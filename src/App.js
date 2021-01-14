@@ -1,18 +1,29 @@
-import './App.css';
+import { useState } from 'react'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Feed from './Feed'
+import Widget from './Widget'
+import Login from './Login'
+import './App.css';
 
 function App() {
+  const [user, setUser] = useState(null)
+
   return (
     <div className="app">
-      <Header />
+      {!user 
+        ? <Login />
+        : <>
+          <Header />
 
-      <div className="app__body">
-        <Sidebar />
-        <Feed />
-        {/* Widgets */}
-      </div>
+          <div className="app__body">
+            <Sidebar />
+            <Feed />
+            <Widget />
+          </div>
+        </>
+      }
+
     </div>
   );
 }

@@ -28,9 +28,9 @@ function Post({
           <p>{message}</p>
         </div>
 
-        <div className="post__image">
+        {image && <div className="post__image">
             <img src={image} alt="Post Image" />
-        </div>
+        </div>}
 
         <div className="post__options">
           <div className="post__option">
