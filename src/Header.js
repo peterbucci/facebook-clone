@@ -1,5 +1,5 @@
 import React from 'react'
-import './Header.css'
+import { Avatar, IconButton } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home'
 import FlagIcon from '@material-ui/icons/Flag'
@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ForumIcon from '@material-ui/icons/Forum'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Avatar, IconButton } from '@material-ui/core'
+import './Header.css'
 
 function Header() {
   return (
@@ -22,7 +22,7 @@ function Header() {
         />
         <div className="header__input">
           <SearchIcon />
-          <input type="text"/>
+          <input placeholder='Search Facebook' type="text"/>
         </div>
       </div>
 
@@ -46,7 +46,7 @@ function Header() {
 
       <div className="header__right">
         <div className="header__info">
-          <Avatar />
+          <Avatar src="./avatar.png" />
           <h4>Brotgils</h4>
         </div>
 
