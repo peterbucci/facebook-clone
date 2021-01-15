@@ -50,8 +50,8 @@ function Header() {
 
       <div className="header__right">
         <div className="header__info">
-          <Avatar src={user.photoURL} />
-          <h4>{user.displayName}</h4>
+          <Avatar src={user.profilePic} />
+          <h4>{`${user.firstName} ${user.lastName}`}</h4>
         </div>
 
         <IconButton>

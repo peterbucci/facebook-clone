@@ -11,7 +11,7 @@ import db from './firebase'
 
 
 function MessageSender() {
-  const [{ user }, dispatch] = useStateValue()
+  const [{ user }] = useStateValue()
   const [input, setInput] = useState('')
   const [imageURL, setImageURL] = useState('')
 
@@ -19,11 +19,12 @@ function MessageSender() {
     e.preventDefault()
     
     db.collection('posts').add({
-      message: input,
+      userId: user.userId,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      profilePic: user.photoURL,
-      username: user.displayName,
-      image: imageURL
+      message: input,
+      image: imageURL,
+      profilePic: user.profilePic,
+      username: user.firstName
     })
 
     setInput('')

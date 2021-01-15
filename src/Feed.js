@@ -12,13 +12,18 @@ function Feed() {
   useEffect(() => {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
-      .onSnapshot(snapshot => (
-        setPosts(snapshot.docs.map(doc => ({
+      .onSnapshot(snapshot => {
+        // As you map posts get the users who have posted.
+        const usersWhoPosted = {}
+        const updatedPosts = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        })))
-      ))
+        }))
+        setPosts(updatedPosts)
+      })
   }, [])
+
+  console.log(posts)
 
   return (
     <div className="feed">
@@ -28,11 +33,11 @@ function Feed() {
       {posts.map(post => (
         <Post 
           key={post.id}
-          profilePic={post.profilePic}
-          message={post.message}
           timestamp={post.timestamp}
-          username={post.username}
+          message={post.message}
           image={post.image}
+          username={post.username}
+          profilePic={post.profilePic}
         />
       ))}
     </div>
