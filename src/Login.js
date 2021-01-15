@@ -2,59 +2,50 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import './Login.css'
 
-import db, { auth, provider } from './firebase'
+import db, { auth, googleProvider } from './firebase'
 import { actionTypes } from './reducer'
 import { useStateValue } from './StateProvider'
 
 function Login() {
   const [state, dispatch] = useStateValue()
 
-  const getUser = (user) => {
-    console.log(user)
-    return db.collection('users')
-      .where('userId', '==', user.uid)
-      .get()
-      .then(querySnapshot => {
-        console.log('snap', querySnapshot.empty)
-        return querySnapshot.empty
-          ? db.collection('users').add({
-            userId: user.uid,
-            profilePic: user.photoURL,
-            firstName: user.displayName,
-            lastName: '',
-            email: user.email
-          })
-          .then(({ id }) => {
-            return {
-              id,
-              userId: user.uid,
-              profilePic: user.photoURL,
-              firstName: user.displayName,
-              lastName: '',
-              email: user.email
-            }
-          })
-          .catch(error => alert(error.message))
-          : {
-            ...querySnapshot.docs[0].data()
-          }
-      })
-      .catch(error => alert(error.message))
+  const getUser = async ({ uid, photoURL, displayName, email }) => {
+    const querySnapshot = await 
+      db.collection('users')
+        .where('email', '==', email)
+        .get()
+
+    if (querySnapshot.empty) {
+      const user = {
+        userId: uid,
+        profilePic: photoURL,
+        firstName: displayName,
+        lastName: '',
+        email: email
+      }
+
+      const query = await db.collection('users').add(user)
+
+      return {
+        id: query.id,
+        ...user
+      }
+    } 
+
+    return {
+      id: querySnapshot.docs[0].id,
+      ...querySnapshot.docs[0].data()
+    }
   }
 
-  const signIn = () => {
-    auth.signInWithPopup(provider)
-      .then(result => {
-        // Create a users collection. If a user exists with the UID use that otherwise, create one with the result
-        getUser(result.user)
-          .then(user => {
-            dispatch({
-              type: actionTypes.SET_USER,
-              user
-            })
-          })
-      })
-      .catch(error => alert(error.message))
+  const signIn = async (provider) => {
+    const authorized = await auth.signInWithPopup(provider)
+    const user = await getUser(authorized.user)
+
+    dispatch({
+      type: actionTypes.SET_USER,
+      user
+    })
   }
 
   console.log(state)
@@ -71,9 +62,9 @@ function Login() {
           alt="facebook logo text"
         />
       </div>
-      <Button type="submit" onClick={signIn}>
-          Sign In
-        </Button>
+      <Button type="submit" onClick={() => signIn(googleProvider)}>
+        Sign In
+      </Button>
     </div>
   )
 }
