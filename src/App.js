@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Feed from './Feed'
@@ -6,8 +5,10 @@ import Widget from './Widget'
 import Login from './Login'
 import './App.css';
 
+import { useStateValue } from './StateProvider'
+
 function App() {
-  const [user, setUser] = useState(null)
+  const [{ user }, dispatch] = useStateValue()
 
   return (
     <div className="app">

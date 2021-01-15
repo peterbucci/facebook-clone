@@ -29,7 +29,7 @@ function Post({
         </div>
 
         {image && <div className="post__image">
-            <img src={image} alt="Post Image" />
+            <img src={image} alt="" />
         </div>}
 
         <div className="post__options">
