@@ -1,35 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import StoryReel from './StoryReel'
 import MessageSender from './MessageSender'
 import Post from './Post'
 import './Feed.css'
 
+import db from './firebase'
+
 function Feed() {
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    db.collection('posts')
+      .orderBy('timestamp', 'desc')
+      .onSnapshot(snapshot => (
+        setPosts(snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })))
+      ))
+  }, [])
+
   return (
     <div className="feed">
       <StoryReel />
       <MessageSender />
 
-      <Post 
-        profilePic="./avatar.png"
-        message="This is a post."
-        timestamp="Timestamp"
-        username="Brotgils"
-        image="./portalIn.jpeg"
-      />
-      <Post 
-        profilePic="./avatar.png"
-        message="This is another post."
-        timestamp="Timestamp"
-        username="Brotgils"
-        image="./portalOut.jpeg"
-      />
-      <Post 
-        profilePic="./avatar.png"
-        message="This is the final post."
-        timestamp="Timestamp"
-        username="Brotgils"
-      />
+      {posts.map(post => (
+        <Post 
+          key={post.id}
+          profilePic={post.profilePic}
+          message={post.message}
+          timestamp={post.timestamp}
+          username={post.username}
+          image={post.image}
+        />
+      ))}
     </div>
   )
 }
