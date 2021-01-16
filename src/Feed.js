@@ -8,22 +8,47 @@ import db from './firebase'
 
 function Feed() {
   const [posts, setPosts] = useState([])
+  const [usersWhoContributed, setUsersWhoContributed] = useState({})
 
+  // Set up onSnapshot once when app loads
   useEffect(() => {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
       .onSnapshot(snapshot => {
-        // As you map posts get the users who have posted.
-        const usersWhoPosted = {}
-        const updatedPosts = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }))
+        const updatedPosts = snapshot.docs.map(doc => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        })
         setPosts(updatedPosts)
       })
   }, [])
 
-  console.log(posts)
+  // Whenever 'posts' is modified, get any users that haven't been pulled from the db. Do something similar to the first useEffect to create onSnapshot
+  useEffect(() => {
+    const users = posts
+      .map(post => post.authId)
+      .filter((authId, index, self) => self.indexOf(authId) === index)
+    
+    if (users.length > 0) {
+      db.collection('users')
+      .where('authId', 'in', users)
+      .onSnapshot(snapshot => {
+        const updatedUsers = snapshot.docs.reduce((users, user) => {
+          return {
+            ...users,
+            [user.data().authId]: user.data()
+          }
+        }, {})
+
+        setUsersWhoContributed(updatedUsers)
+      })
+    }
+  }, [posts])
+
+  console.log(usersWhoContributed)
+  // console.log(posts)
 
   return (
     <div className="feed">
@@ -36,8 +61,8 @@ function Feed() {
           timestamp={post.timestamp}
           message={post.message}
           image={post.image}
-          username={post.username}
-          profilePic={post.profilePic}
+          username={(usersWhoContributed[post.authId] ? usersWhoContributed[post.authId].firstName : '')}
+          profilePic={(usersWhoContributed[post.authId] ? usersWhoContributed[post.authId].profilePic : '')}
         />
       ))}
     </div>

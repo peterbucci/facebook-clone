@@ -19,12 +19,10 @@ function MessageSender() {
     e.preventDefault()
     
     db.collection('posts').add({
-      userId: user.userId,
+      authId: user.authId,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       message: input,
-      image: imageURL,
-      profilePic: user.profilePic,
-      username: user.firstName
+      image: imageURL
     })
 
     setInput('')

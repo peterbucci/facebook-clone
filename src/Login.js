@@ -16,19 +16,19 @@ function Login() {
         .get()
 
     if (querySnapshot.empty) {
-      const user = {
-        userId: uid,
+      const newUser = {
+        authId: uid,
         profilePic: photoURL,
         firstName: displayName,
         lastName: '',
         email: email
       }
 
-      const query = await db.collection('users').add(user)
+      const query = await db.collection('users').add(newUser)
 
       return {
         id: query.id,
-        ...user
+        ...newUser
       }
     } 
 
