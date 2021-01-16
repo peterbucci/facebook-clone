@@ -10,7 +10,6 @@ function Feed() {
   const [posts, setPosts] = useState([])
   const [usersWhoContributed, setUsersWhoContributed] = useState({})
 
-  // Set up onSnapshot once when app loads
   useEffect(() => {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
@@ -25,7 +24,6 @@ function Feed() {
       })
   }, [])
 
-  // Whenever 'posts' is modified, get any users that haven't been pulled from the db. Do something similar to the first useEffect to create onSnapshot
   useEffect(() => {
     const users = posts
       .map(post => post.authId)
@@ -46,9 +44,6 @@ function Feed() {
       })
     }
   }, [posts])
-
-  console.log(usersWhoContributed)
-  // console.log(posts)
 
   return (
     <div className="feed">

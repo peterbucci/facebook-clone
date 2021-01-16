@@ -9,43 +9,39 @@ import { useStateValue } from './StateProvider'
 function Login() {
   const [state, dispatch] = useStateValue()
 
-  const getUser = async ({ uid, photoURL, displayName, email }) => {
-    const querySnapshot = await 
-      db.collection('users')
-        .where('email', '==', email)
-        .get()
-
-    if (querySnapshot.empty) {
-      const newUser = {
-        authId: uid,
-        profilePic: photoURL,
-        firstName: displayName,
-        lastName: '',
-        email: email
-      }
-
-      const query = await db.collection('users').add(newUser)
-
-      return {
-        id: query.id,
-        ...newUser
-      }
-    } 
-
-    return {
-      id: querySnapshot.docs[0].id,
-      ...querySnapshot.docs[0].data()
-    }
+  const getUser = async (user) => {
+    const { uid, photoURL, displayName, email } = user
+    
+    db.collection('users')
+      .where('email', '==', email)
+      .onSnapshot(snapshot => {
+        if (snapshot.empty) {
+          const newUser = {
+            authId: uid,
+            profilePic: photoURL,
+            firstName: displayName,
+            lastName: '',
+            email: email
+          }
+    
+          db.collection('users')
+            .add(newUser)
+            .then(res => getUser(user))
+        } else {
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: {
+              id: snapshot.docs[0].id,
+              ...snapshot.docs[0].data()
+            }
+          })
+        }
+      })
   }
 
   const signIn = async (provider) => {
     const authorized = await auth.signInWithPopup(provider)
-    const user = await getUser(authorized.user)
-
-    dispatch({
-      type: actionTypes.SET_USER,
-      user
-    })
+    getUser(authorized.user)
   }
 
   console.log(state)
