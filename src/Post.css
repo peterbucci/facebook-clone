@@ -47,6 +47,7 @@
 }
 
 .post__option {
+  all: unset;
   display: flex;
   flex: 1;
   align-items: center;

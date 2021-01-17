@@ -18,12 +18,17 @@ function MessageSender() {
   const handleSubmit = e => {
     e.preventDefault()
     
-    db.collection('posts').add({
-      authId: user.authId,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      message: input,
-      image: imageURL
-    })
+    db.collection('posts')
+      .doc()
+      .set({
+        userId: user.id,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: input,
+        image: imageURL,
+        reactions: {
+          like: []
+        }
+      })
 
     setInput('')
     setImageURL('')
@@ -32,7 +37,7 @@ function MessageSender() {
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <Avatar src={user.photoURL} />
+        <Avatar src={user.profilePic} />
         <form>
           <input
             value={input}

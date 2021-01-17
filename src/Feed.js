@@ -26,17 +26,19 @@ function Feed() {
 
   useEffect(() => {
     const users = posts
-      .map(post => post.authId)
-      .filter((authId, index, self) => self.indexOf(authId) === index)
+      .reduce((users, post) => {
+        return [...users, post.userId, ...post.reactions.like]
+      }, [])
+      .filter((userId, index, self) => self.indexOf(userId) === index)
     
     if (users.length > 0) {
       db.collection('users')
-      .where('authId', 'in', users)
+      .where('id', 'in', users)
       .onSnapshot(snapshot => {
         const updatedUsers = snapshot.docs.reduce((users, user) => {
           return {
             ...users,
-            [user.data().authId]: user.data()
+            [user.data().id]: user.data()
           }
         }, {})
 
@@ -50,16 +52,25 @@ function Feed() {
       <StoryReel />
       <MessageSender />
 
-      {posts.map(post => (
-        <Post 
-          key={post.id}
-          timestamp={post.timestamp}
-          message={post.message}
-          image={post.image}
-          username={(usersWhoContributed[post.authId] ? usersWhoContributed[post.authId].firstName : '')}
-          profilePic={(usersWhoContributed[post.authId] ? usersWhoContributed[post.authId].profilePic : '')}
-        />
-      ))}
+      {posts.map(post => {
+        const usersInPost = {
+          [post.userId]: usersWhoContributed[post.userId],
+          ...post.reactions.like.reduce((users, id) => {
+            return {
+              ...users,
+              [id]: usersWhoContributed[id]
+            }
+          }, {})
+        }
+
+        return Object.values(usersInPost).some(user => !user)
+        ? <></>
+        : <Post 
+            key={post.id}
+            post={post}
+            usersInPost={usersInPost}
+          />
+      })}
     </div>
   )
 }

@@ -10,14 +10,16 @@ function Login() {
   const [state, dispatch] = useStateValue()
 
   const getUser = async (user) => {
-    const { uid, photoURL, displayName, email } = user
-    
+    const { photoURL, displayName, email } = user
+
     db.collection('users')
       .where('email', '==', email)
       .onSnapshot(snapshot => {
         if (snapshot.empty) {
+          const ref = db.collection('users').doc()
+          const id = ref.id
           const newUser = {
-            authId: uid,
+            id,
             profilePic: photoURL,
             firstName: displayName,
             lastName: '',
@@ -25,8 +27,9 @@ function Login() {
           }
     
           db.collection('users')
-            .add(newUser)
-            .then(res => getUser(user))
+            .doc(id)
+            .set(newUser)
+            .then(() => getUser(user))
         } else {
           dispatch({
             type: actionTypes.SET_USER,
