@@ -2,58 +2,13 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import './Login.css'
 
-import db, { auth, googleProvider } from './firebase'
-import { actionTypes } from './reducer'
-import { useStateValue } from './StateProvider'
+import { auth, googleProvider } from './firebase'
 
 function Login() {
-  const [state, dispatch] = useStateValue()
-
-  const getUser = async (user) => {
-    const { photoURL, displayName, email } = user
-
-    db.collection('users')
-      .where('email', '==', email)
-      .onSnapshot(snapshot => {
-        if (snapshot.empty) {
-          const ref = db.collection('users').doc()
-          const id = ref.id
-          const newUser = {
-            id,
-            profilePic: photoURL,
-            firstName: displayName,
-            lastName: '',
-            email: email,
-            notifications: {
-              comments: [],
-              reactions: {
-                like: []
-              }
-            }
-          }
-    
-          db.collection('users')
-            .doc(id)
-            .set(newUser)
-            .then(() => getUser(user))
-        } else {
-          dispatch({
-            type: actionTypes.SET_USER,
-            user: {
-              id: snapshot.docs[0].id,
-              ...snapshot.docs[0].data()
-            }
-          })
-        }
-      })
+  const signIn = (provider) => {
+    auth.signInWithPopup(provider)
+        .catch(error => alert(error.message))    
   }
-
-  const signIn = async (provider) => {
-    const authorized = await auth.signInWithPopup(provider)
-    getUser(authorized.user)
-  }
-
-  console.log(state)
 
   return (
     <div className="login">
