@@ -6,8 +6,8 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import './MessageSender.css'
 
-import { useStateValue } from './StateProvider'
-import db from './firebase'
+import { useStateValue } from '../StateProvider'
+import db from '../firebase'
 
 
 function MessageSender() {
@@ -43,7 +43,7 @@ function MessageSender() {
             value={input}
             onChange={({ target }) => setInput(target.value)}
             className="messageSender__input"
-            placeholder={`What's on your mind, ${user.displayName}?`}
+            placeholder={`What's on your mind, ${user.firstName}?`}
           />
           <input 
             value={imageURL}

@@ -23,7 +23,13 @@ function Login() {
             profilePic: photoURL,
             firstName: displayName,
             lastName: '',
-            email: email
+            email: email,
+            notifications: {
+              comments: [],
+              reactions: {
+                like: []
+              }
+            }
           }
     
           db.collection('users')

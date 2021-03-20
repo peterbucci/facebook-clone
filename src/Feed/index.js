@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import './index.css'
+
+// COMPONENTS
 import StoryReel from './StoryReel'
 import MessageSender from './MessageSender'
 import Post from './Post'
-import './Feed.css'
 
-import db from './firebase'
+// FIREBASE
+import db from '../firebase'
 
 function Feed() {
   const [posts, setPosts] = useState([])
   const [usersWhoContributed, setUsersWhoContributed] = useState({})
+  const [comments, setComments] = useState([])
 
   useEffect(() => {
     db.collection('posts')
@@ -20,14 +24,44 @@ function Feed() {
             ...doc.data()
           }
         })
+
         setPosts(updatedPosts)
       })
+      
   }, [])
+
+  useEffect(() => {
+    posts.forEach(post => {
+      db.collection('posts').doc(post.id)
+        .collection('comments')
+        .where('parent', '==', null)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+              console.log(doc.id, " => ", doc.data());
+          });
+      })
+    })
+
+    const postIds = posts.map(post => post.id)
+    postIds.length > 0 && db.collection('comments')
+      .where('postId', 'in', postIds)
+      .onSnapshot(snapshot => {
+        const updatedComments = snapshot.docs.map(doc => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        })
+
+        setComments(updatedComments)
+      })
+  }, [posts])
 
   useEffect(() => {
     const users = posts
       .reduce((users, post) => {
-        return [...users, post.userId, ...post.reactions.like]
+        return [...users, post.userId, ...post.reactions.like, ...comments.map(comment => comment.userId)]
       }, [])
       .filter((userId, index, self) => self.indexOf(userId) === index)
     
@@ -45,7 +79,7 @@ function Feed() {
         setUsersWhoContributed(updatedUsers)
       })
     }
-  }, [posts])
+  }, [comments, posts])
 
   return (
     <div className="feed">
@@ -53,6 +87,16 @@ function Feed() {
       <MessageSender />
 
       {posts.map(post => {
+        const commentsInPost = comments.filter(comment => comment.postId === post.id).reduce((comments, comment) => {
+          return {
+            data: [...comments.data, comment],
+            users: {
+            ...comments.users,
+            [comment.userId]: usersWhoContributed[comment.userId]
+          
+          }}
+        }, {data: [], users: {}})
+
         const usersInPost = {
           [post.userId]: usersWhoContributed[post.userId],
           ...post.reactions.like.reduce((users, id) => {
@@ -60,7 +104,8 @@ function Feed() {
               ...users,
               [id]: usersWhoContributed[id]
             }
-          }, {})
+          }, {}),
+          ...commentsInPost.users
         }
 
         return Object.values(usersInPost).some(user => !user)
@@ -69,6 +114,7 @@ function Feed() {
             key={post.id}
             post={post}
             usersInPost={usersInPost}
+            commentsInPost={commentsInPost.data}
           />
       })}
     </div>
