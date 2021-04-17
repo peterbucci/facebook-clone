@@ -1,10 +1,6 @@
 import React from 'react'
-import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
 import PeopleIcon from '@material-ui/icons/People';
-import ChatIcon from '@material-ui/icons/Chat';
-import StorefrontIcon from '@material-ui/icons/Storefront';
-import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import ExpandMoreOutlined from '@material-ui/icons/ExpandMoreOutlined';
 import SidebarRow from './SidebarRow'
 import './Sidebar.css'
@@ -17,13 +13,16 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <SidebarRow src={user.profilePic} title={`${user.firstName} ${user.lastName}`} />
-      <SidebarRow Icon={LocalHospitalIcon} title="COVID-19 Information Center" />
-      <SidebarRow Icon={EmojiFlagsIcon} title="Pages" />
-      <SidebarRow Icon={PeopleIcon} title="Friends" />
-      <SidebarRow Icon={ChatIcon} title="Messenger" />
-      <SidebarRow Icon={StorefrontIcon} title="Marketplace" />
-      <SidebarRow Icon={VideoLibraryIcon} title="Videos" />
-      <SidebarRow Icon={ExpandMoreOutlined} title="See More" />
+      <SidebarRow Icon="findFriends" title="Find Friends" />
+      <SidebarRow Icon="mostRecent" title="Most Recent" />
+      <SidebarRow Icon="favorites" title="Favorites" />
+      <SidebarRow Icon="groups" title="Groups" />
+      <SidebarRow Icon="marketplace" title="Marketplace" />
+      <SidebarRow Icon="watch" title="Watch" />
+      <SidebarRow Icon="events" title="Events" />
+      <SidebarRow Icon="memories" title="Memories" />
+      <SidebarRow Icon="saved" title="Saved" />
+      <SidebarRow Icon="findFriends" title="See More" />
     </div>
   )
 }

@@ -17,18 +17,23 @@ function MessageSender() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    
-    db.collection('posts')
+
+    const newPost = db.collection('users')
+      .doc(user.id)
+      .collection('wallPosts')
       .doc()
-      .set({
-        userId: user.id,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        message: input,
-        image: imageURL,
-        reactions: {
-          like: []
-        }
-      })
+    const id = newPost.id
+
+    newPost.set({
+      id,
+      userId: user.id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      message: input,
+      image: imageURL,
+      reactions: {
+        like: []
+      }
+    })
 
     setInput('')
     setImageURL('')

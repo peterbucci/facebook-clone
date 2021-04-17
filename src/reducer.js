@@ -1,4 +1,5 @@
 export const initialState = {
+  initialRender: true,
   user: null,
 }
 
@@ -13,10 +14,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         user: action.user,
+        initialRender: false
       }
 
-      default:
-        return state
+    default:
+      return state
   }
 }
 

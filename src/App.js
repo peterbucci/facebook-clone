@@ -13,13 +13,14 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import Feed from './Feed/'
 import Widget from './Widget'
+import Profile from './Profile/'
 
 import db, { auth } from './firebase'
 import { actionTypes } from './reducer'
 import { useStateValue } from './StateProvider'
 
 function App() {
-  const [{ user }, dispatch] = useStateValue()
+  const [{ user, initialRender }, dispatch] = useStateValue()
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => { 
@@ -76,22 +77,26 @@ function App() {
   return (
     <Router>
       <div className="app">
-        {!user 
-          ? <Login />
-          : <>
-            <Header />
+        {initialRender
+          ? <></>
+          : !user 
+            ? <Login />
+            : <>
+              <Header />
 
-            <div className="app__body">
-              <Switch>
-                <Route path="/users">
-                  <UserProfile />
-                </Route>
-                <Route path="/">
-                  <UserFeed />
-                </Route>
-              </Switch>
-            </div>
-          </>
+              <div className="app__body">
+                <Switch>
+                  <Route path="/me">
+                    <Profile 
+                     user={user}
+                    />
+                  </Route>
+                  <Route path="/">
+                    <UserFeed />
+                  </Route>
+                </Switch>
+              </div>
+            </>
         }
 
       </div>
@@ -105,10 +110,6 @@ function UserFeed() {
     <Feed />
     <Widget />
   </>
-}
-
-function UserProfile() {
-  return <h2>Test</h2>
 }
 
 export default App;

@@ -1,3 +1,46 @@
 .storyReel {
   display: flex;
 }
+
+.addStory {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);
+}
+
+.addStory__container {
+  display: flex;
+  flex-direction: row;
+  margin: 8px;
+  padding: 8px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.addStory__container:hover {
+  background-color: #eff2f5;
+}
+
+.addStory button {
+  width: 40px;
+  height: 40px;
+  background-color: #e7f3ff;
+  border: none;
+  border-radius: 50%;
+  color: #0571ed;
+}
+
+.addStory__desc {
+  margin-left: 8px;
+}
+
+.addStory__desc h3 {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.addStory__desc p {
+  font-size: 15px;
+  color: #65676b;
+}

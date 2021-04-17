@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import firebase from 'firebase'
 import { Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 // ICONS
@@ -23,10 +24,16 @@ function Post({
   usersInPost,
   commentsInPost
 }) {
+  const [comment, setComment] = useState('')
   const [{ user }] = useStateValue()
   const { id, image, message, reactions, timestamp, userId} = post
   const originalPoster = usersInPost[userId]
   const classes = useStyles()
+
+  const postRef = db.collection('users')
+    .doc(userId)
+    .collection('wallPosts')
+    .doc(id)
 
   const handleReactionClick = (type) => {
     const newReactionsObj = reactions[type].indexOf(user.id) >= 0
@@ -39,17 +46,29 @@ function Post({
         [type]: [...reactions[type], user.id]
       }
 
-    db.collection('posts')
-      .doc(id)
-      .set({
+      postRef.set({
         ...post,
         reactions: newReactionsObj
       })
   }
 
-  const iconActive = reactions.like.indexOf(user.id) >= 0 ? 'blue' : ''
+  const handleCommentSubmit = e => {
+    e.preventDefault()
 
-  // commentsInPost.forEach(comment => console.log(usersInPost[comment.userId]))
+    const newCommentRef = postRef.collection('comments').doc()
+    newCommentRef.set({
+      id: newCommentRef.id,
+      image: '',
+      message: comment,
+      postId: post.id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      userId: user.id
+    })
+
+    setComment('')
+  }
+
+  const iconActive = reactions.like.indexOf(user.id) >= 0 ? 'blue' : ''
 
   return (
     <div className="post">
@@ -113,8 +132,10 @@ function Post({
             <input
               className="commentSender__input"
               placeholder="Write a comment..."
+              value={comment}
+              onChange={({ target }) => setComment(target.value)}
             />
-            <button onClick={() => {}} type="submit">
+            <button onClick={handleCommentSubmit} type="submit">
               Hidden submit
             </button>
         </form>
