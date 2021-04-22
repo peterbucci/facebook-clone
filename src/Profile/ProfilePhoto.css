@@ -1,0 +1,61 @@
+.header__profilePhoto {
+  position: absolute;
+  top: calc(350px - 160px);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.profilePhoto__image {
+  height: 168px !important;
+  width: 168px !important;
+  border: solid 4px white;
+  cursor: pointer;
+}
+
+.profilePhoto__updateBadge {
+  padding: 5px;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profilePhoto__image:hover, .profilePhoto__updateBadge:hover {
+  filter: brightness(90%);
+}
+
+.profilePhoto__menu {
+  position: absolute;
+  bottom: -99px;
+  margin: auto;
+  padding: 10px;
+  width: 344px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
+  border-radius: 12px;
+  font-weight: 551;
+  color: #434242;
+}
+
+.profilePhoto__menu ul {
+  padding: 0;
+
+}
+
+.profilePhoto__menu li {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 5px;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.profilePhoto__menu li:hover {
+  background: #e4e6eb;
+}
+
+.profilePhoto__menu li svg {
+  margin-right: 10px;
+}
+
