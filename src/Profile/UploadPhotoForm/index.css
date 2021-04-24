@@ -52,133 +52,12 @@
 
 /* Body > contains description, uploaded image, and tools to edit the image */
 
-.updatePhoto__modal__body {
+.updatePhoto__body {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 16px;
   border-bottom: solid 1px #e5e5e5;
-}
-
-.updatePhoto__description {
-  position: relative;
-  width: 100%;
-}
-
-.updatePhoto__description label {
-  color: #65676b;
-  transition: all .15s ease-in-out;
-}
-
-.updatePhoto__description label.noText {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-}
-
-.updatePhoto__description:focus-within > label {
-  color: #247ef3;
-}
-
-.updatePhoto__description:focus-within > label, label.containsText {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 13px;
-}
-
-.updatePhoto__description textarea {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: transparent !important;
-  border: none;
-  outline: none !important;
-}
-
-.updatePhoto__description .growWrap__container {
-  border: solid 1px #bec3c9;
-  border-radius: 10px;
-
-}
-
-.updatePhoto__description .growWrap__container p {
-  opacity: 0;
-}
-
-.updatePhoto__description textarea, .updatePhoto__description .growWrap__container {
-  margin-bottom: 16px;
-  padding: 30px 15px 10px 15px;
-  width: 100%;
-  resize: none; 
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;   
-  font-size: 16px; 
-  word-wrap: break-word;
-}
-
-.updatePhoto__description:focus-within > .growWrap > .growWrap__container {
-  border: solid 1px #247ef3;
-  outline: none !important;
-}
-
-.updatePhoto__image {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 700px;
-  height: 400px;
-  overflow: hidden;
-}
-
-.image__thumbnailOverlay, .image__dragDropContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 700px;
-  height: 400px;
-  overflow: hidden;
-}
-
-.image__thumbnailOutline {
-  width: 300px;
-  height: 300px;
-  opacity: .5;
-  box-shadow: 0 0 0 500px #fff;
-  border-radius: 50%;
-  z-index: 899;
-}
-
-.imageContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.imageContainer img {
-  position: fixed;
-}
-
-.imageCropped {
-  height: 300px;
-  width: 300px;
-}
-
-.image__dragDropContainer {
-  z-index: 900;
-}
-
-.dragDrop__object {
-  position: fixed;
-  height: 300px;
-  width: 300px;
-  cursor: move;
 }
 
 .updatePhoto__zoomSlider {
@@ -261,6 +140,15 @@
   width: 100%;
   font-size: 16px;
   color: #76787c;
+}
+
+.updatePhoto__options button.optionSelected {
+  background-color: #e6f3ff;
+  color: #5395f4;
+}
+
+.updatePhoto__options button.optionSelected:hover {
+  background-color: #d4e0eb;
 }
 
 .updatePhoto__visibility svg, .updatePhoto__options button svg {

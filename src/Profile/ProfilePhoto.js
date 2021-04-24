@@ -7,7 +7,7 @@ import WallpaperIcon from '@material-ui/icons/Wallpaper';
 
 import './ProfilePhoto.css'
 
-import UploadPhoto from './UploadPhoto'
+import UploadPhotoForm from './UploadPhotoForm'
 
 function useOutsideAlerter(ref, closeAllMenus) {
   useEffect(() => {
@@ -31,11 +31,11 @@ function useOutsideAlerter(ref, closeAllMenus) {
 
 function ProfilePhoto() {
   const [toggleProfilePhotoMenu, setToggleProfilePhotoMenu] = useState(false)
-  const [toggleProfilePhotoModal, setToggleProfilePhotoModal] = useState(false)
+  const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false)
 
   const closeAllMenus = () => {
     setToggleProfilePhotoMenu(false)
-    setToggleProfilePhotoModal(false)
+    setToggleUploadPhotoForm(false)
   }
 
   const menuRef = useRef(null),
@@ -52,7 +52,7 @@ function ProfilePhoto() {
           vertical: 'bottom',
           horizontal: 'right',
         }}
-        badgeContent={<CameraAltIcon className="profilePhoto__updateBadge" onClick={() => setToggleProfilePhotoModal(true)} />}
+        badgeContent={<CameraAltIcon className="profilePhoto__updateBadge" onClick={() => setToggleUploadPhotoForm(true)} />}
       >
         <Avatar className="profilePhoto__image" onClick={() => setToggleProfilePhotoMenu(!toggleProfilePhotoMenu)}>
           <img src="./default_avatar.png" />
@@ -61,12 +61,12 @@ function ProfilePhoto() {
 
       {toggleProfilePhotoMenu && <div className="profilePhoto__menu" ref={menuRef}>
         <ul>
-          <li onClick={() => setToggleProfilePhotoModal(!toggleProfilePhotoModal)}><CameraAltOutlinedIcon /> Add Photo</li>
+          <li onClick={() => setToggleUploadPhotoForm(!toggleUploadPhotoForm)}><CameraAltOutlinedIcon /> Add Photo</li>
           <li><WallpaperIcon /> Add a Frame</li>
         </ul>
       </div>}
 
-      {toggleProfilePhotoModal && <UploadPhoto closeAllMenus={closeAllMenus} />}
+      {toggleUploadPhotoForm && <UploadPhotoForm closeAllMenus={closeAllMenus} />}
     </div>
   )
 }

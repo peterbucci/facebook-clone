@@ -1,0 +1,65 @@
+.updatePhoto__description {
+  position: relative;
+  width: 100%;
+}
+
+.updatePhoto__description label {
+  color: #65676b;
+  transition: all .15s ease-in-out;
+}
+
+.updatePhoto__description label.noText {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.updatePhoto__description:focus-within > label {
+  color: #247ef3;
+}
+
+.updatePhoto__description:focus-within > label, label.containsText {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 13px;
+}
+
+.updatePhoto__description textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent !important;
+  border: none;
+  outline: none !important;
+}
+
+.updatePhoto__description .growWrap__container {
+  border: solid 1px #bec3c9;
+  border-radius: 10px;
+}
+
+.updatePhoto__description .growWrap:hover > .growWrap__container {
+  border: solid 1px #91959b;
+}
+
+.updatePhoto__description .growWrap__container p {
+  opacity: 0;
+}
+
+.updatePhoto__description textarea, .updatePhoto__description .growWrap__container {
+  margin-bottom: 16px;
+  padding: 30px 15px 10px 15px;
+  width: 100%;
+  resize: none; 
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;   
+  font-size: 16px; 
+  word-wrap: break-word;
+}
+
+.updatePhoto__description:focus-within > .growWrap > .growWrap__container {
+  border: solid 1px #247ef3;
+  outline: none !important;
+}
