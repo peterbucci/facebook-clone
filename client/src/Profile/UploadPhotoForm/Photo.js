@@ -1,21 +1,38 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import './Photo.css'
+
+import { actionTypes } from '../../reducer'
+import { useStateValue } from '../../StateProvider'
 
 function Photo({
   imageList,
-  zoomValue,
-  imageWidth,
-  imageRef,
-  imageContainerRef,
-  imageThumbnailRef,
+  imageDimensions,
+  zoomedHeight,
   cropped,
-  dragDropLayerRef,
-  dragDropTransparentContainerRef
 }) {
-  const imageDimensions = {
-    height: `${cropped ? '300' : zoomValue}px`,
-    width: `${cropped ? '300' : imageWidth}px`
-  }
+  const [{ uploadPhotoForm }, dispatch] = useStateValue()
+
+  const imageRef = useRef(null)
+  const imageContainerRef = useRef(null)
+  const imageThumbnailRef = useRef(null)
+  const dragDropLayerRef = useRef(null)
+  const dragDropTransparentContainerRef = useRef(null)
+  const croppedImageRef = useRef(null)
+
+  useEffect(() => {
+    dispatch({
+      type: actionTypes.SET_UPLOAD_REFS,
+      uploadRefs: {
+        imageRef,
+        imageContainerRef,
+        imageThumbnailRef,
+        dragDropLayerRef,
+        dragDropTransparentContainerRef,
+        croppedImageRef
+      }
+    })
+    console.log(uploadPhotoForm)
+  }, [imageRef.current])
 
   let offsetX, offsetY
   const move = e => {
@@ -67,22 +84,23 @@ function Photo({
     dragDropTransparentContainerRef.current.onpointerup = remove
   }
 
-  return (
-  <div className='updatePhoto__image'>
-    <div ref={dragDropLayerRef} className="image__dragDropContainer">
-      <div ref={dragDropTransparentContainerRef} className={`dragDrop__object${cropped ? ' croppedObj' : ''}`} style={imageDimensions} >
-    </div>
-    </div>
-    <div className="image__thumbnailOverlay">
-      <div ref={imageThumbnailRef} className={`image__croppedOutline${cropped ? ' cropped' : ''}`}>
-        <div className="image__thumbnailOutline"></div>
+  return <>
+    <div className='updatePhoto__image'>
+      <div ref={dragDropLayerRef} className="image__dragDropContainer">
+        <div ref={dragDropTransparentContainerRef} className={`dragDrop__object${cropped ? ' croppedObj' : ''}`} style={imageDimensions} >
+      </div>
+      </div>
+      <div className="image__thumbnailOverlay">
+        <div ref={imageThumbnailRef} className={`image__croppedOutline${cropped ? ' cropped' : ''}`}>
+          <div className="image__thumbnailOutline"></div>
+        </div>
+      </div>
+      <div ref={imageContainerRef} className="imageContainer">
+        <img ref={imageRef} src={imageList[0]['data_url']} alt="" style={{height: `${zoomedHeight}px`}}/>
       </div>
     </div>
-    <div ref={imageContainerRef} className="imageContainer">
-      <img ref={imageRef} src={imageList[0]['data_url']} alt="" style={{height: `${zoomValue}px`}}/>
-    </div>
-  </div>
-  )
+    <canvas ref={croppedImageRef} className="croppedCanvas" width="300px" height="300px" />
+</>
 }
 
 export default Photo
