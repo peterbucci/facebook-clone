@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Description.css'
 
-function Description() {
-  const [description, setDescription] = useState('')
+function Description({
+  description,
+  setDescription
+}) {
   const splitDesc =  description ? description.split('\n') : []
   const textArea = document.querySelector('textarea')
   const textRowCount = textArea ? textArea.value.split("\n").length : 0

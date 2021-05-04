@@ -6,6 +6,7 @@
 /client/.eslintcache
 /.pnp
 .pnp.js
+serviceAccountKey.json
 
 # testing
 /coverage

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import firebase from 'firebase'
 import ImageUploading from 'react-images-uploading'
 import CloseIcon from '@material-ui/icons/Close'
 import PublicIcon from '@material-ui/icons/Public'
@@ -12,12 +13,37 @@ import Footer from './Footer'
 
 import { useStateValue } from '../../StateProvider'
 
+function dataURItoBlob(dataURI) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(',')[1])
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length)
+
+  // create a view into the buffer
+  var ia = new Uint8Array(ab)
+
+  // set the bytes of the buffer to the correct values
+  for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i)
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  var blob = new Blob([ab], {type: mimeString})
+  return blob
+}
+
 function UploadPhotoForm({
   closeAllMenus
 }) {
-  const [{ uploadPhotoForm: { imageRef, imageContainerRef, imageThumbnailRef, croppedImageRef } }] = useStateValue()
+  const [{user, uploadPhotoForm: { imageRef, imageContainerRef, imageThumbnailRef, croppedImageRef } }] = useStateValue()
   
-  const [image, setImage] = useState([]);
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState([])
   const [cropped, setCropped] = useState(false)
   const [zoomedHeight, setZoomedHeight] = useState(300)
   const [zoomedWidth, setZoomedWidth] = useState(null)
@@ -35,7 +61,8 @@ function UploadPhotoForm({
     }
   }, [imageRef, image, zoomedHeight])
 
-  const onSave = (image) => {
+  const onSave = (e, image) => {
+    e.preventDefault()
     const canvas = croppedImageRef.current
     const ctx = canvas.getContext('2d')
     const img = new Image
@@ -58,6 +85,21 @@ function UploadPhotoForm({
         ctx.canvas.height = 300
         ctx.drawImage(img, 0, 0, img.width, img.height, -destinationX, -destinationY, zoomedWidth, zoomedHeight) 
       }
+
+      const formData = new FormData()
+      formData.append('userId', user.id)
+      formData.append('description', description)
+      formData.append('picture', image.file)
+      formData.append('thumbnail', dataURItoBlob(canvas.toDataURL()))
+      formData.append('cropped', false)
+      formData.append('temporary', false)
+
+      fetch('/me', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
     }
 
     img.src = image['data_url']
@@ -81,7 +123,10 @@ function UploadPhotoForm({
                 <button className="profilePhoto__modal__closeButton" onClick={() => closeAllMenus()}><CloseIcon /></button>
               </div>
               {image.length > 0 && <div className="updatePhoto__body">
-                  <Description />
+                  <Description 
+                    description={description}
+                    setDescription={setDescription}
+                  />
                   <Photo 
                     imageList={imageList}
                     imageDimensions={imageDimensions} 

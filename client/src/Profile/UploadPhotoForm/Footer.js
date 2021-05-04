@@ -14,7 +14,7 @@ function Footer({
       {image.length > 0
         ? <>
             <button onClick={() => onImageRemove(0)}>Cancel</button>
-            <button onClick={() => onSave(image[0])}>Save</button>
+            <button onClick={(e) => onSave(e, image[0])}>Save</button>
         </>
         : <>
             <button onClick={onImageUpload}><AddIcon /> Upload Photo</button>
