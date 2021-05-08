@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import firebase from 'firebase'
 import ImageUploading from 'react-images-uploading'
 import CloseIcon from '@material-ui/icons/Close'
 import PublicIcon from '@material-ui/icons/Public'
@@ -38,7 +37,8 @@ function dataURItoBlob(dataURI) {
 }
 
 function UploadPhotoForm({
-  closeAllMenus
+  closeAllMenus,
+  modalRef
 }) {
   const [{user, uploadPhotoForm: { imageRef, imageContainerRef, imageThumbnailRef, croppedImageRef } }] = useStateValue()
   
@@ -116,7 +116,7 @@ function UploadPhotoForm({
           onImageUpload,
           onImageRemove,
         }) => (
-          <div className="profilePhoto__modal__background">
+          <div className="profilePhoto__modal__background" ref={modalRef}>
             <div className="profilePhoto__modal__container">
               <div className="profilePhoto__modal__header">
                 <h3>Update Profile Picture</h3>

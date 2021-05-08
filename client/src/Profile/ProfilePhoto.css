@@ -25,9 +25,7 @@
 }
 
 .profilePhoto__menu {
-  position: absolute;
-  bottom: -99px;
-  margin: auto;
+  margin-top: 80px;
   padding: 10px;
   width: 344px;
   background-color: #fff;
@@ -35,6 +33,7 @@
   border-radius: 12px;
   font-weight: 551;
   color: #434242;
+  cursor: auto;
 }
 
 .profilePhoto__menu ul {
@@ -59,3 +58,79 @@
   margin-right: 10px;
 }
 
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  z-index: 500;
+  overflow-y: scroll;
+  cursor: pointer;
+}
+
+.profilePhoto__viewPicture {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  z-index: 500;
+  overflow-y: scroll;
+}
+
+.viewPicture__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex: 1;
+  height: 100%;
+  background: #000;
+}
+
+.viewPicture__leftHeader {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 16px;
+  color: #fff;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;   
+}
+
+.viewPicture__leftHeader svg {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.viewPicture__leftBody {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.viewPicture__leftBody img {
+  max-width: 100%;
+}
+
+.viewPicture__right{
+  width: 360px;
+  height: 100%;
+  background: #fff;
+}
+
+.viewPicture__rightHeader {
+  height: 60px;
+  border-bottom: solid 1px #ced0d4;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;  
+}

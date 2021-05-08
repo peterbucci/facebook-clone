@@ -20,7 +20,7 @@ import { actionTypes } from './reducer'
 import { useStateValue } from './StateProvider'
 
 function App() {
-  const [{ user, initialRender }, dispatch] = useStateValue()
+  const [{ user, initialRender, currentProfile }, dispatch] = useStateValue()
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => { 
@@ -87,9 +87,7 @@ function App() {
               <div className="app__body">
                 <Switch>
                   <Route path="/me">
-                    <Profile 
-                     user={user}
-                    />
+                    <Profile id={user.id} />
                   </Route>
                   <Route path="/">
                     <UserFeed />
