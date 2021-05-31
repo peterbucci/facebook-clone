@@ -1,7 +1,4 @@
 import React from 'react'
-import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
-import PeopleIcon from '@material-ui/icons/People';
-import ExpandMoreOutlined from '@material-ui/icons/ExpandMoreOutlined';
 import SidebarRow from './SidebarRow'
 import './Sidebar.css'
 
@@ -12,7 +9,7 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <SidebarRow src={user.profilePic} title={`${user.firstName} ${user.lastName}`} />
+      <SidebarRow pictureId={user.profilePic} title={`${user.firstName} ${user.lastName}`} />
       <SidebarRow Icon="findFriends" title="Find Friends" />
       <SidebarRow Icon="mostRecent" title="Most Recent" />
       <SidebarRow Icon="favorites" title="Favorites" />

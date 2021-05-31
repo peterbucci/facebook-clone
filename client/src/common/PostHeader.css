@@ -1,0 +1,20 @@
+.post__header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 12px 16px ;
+}
+.post__avatar {
+  margin-right: 10px;
+}
+
+.post__headerInfo > .headerInfo__name {
+  color: #65676b;
+  font-size: 17px;
+  font-weight: 500 !important;
+}
+
+.post__headerInfo > .headerInfo__timestamp {
+  font-size: small;
+  color: gray;
+}

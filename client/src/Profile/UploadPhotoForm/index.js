@@ -65,7 +65,7 @@ function UploadPhotoForm({
     e.preventDefault()
     const canvas = croppedImageRef.current
     const ctx = canvas.getContext('2d')
-    const img = new Image
+    const img = new Image()
 
     img.onload = () => { 
       const canvasSizeRatio = (zoomedHeight - imageRef.current.naturalHeight) / imageRef.current.naturalHeight
@@ -88,7 +88,7 @@ function UploadPhotoForm({
 
       const formData = new FormData()
       formData.append('userId', user.id)
-      formData.append('description', description)
+      formData.append('message', description)
       formData.append('picture', image.file)
       formData.append('thumbnail', dataURItoBlob(canvas.toDataURL()))
       formData.append('cropped', false)

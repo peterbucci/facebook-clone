@@ -1,9 +1,6 @@
 export const initialState = {
   initialRender: true,
   user: null,
-  currentProfile: {
-    initialRender: true
-  },
   postSnapshot: [],
   uploadPhotoForm: {
     imageRef: null,
@@ -17,9 +14,9 @@ export const initialState = {
 
 export const actionTypes = {
   SET_USER: 'SET_USER',
-  SET_CURRENT_PROFILE: 'SET_CURRENT_PROFILE',
   SET_POST_SNAPSHOT: 'SET_POST_SNAPSHOT',
   SET_UPLOAD_REFS: 'SET_UPLOAD_REFS',
+  SET_LOG_OUT: 'SET_LOG_OUT'
 }
 
 const reducer = (state, action) => {
@@ -30,15 +27,6 @@ const reducer = (state, action) => {
         ...state,
         user: action.user,
         initialRender: false
-      }
-
-    case actionTypes.SET_CURRENT_PROFILE:
-      return {
-        ...state,
-        currentProfile: {
-          ...action.currentProfile,
-          initialRender: false
-        }
       }
 
     case actionTypes.SET_POST_SNAPSHOT:

@@ -1,17 +1,24 @@
 import db from '../firebase'
 
+const reduceDocs = snapshot => snapshot.docs.reduce((docs, doc) => {
+  return {
+    ...docs,
+    [doc.data().id]: doc.data()
+  }
+}, {})
+
 const getSnapshot = ({ 
   collection, 
   filter,
   order,
   setState,
-  modifyData 
+  useReduce
 }) => {
   const [key, qualifier, value] = filter
 
   const onSnapShot = snapshot => {
-    const snapshotData = modifyData
-      ? modifyData(snapshot)
+    const snapshotData = useReduce
+      ? reduceDocs(snapshot)
       : snapshot.docs.map(doc => {
       return {
         id: doc.id,
@@ -40,7 +47,9 @@ const getPost = ({
   postId,
   setState
 }) => {
-
+  db.collectionGroup(collection)
+    .doc(postId)
+    .then(res => console.log(res))
 }
 
 export { getSnapshot, getPost }

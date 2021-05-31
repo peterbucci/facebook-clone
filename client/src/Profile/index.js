@@ -1,46 +1,55 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from "react-router-dom"
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import './index.css'
-
+// COMPONENTS
 import CoverPhoto from './CoverPhoto'
 import ProfilePhoto from './ProfilePhoto'
 import Bio from './Bio'
-
-import { useStateValue } from '../StateProvider'
-import { actionTypes } from '../reducer'
+// FIREBASE
 import db from '../firebase'
+// STATE
+import { useStateValue } from '../StateProvider'
 
-function Profile({
-  id
-}) {
-  const [{ currentProfile }, dispatch] = useStateValue()
+function Profile() {
+  const [{ user }] = useStateValue()
+  const [currentProfile, setCurrentProfile] = useState({ initialRender: true })
+  let { profileURL } = useParams()
 
   useEffect(() => {
     if (currentProfile.initialRender) {
-      const profile = db.collection('users').doc(id)
-      profile.get()
-        .then(res => {
-          const userData = res.data()
-          profile.collection('pictures')
+      db.collection('users').where('url', '==', profileURL)
+        .get().then(res => {
+          const userData = res.docs[0].data()
+          const profile = db.collection('users').doc(userData.id)
+
+          if (userData.profilePic) {
+            profile.collection('posts')
             .doc(userData.profilePic)
             .get().then((res => {
-              dispatch({
-                type: actionTypes.SET_CURRENT_PROFILE,
-                currentProfile: {
+              setCurrentProfile({
                   ...userData,
-                  profilePicData: res.data()
-                }
-              })
+                  profilePicData: res.data(),
+                  initialRender: false
+                })
             }))
+          } else {
+            setCurrentProfile({
+              ...userData,
+              initialRender: false
+            })
+          }
+         
         })
     }
-  }, [id, currentProfile])
+  }, [currentProfile, useParams])
 
-  return (
-    <div className="profile">
+  return (currentProfile.initialRender
+    ? <></>
+    : <div className="profile">
       <div className="profile__header">
-        <CoverPhoto />
-        <ProfilePhoto />
+        <CoverPhoto currentProfile={currentProfile} />
+        <ProfilePhoto currentProfile={currentProfile} />
 
         <h1 className="header__name">{currentProfile.firstName} {currentProfile.lastName}</h1>
         <Bio 

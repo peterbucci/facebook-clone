@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import firebase from 'firebase'
-import { Avatar } from '@material-ui/core'
 import VideocamIcon from '@material-ui/icons/Videocam'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import './MessageSender.css'
+
+import NewAvatar from '../common/Avatar'
 
 import { useStateValue } from '../StateProvider'
 import db from '../firebase'
@@ -20,12 +21,13 @@ function MessageSender() {
 
     const newPost = db.collection('users')
       .doc(user.id)
-      .collection('wallPosts')
+      .collection('posts')
       .doc()
     const id = newPost.id
 
     newPost.set({
       id,
+      type: 'Wall Post',
       userId: user.id,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       message: input,
@@ -42,7 +44,7 @@ function MessageSender() {
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <Avatar src={user.profilePic} />
+        <NewAvatar pictureId={user.profilePic} />
         <form>
           <input
             value={input}
@@ -50,12 +52,6 @@ function MessageSender() {
             className="messageSender__input"
             placeholder={`What's on your mind, ${user.firstName}?`}
           />
-          <input 
-            value={imageURL}
-            onChange={({ target }) => setImageURL(target.value)}
-            placeholder="image URL (Optional)" 
-          />
-
           <button onClick={handleSubmit} type="submit">
             Hidden submit
           </button>

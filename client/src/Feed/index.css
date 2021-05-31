@@ -10,8 +10,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 50vw;
-  max-width: 650px;
+  flex: 1;
+  max-width: 680px;
 }
 
 .feed__noMorePosts {

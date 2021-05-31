@@ -6,27 +6,13 @@
   box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);
 }
 
-.post__top {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 12px 16px ;
-}
-.post__avatar {
-  margin-right: 10px;
-}
-
-.post__topInfo > h3 {
-  font-size: medium;
-}
-
-.post__topInfo > p {
-  font-size: small;
-  color: gray;
-}
-
 .post__body {
   padding: 0 16px;
+}
+
+.post__body.small-font p {
+  margin-bottom: 10px;
+  font-size: 15px;
 }
 
 .post__body > p {
@@ -166,5 +152,14 @@
 
 .commentSender__input:focus::placeholder {
   color: #90949c;
+}
+
+.post a {
+  color: #050505;
+  text-decoration: none;
+}
+
+.post a:hover {
+  text-decoration: underline;
 }
 

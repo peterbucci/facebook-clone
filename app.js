@@ -34,12 +34,14 @@ const port = 3001
 const cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }])
 app.post('/me', cpUpload, async (req, res) => {
   const userRef = db.collection('users').doc(req.body.userId)
-  const newImageRef = userRef.collection('pictures').doc()
+  const newImageRef = userRef.collection('posts').doc()
   userRef.set({
     profilePic: newImageRef.id
   }, { merge: true }).then(res => {
     newImageRef.set({
-      picture: req.files.picture[0].filename,
+      id: newImageRef.id,
+      type: 'Image',
+      image: req.files.picture[0].filename,
       thumbnail: req.files.thumbnail[0].filename,
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
       ...req.body

@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Avatar } from '@material-ui/core'
 import Badge from '@material-ui/core/Badge';
-import CloseIcon from '@material-ui/icons/Close'
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import './ProfilePhoto.css'
-
+// COMPONENTS
 import UploadPhotoForm from './UploadPhotoForm'
+import ViewPhoto from './ViewPhoto'
 import { useStateValue } from '../StateProvider'
 
 function useOutsideAlerter(ref, closeAllMenus) {
@@ -29,8 +29,8 @@ function useOutsideAlerter(ref, closeAllMenus) {
   }, [ref, closeAllMenus]);
 }
 
-function ProfilePhoto() {
-  const [{ currentProfile }] = useStateValue()
+function ProfilePhoto({ currentProfile }) {
+  const [{ user }] = useStateValue()
   const [toggleProfilePhotoMenu, setToggleProfilePhotoMenu] = useState(false)
   const [toggleViewProfilePicture, setToggleViewProfilePicture] = useState(false)
   const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false)
@@ -46,7 +46,8 @@ function ProfilePhoto() {
 
   return (
     <div className="header__profilePhoto">
-      <Badge
+      {user.id === currentProfile.id 
+        ? <Badge
         overlap="circle"
         anchorOrigin={{
           vertical: 'bottom',
@@ -54,34 +55,47 @@ function ProfilePhoto() {
         }}
         badgeContent={<CameraAltIcon className="profilePhoto__updateBadge" onClick={() => setToggleUploadPhotoForm(true)} />}
       >
-      <Avatar className="profilePhoto__image" src={currentProfile.profilePic ? `/profile_pictures/${currentProfile.profilePicData.thumbnail}` : null} onClick={() => setToggleProfilePhotoMenu(!toggleProfilePhotoMenu)}>
-        <img src="./default_avatar.png" />
-      </Avatar>
+      <Avatar 
+          className="profilePhoto__image" 
+          src={currentProfile.profilePic 
+            ? `/profile_pictures/${currentProfile.profilePicData.thumbnail}` 
+            : null} 
+          onClick={() => setToggleProfilePhotoMenu(!toggleProfilePhotoMenu)}
+        >
+          <img src="./default_avatar.png" alt="Default Avatar" />
+        </Avatar>
     </Badge>
+      : (
+        <Avatar 
+          className="profilePhoto__image" 
+          src={currentProfile.profilePic 
+            ? `/profile_pictures/${currentProfile.profilePicData.thumbnail}` 
+            : null} 
+          onClick={() => setToggleProfilePhotoMenu(!toggleProfilePhotoMenu)}
+        >
+          <img src="./default_avatar.png" alt="Default Avatar" />
+        </Avatar>
+      )}
 
-    {toggleProfilePhotoMenu && <div className="modalBackground" ref={modalRef}>
+    {toggleProfilePhotoMenu && !(user.id !== currentProfile.id && !currentProfile.profilePic) && <div className="modalBackground" ref={modalRef}>
       <div className="profilePhoto__menu">
         <ul>
           {currentProfile.profilePic && <li onClick={() => setToggleViewProfilePicture(!toggleViewProfilePicture)}><WallpaperIcon /> View Profile Picture</li>}
-          <li onClick={() => setToggleUploadPhotoForm(!toggleUploadPhotoForm)}><CameraAltOutlinedIcon /> Add Photo</li>
-          <li><WallpaperIcon /> Add a Frame</li>
+          {user.id === currentProfile.id && <>
+            <li onClick={() => setToggleUploadPhotoForm(!toggleUploadPhotoForm)}><CameraAltOutlinedIcon /> Add Photo</li>
+            <li><WallpaperIcon /> Add a Frame</li>
+          </>}
         </ul>
       </div>
     </div>}
 
-    {toggleViewProfilePicture && <div className="profilePhoto__viewPicture">
-      <div className="viewPicture__left">
-        <div className="viewPicture__leftHeader">
-          <CloseIcon onClick={closeAllMenus} />
-        </div>
-        <div ref={modalRef} className="viewPicture__leftBody">
-          <img src={currentProfile.profilePic ? `/profile_pictures/${currentProfile.profilePicData.picture}` : null} />
-        </div>
-      </div>
-      <div className="viewPicture__right">
-        <div className="viewPicture__rightHeader"></div>
-      </div>
-    </div>}
+    {toggleViewProfilePicture && 
+      <ViewPhoto 
+        modalRef={modalRef}
+        closeAllMenus={closeAllMenus}
+        pictureData={currentProfile.profilePicData}
+        user={currentProfile}
+      />}
 
     {toggleUploadPhotoForm && <UploadPhotoForm 
       closeAllMenus={closeAllMenus} 

@@ -20,13 +20,15 @@
 }
 
 .messageSender__top > form > input {
-  margin: 0 10px;
+  margin-left: 5px;
   padding: 5px 20px;
   outline-width: 0;
   border: none;
   border-radius: 999px;
   background-color: #eff2f5;
+  font-size: 15px;
   cursor: pointer;
+  
 }
 
 .messageSender__top > form > button {
@@ -41,6 +43,7 @@
 .messageSender__bottom {
   display: flex;
   justify-content: space-evenly;
+  padding: 10px;
 }
 
 .messageSender__option {
@@ -50,13 +53,13 @@
   align-items: center;
   justify-content: center;
   color: gray;
-  margin: 10px;
   cursor: pointer;
 }
 
 .messageSender__option > h3 {
   font-size: medium;
-  margin-left: 20px;
+  font-weight: 500;
+  margin-left: 5px;
 }
 
 .messageSender__option:hover {

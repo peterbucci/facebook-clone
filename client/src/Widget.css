@@ -1,10 +1,9 @@
 .widget {
-  position: fixed;
+  position: sticky;
+  align-self: flex-start;
   top: 54px;
-  right: 0;
-  padding: 15px;
-  width: 22vw;
-  max-width: 333px;
+  padding: 10px;
+  min-width: 280px;
 }
 
 .widget h3 {

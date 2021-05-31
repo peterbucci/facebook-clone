@@ -1,38 +1,31 @@
 import React, { useState } from 'react'
 import firebase from 'firebase'
-import { Avatar } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-// ICONS
-import ThumbUpIcon from '@material-ui/icons/ThumbUp'
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline'
-import ReplyIcon from '@material-ui/icons/Reply'
 // CSS
 import './Post.css'
-
+// COMPONENTS
+import PostHeader from './PostHeader'
+import PostFooter from './PostFooter'
+// FIREBASE
 import db from '../firebase'
+// STATE
 import { useStateValue } from '../StateProvider'
-
-const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-  }
-}))
 
 function Post({
   post,
   usersInPost,
-  commentsInPost
+  commentsInPost,
+  action
 }) {
-  const [comment, setComment] = useState('')
   const [{ user }] = useStateValue()
-  const { id, image, message, reactions, timestamp, userId} = post
+  const { id, image, message, reactions, timestamp, userId, type, thumbnail} = post
+  console.log(post)
   const originalPoster = usersInPost[userId]
-  const classes = useStyles()
+
+  const [comment, setComment] = useState('')
 
   const postRef = db.collection('users')
     .doc(userId)
-    .collection('wallPosts')
+    .collection('posts')
     .doc(id)
 
   const handleReactionClick = (type) => {
@@ -72,74 +65,30 @@ function Post({
 
   return (
     <div className="post">
-        <div className="post__top">
-          <Avatar src={originalPoster.profilePic} className="post__avatar" />
-          <div className="post__topInfo">
-            <h3>{`${originalPoster.firstName} ${originalPoster.lastName}`}</h3>
-            <p>{new Date(timestamp?.toDate()).toUTCString()}</p>
-          </div>
-        </div>
+        <PostHeader
+          originalPoster={originalPoster}
+          action={action}
+          timestamp={timestamp}
+        />
 
-        <div className="post__body">
+        <div className={`post__body${type === 'Profile Picture' || message.length >= 85 ? ' small-font' : ''}`}>
           <p>{message}</p>
         </div>
 
         {image && <div className="post__image">
-            <img src={image} alt="" />
+            {type === 'Wall Post' && <img src={image} alt="" />}
+            {type === 'Profile Picture' && <img src={`/profile_pictures/${thumbnail}`} alt="" />}
         </div>}
 
-        <div className="post__bottom">
-          {reactions.like.length > 0 && <div className="post__reactions">          
-            <ThumbUpIcon style={{fontSize: "small"}} className="likeIcon" /> 
-            <p className="reactionCount">{reactions.like.length}</p>
-          </div>}
-          <div className="post__engagements">
-
-          </div>
-        </div>
-
-        <div className="post__options">
-          <button className="post__option" onClick={() => handleReactionClick('like')}>
-            <ThumbUpIcon className={iconActive} />
-            <p className={iconActive}>Like</p>
-          </button>
-          <div className="post__option">
-            <ChatBubbleOutlineIcon />
-            <p>Comment</p>
-          </div>
-          <div className="post__option">
-            <ReplyIcon className="shareIcon" />
-            <p>Share</p>
-          </div>
-        </div>
-
-        <div className="post__comments">
-          {commentsInPost.map(comment => {
-            const user = usersInPost[comment.userId]
-            return <div className="post__comment">
-              <Avatar src={user.profilePic} className={`${classes.small} comment__avatar`} />
-              <div className="post__comment__body">
-                <h4>{`${user.firstName} ${user.lastName}`}</h4>
-                <p>{comment.message}</p>
-              </div>
-            </div>
-          })}
-        </div>
-
-        <div className="post__commentSender">
-          <Avatar src={originalPoster.profilePic} className={`${classes.small} commentSender__avatar`} />
-          <form>
-            <input
-              className="commentSender__input"
-              placeholder="Write a comment..."
-              value={comment}
-              onChange={({ target }) => setComment(target.value)}
-            />
-            <button onClick={handleCommentSubmit} type="submit">
-              Hidden submit
-            </button>
-        </form>
-        </div>
+        <PostFooter
+          post={post}
+          postRef={postRef}
+          user={user}
+          iconActive={iconActive}
+          commentsInPost={commentsInPost}
+          usersInPost={usersInPost}
+          handleCommentSubmit={handleCommentSubmit}
+        />
     </div>
   )
 }

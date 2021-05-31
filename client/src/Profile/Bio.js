@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import PublicIcon from '@material-ui/icons/Public';
 import './Bio.css'
-
+// FIREBASE
 import db from '../firebase'
+// STATE
+import { useStateValue } from '../StateProvider'
 
 function Bio({
   currentBio,
   userId
 }) {
+  const [{ user }] = useStateValue()
   const [editBio, setEditBio] = useState(false)
   const [newBio, setNewBio] = useState(currentBio)
 
@@ -56,7 +59,7 @@ function Bio({
         </>
         : <>
           <p className="bio__text">{currentBio}</p>
-          <span className="bio__editButton" onClick={() => setEditBio(true)}>{currentBio ? 'Edit' : 'Add Bio'}</span>
+          {userId === user.id && <span className="bio__editButton" onClick={() => setEditBio(true)}>{currentBio ? 'Edit' : 'Add Bio'}</span>}
         </>
       }
 

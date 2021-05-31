@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom"
+import { Redirect } from 'react-router'
 import './App.css'
 
 // COMPONENTS
@@ -19,13 +19,22 @@ import db, { auth } from './firebase'
 import { actionTypes } from './reducer'
 import { useStateValue } from './StateProvider'
 
+function UserFeed() {
+  return <>
+    <Sidebar />
+    <Feed />
+    <Widget />
+  </>
+}
+
+
 function App() {
-  const [{ user, initialRender, currentProfile }, dispatch] = useStateValue()
+  const [{ user, initialRender }, dispatch] = useStateValue()
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => { 
       if (authUser) {
-        const { photoURL, displayName, email } = authUser
+        const { displayName, email } = authUser
 
         db.collection('users')
           .where('email', '==', email)
@@ -35,7 +44,7 @@ function App() {
               const id = ref.id
               const newUser = {
                 id,
-                profilePic: photoURL,
+                profilePic: null,
                 firstName: displayName,
                 lastName: '',
                 email: email,
@@ -56,11 +65,13 @@ function App() {
                 user: newUser
               })
             } else {
+              const user = snapshot.docs[0].data()
+              const userId = snapshot.docs[0].id
               dispatch({
                 type: actionTypes.SET_USER,
                 user: {
-                  id: snapshot.docs[0].id,
-                  ...snapshot.docs[0].data()
+                  id: userId,
+                  ...user
                 }
               })
             }
@@ -84,14 +95,13 @@ function App() {
             : <>
               <Header />
 
-              <div className="app__body">
+              <div className="body">
                 <Switch>
                   <Route path="/me">
-                    <Profile id={user.id} />
+                    <Redirect to={`/${user.url}`} />
                   </Route>
-                  <Route path="/">
-                    <UserFeed />
-                  </Route>
+                  <Route path="/:profileURL" component={Profile} />
+                  <Route path="/" component={UserFeed} />
                 </Switch>
               </div>
             </>
@@ -100,14 +110,6 @@ function App() {
       </div>
     </Router>
   )
-}
-
-function UserFeed() {
-  return <>
-    <Sidebar />
-    <Feed />
-    <Widget />
-  </>
 }
 
 export default App;
