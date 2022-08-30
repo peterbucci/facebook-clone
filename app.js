@@ -20,7 +20,7 @@ function getRandomString(length) {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'client/public/profile_pictures')
+    cb(null, 'public/images')
   },
   filename: function (req, file, cb) {
     const fileExtension = file.originalname.split('.')[file.originalname.split('.').length - 1]
@@ -29,6 +29,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 const app = express()
+app.use(express.static('public'))
 const port = 3001
  
 const cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }])
@@ -40,10 +41,12 @@ app.post('/me', cpUpload, async (req, res) => {
   }, { merge: true }).then(res => {
     newImageRef.set({
       id: newImageRef.id,
-      type: 'Image',
       image: req.files.picture[0].filename,
       thumbnail: req.files.thumbnail[0].filename,
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      reactions: {
+        like: []
+      },
       ...req.body
     }).then(res => res.json())
   })

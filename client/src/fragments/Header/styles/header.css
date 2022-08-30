@@ -1,0 +1,265 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  padding: 0 16px 0 0;
+  height: 54px;
+  background-color: white;
+  z-index: 100;
+  top: 0;
+  box-shadow: 0px 5px 8px -9px rgba(0, 0, 0, 0.75);
+}
+
+.header__left {
+  position: relative;
+  width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.header__left__logo-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 13px;
+  transition: all .2s;
+  z-index: 100;
+}
+
+.header__left__logo-icon.clicked {
+  left: 5px;
+  opacity: 0;
+}
+
+.header__left__arrow-back-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 33px;
+  padding: 7px;
+  border-radius: 50%;
+  color: #5f6770;
+  opacity: 0;
+  transition: all .2s;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.header__left__arrow-back-icon:hover {
+  background-color: #f0f2f5;
+}
+
+.header__left__arrow-back-icon:active {
+  background-color: #e6e6e6;
+}
+
+.header__left__arrow-back-icon.clicked {
+  left: 4px;
+  opacity: 1;
+}
+
+.header__left__logo-fill {
+  fill: white;
+}
+
+.header__left__absolute-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  top: 0;
+  left: 0;
+  width: 288px;
+  height: 54px;
+}
+
+.header__left__absolute-container.clicked {
+  padding-right: 15px;
+  width: 288px;
+  height: auto;
+  border-radius: 7px;
+  background-color: #fff;
+  overflow: visible;
+  box-shadow: 0 12px 12px 1px rgba(112, 112, 112, 0.6);
+}
+
+.header__left__input {
+  position: relative;
+  padding: 10px;
+  margin-top: 7px;
+  margin-left: 60px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  background-color: #f0f2f5;
+  border-radius: 999px;
+  transition: all .2s;
+  cursor: text;
+}
+
+.header__left__input.clicked {
+  margin-top: 7px;
+  margin-left: 50px;
+  max-width: 288px;
+  cursor: text;
+}
+
+.header__left__input > input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 39px;
+  border: none;
+  background-color: transparent;
+  color: #5f6770;
+  outline-width: 0;
+  transition: left .2s;
+  font-size: 16px;
+}
+
+.header__left__input > input.focused {
+  left: 12px;
+}
+
+.header__left__input svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px;
+  color: #5f6770;
+  transition: all .2s;
+}
+
+.header__left__input svg.focused {
+  left: -10px;
+  opacity: 0;
+}
+
+.header__left__search-history p {
+  padding: 16px 0;
+  color: #9a9da0;
+  text-align: center;
+}
+
+.header__center {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.header__center__container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  max-width: 680px;
+  padding: 0 25px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.header__center__option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-left: 8px;
+  min-width: 50px;
+  max-width: 115px;
+  cursor: pointer;
+  border: solid 2px #fff;
+}
+
+.header__center__option:first-child {
+  margin: 0;
+}
+
+.header__center__option:hover {
+  background-color: #eff2f5;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.header__center__option > svg {
+  fill: #65676b;
+}
+
+.header__center__option:hover > svg {
+  fill: #2e81f4;
+}
+
+.header__center__option.active > svg {
+  fill: #2e81f4;
+}
+
+.header__center__option.active {
+  background-color: transparent !important;
+  border-bottom: 3px solid #2e81f4 !important;
+  border-radius: 0 !important;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0;
+}
+
+.header__right__info {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px 4px 4px;
+  height: 28px;
+  border-radius: 16px;
+  text-decoration: none;
+}
+
+.header__right__info:hover {
+  background-color: #eff2f5;
+}
+
+.header__right__info.active {
+  background-color: #e7f3ff;
+  
+}
+
+.header__right__info.active h4 {
+  color: #1877f2;
+}
+
+.header__right__info__profile-pic {
+  height: 28px;
+  width: 28px;
+}
+
+.header__right__info img {
+  height: auto;
+  width: 100%;
+}
+
+.header__right__info > h4 {
+  margin-left: 7px;
+  vertical-align: middle;
+  color: black;
+  font-weight: 500;
+}
+
+.header__right button {
+  margin-left: 8px;
+  height: 40px;
+  width: 40px;
+  background-color: #e4e6eb;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.header__right button:hover {
+  background-color: #cfd1d6;
+}
+
+.header__right button span {
+  height: 20px;
+  width: 20px;
+}

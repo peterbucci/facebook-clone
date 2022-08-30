@@ -10,7 +10,7 @@ function NewAvatar({ pictureId, className }) {
     db.collectionGroup('posts')
       .where('id', '==', pictureId)
       .get().then(res => {
-        res.forEach(doc => setThumbnail(`/profile_pictures/${doc.data().thumbnail}`))
+        res.forEach(doc => setThumbnail(`http://localhost:3001/images/${doc.data().thumbnail}`))
       })
   }, [pictureId])
 

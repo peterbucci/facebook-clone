@@ -1,0 +1,65 @@
+.updatePhoto__modal__footer.stepOne {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 16px;
+}
+
+.updatePhoto__modal__footer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 12px;
+  background-color: #e4e6eb;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 551;
+  cursor: pointer;
+}
+
+.updatePhoto__modal__footer button svg {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.updatePhoto__modal__footer button:first-child {
+  margin-right: 10px;
+  background-color: #e7f3ff;
+  color: #247ef3;
+}
+
+.updatePhoto__modal__footer.stepOne button:hover, .profilePhoto__modal__closeButton:hover, .updatePhoto__options button:hover {
+  background: #d3d5da;
+}
+
+.updatePhoto__modal__footer button:first-child:hover {
+  background-color: #dbe6f1;
+}
+
+.updatePhoto__modal__footer.stepTwo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.updatePhoto__modal__footer.stepTwo button {
+  flex: 0;
+  padding: 10px 40px;
+  background: #1877f2;
+  color: #fff;
+}
+
+.updatePhoto__modal__footer.stepTwo button:hover {
+  background: #176ddd;
+}
+
+.updatePhoto__modal__footer.stepTwo button:first-child {
+  background: #fff;
+  color: #267ff3;
+}
+
+.updatePhoto__modal__footer.stepTwo button:first-child:hover {
+  background: #f0f0f0;
+}

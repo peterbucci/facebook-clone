@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom"
 import { makeStyles } from '@material-ui/core/styles'
 // ICONS
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
@@ -26,7 +25,7 @@ function PostFooter({
 }) {
   const [comment, setComment] = useState('')
 
-  const { id, image, message, reactions, timestamp, userId, type, thumbnail} = post
+  const { reactions } = post
   const classes = useStyles()
 
   const handleReactionClick = (type) => {
@@ -46,7 +45,7 @@ function PostFooter({
       })
   }
   
-  return <>
+  return <div>
     <div className="post__bottom">
       {reactions.like.length > 0 && <div className="post__reactions">          
         <ThumbUpIcon style={{fontSize: "small"}} className="likeIcon" /> 
@@ -72,18 +71,20 @@ function PostFooter({
       </div>
     </div>
 
-    <div className="post__comments">
-      {commentsInPost.map(comment => {
+    {/* <div className="post__comments">
+      {commentsInPost.map((comment, i) => {
         const user = usersInPost[comment.userId]
-        return <div className="post__comment">
-        <Link to={`/${user.url}`}><NewAvatar pictureId={user.profilePic} className={`${classes.small} comment__avatar`} /></Link>
-          <div className="post__comment__body">
-            <h4><Link to={`/${user.url}`}>{`${user.firstName} ${user.lastName}`}</Link></h4>
-            <p>{comment.message}</p>
-          </div>
+        return (
+          <div className="post__comment" key={i}>
+            <Link to={`/${user.url}`}><NewAvatar pictureId={user.profilePic} className={`${classes.small} comment__avatar`} /></Link>
+            <div className="post__comment__body">
+              <h4><Link to={`/${user.url}`}>{`${user.firstName} ${user.lastName}`}</Link></h4>
+              <p>{comment.message}</p>
+            </div>
         </div>
+        )
       })}
-    </div>
+    </div> */}
 
     <div className="post__commentSender">
       <NewAvatar pictureId={user.profilePic} className={`${classes.small} commentSender__avatar`} />
@@ -99,7 +100,7 @@ function PostFooter({
         </button>
       </form>
     </div>
-  </>
+  </div>
 }
 
 export default PostFooter
