@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import './PostHeader.css'
+import './styles/post_header.css'
 // COMPONENTS
-import NewAvatar from './Avatar'
+import NewAvatar from '../../components/Avatar/'
 
 function PostHeader({
   originalPoster,

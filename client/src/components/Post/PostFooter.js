@@ -5,7 +5,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp'
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline'
 import ReplyIcon from '@material-ui/icons/Reply'
 // COMPONENTS
-import NewAvatar from './Avatar'
+import NewAvatar from '../../components/Avatar/'
 
 const useStyles = makeStyles((theme) => ({
   small: {

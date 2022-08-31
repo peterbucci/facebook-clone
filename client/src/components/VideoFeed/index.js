@@ -1,6 +1,6 @@
 import React from 'react'
 import VideoCallIcon from '@material-ui/icons/VideoCall';
-import './VideoFeed.css'
+import './styles/video_feed.css'
 
 function VideoFeed() {
   return (

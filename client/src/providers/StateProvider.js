@@ -18,6 +18,16 @@ export const StateProvider = ({ reducer, children }) => {
     postOrder: null,
     posts: null,
     users: {},
+    userWall: {
+      postOrder: null,
+      posts: null,
+      users: {},
+    },
+    userFeed: {
+      postOrder: null,
+      posts: null,
+      users: {},
+    },
     uploadPhotoForm: {
       imageRef: null,
       imageContainerRef: null,

@@ -3,7 +3,7 @@ import React from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import './ViewPhoto.css'
 // COMPONENTS
-import PostHeader from '../../common/PostHeader'
+import PostHeader from '../../components/Post/PostHeader'
 
 function ViewPhoto({
   modalRef,

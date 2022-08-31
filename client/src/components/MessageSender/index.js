@@ -4,9 +4,9 @@ import "firebase/firestore";
 import VideocamIcon from '@material-ui/icons/Videocam'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import './MessageSender.css'
+import './styles/message_sender.css'
 
-import NewAvatar from '../../common/Avatar'
+import NewAvatar from '../../components/Avatar/'
 
 import { useStateValue } from '../../providers/StateProvider'
 import db from '../../firebase'

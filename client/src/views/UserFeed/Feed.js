@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "./index.css";
+import React, { useEffect, useState, useLayoutEffect } from "react";
+import "./styles/feed.css";
 // COMPONENTS
-import StoryReel from "./StoryReel";
-import MessageSender from "./MessageSender";
-import VideoFeed from "./VideoFeed";
-import Post from "../../common/Post";
+import StoryReel from "../../components/StoryReel/";
+import MessageSender from "../../components/MessageSender/";
+import VideoFeed from "../../components/VideoFeed";
+import Post from "../../components/Post";
 // State
 import { useStateValue, useApiUtil } from "../../providers/StateProvider";
 
@@ -15,7 +15,9 @@ function Feed() {
   } = useStateValue();
   const {    
     getPostData,
-    getNewPostSnapshot} = useApiUtil()
+    getNewPostSnapshot,
+    clearPostData
+  } = useApiUtil()
   const [initialRender, setInitialRender] = useState(true)
 
   useEffect(() => {

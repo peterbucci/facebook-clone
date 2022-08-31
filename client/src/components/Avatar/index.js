@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar } from '@material-ui/core'
 // Firebase
-import db from '../firebase'
+import db from '../../firebase'
 
 function NewAvatar({ pictureId, className }) {
   const [thumbnail, setThumbnail] = useState(null)

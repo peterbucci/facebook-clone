@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 // CSS
-import "./Post.css";
+import "./styles/post.css";
 // COMPONENTS
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter";
 // FIREBASE
-import db from "../firebase";
+import db from "../../firebase";
 // STATE
-import { useStateValue } from "../providers/StateProvider";
+import { useStateValue } from "../../providers/StateProvider";
 
 function Post({ post, action }) {
   const { state: {user, users} } = useStateValue()

@@ -1,8 +1,8 @@
 import React from 'react'
 import AddIcon from '@material-ui/icons/Add'
-import './StoryReel.css'
+import './styles/story_reel.css'
 
-import Story from './Story'
+import Story from '../Story'
 
 function StoryReel({
   stories

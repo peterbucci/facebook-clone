@@ -5,7 +5,8 @@ export const actionTypes = {
   SET_LOG_OUT: 'SET_LOG_OUT',
   SET_USERS: 'SET_USERS',
   SET_POSTS: 'SET_POSTS',
-  SET_POST_ORDER: 'SET_POST_ORDER'
+  SET_POST_ORDER: 'SET_POST_ORDER',
+  CLEAR_POST_DATA: 'CLEAR_POST_DATA',
 }
 
 const reducer = (state, action) => {
@@ -63,6 +64,15 @@ const reducer = (state, action) => {
             ...(!action.new ? action.newPosts : [])
           ]
         }
+
+        case actionTypes.CLEAR_POST_DATA:
+          return {
+            ...state,
+            fetchPosts: false,
+            postOrder: null,
+            posts: null,
+            users: {}
+          }
 
     default:
       return state
