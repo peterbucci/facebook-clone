@@ -9,36 +9,17 @@ import './styles/message_sender.css'
 import NewAvatar from '../../components/Avatar/'
 
 import { useStateValue } from '../../providers/StateProvider'
-import db from '../../firebase'
+import { useApiUtil } from '../../providers/ApiUtil';
 
-
-function MessageSender() {
+function MessageSender({ wallId }) {
   const { state: {user} } = useStateValue()
+  const {addNewPost} = useApiUtil()
   const [input, setInput] = useState('')
   const [imageURL, setImageURL] = useState('')
 
   const handleSubmit = e => {
     e.preventDefault()
-
-    const newPost = db.collection('users')
-      .doc(user.id)
-      .collection('posts')
-      .doc()
-    const id = newPost.id
-
-    newPost.set({
-      id,
-      type: 'Wall Post',
-      userId: user.id,
-      wallId: user.id,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      message: input,
-      image: imageURL,
-      reactions: {
-        like: []
-      }
-    })
-
+    addNewPost(user.id, wallId, firebase.firestore.FieldValue.serverTimestamp(), input, imageURL)
     setInput('')
     setImageURL('')
   }

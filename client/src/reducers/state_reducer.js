@@ -1,82 +1,117 @@
 export const actionTypes = {
-  SET_USER: 'SET_USER',
-  SET_POST_SNAPSHOT: 'SET_POST_SNAPSHOT',
-  SET_UPLOAD_REFS: 'SET_UPLOAD_REFS',
-  SET_LOG_OUT: 'SET_LOG_OUT',
-  SET_USERS: 'SET_USERS',
-  SET_POSTS: 'SET_POSTS',
-  SET_POST_ORDER: 'SET_POST_ORDER',
-  CLEAR_POST_DATA: 'CLEAR_POST_DATA',
-}
+  SET_USER: "SET_USER",
+  SET_UPLOAD_REFS: "SET_UPLOAD_REFS",
+  SET_LOG_OUT: "SET_LOG_OUT",
+  SET_USERS: "SET_USERS",
+  SET_POSTS: "SET_POSTS",
+  UPDATE_POST: "UPDATE_POST",
+  UPDATE_COMMENTS: "UPDATE_COMMENTS",
+  SET_COMMENTS: "SET_COMMENTS",
+};
 
 const reducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actionTypes.SET_USER:
       return {
         ...state,
         user: action.user,
-      }
-
-    case actionTypes.SET_POST_SNAPSHOT:
-      return {
-        ...state,
-        postSnapshot: {
-          ...action.postSnapshot,
-        }
-      }
+      };
 
     case actionTypes.SET_UPLOAD_REFS:
       return {
         ...state,
         uploadPhotoForm: {
           ...state.uploadPhotoForm,
-          ...action.uploadRefs
-        }
-      }
+          ...action.uploadRefs,
+        },
+      };
 
     case actionTypes.SET_USERS:
       return {
         ...state,
-        fetchPosts: true,
-        users: {
-          ...state.users,
-          ...action.users
-        }
-      }
+        feed: {
+          ...state.feed,
+          users: {
+            ...(action.initialRender ? [] : state.feed.users),
+            ...action.users,
+          },
+        },
+        db: {
+          ...state.db,
+          gettingUsers: false,
+        },
+      };
 
     case actionTypes.SET_POSTS:
       return {
         ...state,
-        fetchPosts: false,
-        posts: {
-          ...(state.posts ? state.posts : {}),
-          ...action.posts.reduce((posts, post) => ({...posts, [post.id]: post}), {})
+        feed: {
+          ...state.feed,
+          posts: [
+            ...(action.new ? action.posts : []),
+            ...(action.initialRender ? [] : state.feed.posts),
+            ...(!action.new ? action.posts : []),
+          ],
+        },
+        db: {
+          ...state.db,
+          gettingPosts: false,
+        },
+      };
+
+    case actionTypes.SET_COMMENTS:
+      return {
+        ...state,
+        feed: {
+          ...state.feed,
+          comments: {
+            ...(action.initialRender ? {} : state.feed.comments),
+            ...action.comments.reduce((comments, comment) => {
+              return {
+                ...comments,
+                [comment.postId]: [
+                  ...(state.feed.comments[comment.postId] &&
+                  !action.initialRender
+                    ? state.feed.comments[comment.postId]
+                    : []),
+                  comment,
+                ],
+              };
+            }, {}),
+          },
+        },
+        db: {
+          ...state.db,
+          gettingComments: action.gettingComments,
+        },
+      };
+
+    case actionTypes.UPDATE_COMMENTS:
+      return {
+        ...state,
+        feed: {
+          ...state.feed,
+          comments: {
+            ...state.feed.comments,
+            [action.postId]: action.comments
+          }
         }
       }
 
-      case actionTypes.SET_POST_ORDER:
-        return {
-          ...state,
-          fetchPosts: false,
-          postOrder: [
-            ...(action.new ? action.newPosts : []),
-            ...(state.postOrder ? state.postOrder : []),
-            ...(!action.new ? action.newPosts : [])
-          ]
-        }
-
-        case actionTypes.CLEAR_POST_DATA:
-          return {
-            ...state,
-            fetchPosts: false,
-            postOrder: null,
-            posts: null,
-            users: {}
-          }
+    case actionTypes.UPDATE_POST:
+      return {
+        ...state,
+        feed: {
+          ...state.feed,
+          posts: state.feed.posts.map((post, idx) =>
+            idx === action.idx ? action.post : post
+          ),
+        },
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;

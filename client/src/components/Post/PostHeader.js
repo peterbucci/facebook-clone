@@ -9,7 +9,8 @@ function PostHeader({
   originalPoster,
   action,
   timestamp,
-  currentWall
+  currentWall,
+  formatTimeStamp
 }) {
   return (
     <div className="post__header">
@@ -25,14 +26,15 @@ function PostHeader({
           {currentWall.id !== originalPoster.id && <>
             <ArrowRightIcon />
             <Link to={`/${currentWall.url}`}>
-            {`${currentWall.firstName} ${currentWall.lastName}`}
+              {`${currentWall.firstName} ${currentWall.lastName}`}
             </Link>
           </>}
           
           {action && ' ' + action}
         </h3>
-        {timestamp 
-          && <p className="headerInfo__timestamp">{new Date(timestamp.toDate()).toUTCString()}</p>}
+        <p className="headerInfo__timestamp">
+          {formatTimeStamp(timestamp.seconds, 'post')}
+        </p>
       </div>
     </div>
   )

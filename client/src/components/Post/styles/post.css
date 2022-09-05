@@ -118,6 +118,19 @@
   margin: 10px;
 }
 
+.comment__interaction {
+  all: unset;
+  list-style-type: none;
+  display: flex;
+  margin: 10px 0 0 0;
+}
+
+.comment__interaction > li {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .post__commentSender {
   padding: 10px;
   display: flex;

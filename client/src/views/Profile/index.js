@@ -3,48 +3,48 @@ import { useParams } from "react-router-dom";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import "./index.css";
 // COMPONENTS
+import Feed from "../UserFeed/Feed";
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import Bio from "./Bio";
-import MessageSender from "../../components/MessageSender";
 // FIREBASE
 import db from "../../firebase";
 
 function Profile() {
-  const [currentProfile, setCurrentProfile] = useState({ initialRender: true });
+  const [initialRender, setInitialRender] = useState(true)
+  const [currentProfile, setCurrentProfile] = useState(null);
   let { profileURL } = useParams();
+
   useEffect(() => {
-    if (currentProfile.initialRender) {
-      db.collection("users")
-        .where("url", "==", profileURL)
-        .get()
-        .then((res) => {
-          const userData = res.docs[0].data();
-          const profile = db.collection("users").doc(userData.id);
+    db.collection("users")
+      .where("url", "==", profileURL)
+      .get()
+      .then((res) => {
+        const userData = res.docs[0].data();
+        const profile = db.collection("users").doc(userData.id);
 
-          if (userData.profilePic) {
-            profile
-              .collection("posts")
-              .doc(userData.profilePic)
-              .get()
-              .then((res) => {
-                setCurrentProfile({
-                  ...userData,
-                  profilePicData: res.data(),
-                  initialRender: false,
-                });
+        if (userData.profilePic) {
+          profile
+            .collection("posts")
+            .doc(userData.profilePic)
+            .get()
+            .then((res) => {
+              setCurrentProfile({
+                ...userData,
+                profilePicData: res.data(),
               });
-          } else {
-            setCurrentProfile({
-              ...userData,
-              initialRender: false,
+              setInitialRender(false)
             });
-          }
-        });
-    }
-  }, [currentProfile, profileURL]);
+        } else {
+          setCurrentProfile({
+            ...userData,
+          });
+          setInitialRender(false)
+        }
+      });
+  }, [profileURL]);
 
-  return currentProfile.initialRender ? (
+  return initialRender ? (
     <></>
   ) : (
     <div className="profile">
@@ -70,10 +70,9 @@ function Profile() {
         </div>
         <div className="profile_body">
           <div className="profile_body_left_col">
-
           </div>
           <div className="profile_body_right_col">
-            <MessageSender />
+          <Feed page='userWall' user={currentProfile} />
           </div>
         </div>
       </div>
@@ -82,3 +81,4 @@ function Profile() {
 }
 
 export default Profile;
+

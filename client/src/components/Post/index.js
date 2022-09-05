@@ -1,74 +1,42 @@
-import React, { useState } from "react";
-import firebase from "firebase/app";
-import "firebase/firestore";
+import React from "react";
 // CSS
 import "./styles/post.css";
 // COMPONENTS
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter";
-// FIREBASE
-import db from "../../firebase";
 // STATE
 import { useStateValue } from "../../providers/StateProvider";
 
-function Post({ post, action }) {
-  const { state: {user, users} } = useStateValue()
-  const { id, image, message, reactions, timestamp, userId, wallId, type, thumbnail } =
-    post;
-  const originalPoster = users[userId];
-  const currentWall = users[wallId]
-  const [comment, setComment] = useState("");
-
-  const postRef = db
-    .collection("users")
-    .doc(userId)
-    .collection("posts")
-    .doc(id);
-
-  const handleReactionClick = (type) => {
-    const newReactionsObj =
-      reactions[type].indexOf(user.id) >= 0
-        ? {
-            ...reactions,
-            [type]: reactions[type].filter((reaction) => reaction !== user.id),
-          }
-        : {
-            ...reactions,
-            [type]: [...reactions[type], user.id],
-          };
-
-    postRef.set({
-      ...post,
-      reactions: newReactionsObj,
-    });
-  };
-
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-
-    const newCommentRef = postRef.collection("comments").doc();
-    newCommentRef.set({
-      id: newCommentRef.id,
-      image: "",
-      message: comment,
-      postId: post.id,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      userId: user.id,
-    });
-
-    setComment("");
-  };
-
+function Post({ post, action, users, comments, idx }) {
+  const { state: {user} } = useStateValue()
+  const { image, message, reactions, timestamp, userId, wallId, type, thumbnail } = post;
   const iconActive = reactions.like.indexOf(user.id) >= 0 ? "blue" : "";
+
+  const formatTimeStamp = (postTimestamp, type) => {
+    const currentTimestamp = Math.round(Date.now() / 1000)
+    const numberOfMinutes = (currentTimestamp - postTimestamp) / 60
+    const numberOfHours = numberOfMinutes / 60
+    const numberOfDays = numberOfHours / 24
+    return numberOfMinutes < 1
+      ? type === 'post' ? 'Just now' : '1m'
+      : numberOfMinutes < 60
+      ? Math.floor(numberOfMinutes) + 'm'
+      : numberOfHours < 24
+        ? Math.floor(numberOfHours) + 'h'
+        : numberOfDays < 365
+          ? Math.floor(numberOfDays) + 'd'
+          : Math.floor(numberOfDays / 365) + 'y'
+  }
 
   return (
     <div className="post" key={post.id}>
       <PostHeader
-        originalPoster={originalPoster}
+        originalPoster={users[userId]}
         action={action}
         timestamp={timestamp}
         wallId={wallId}
-        currentWall={currentWall}
+        currentWall={users[wallId]}
+        formatTimeStamp={formatTimeStamp}
       />
 
       <div
@@ -91,12 +59,13 @@ function Post({ post, action }) {
       )}
 
       <PostFooter
+        idx={idx}
         post={post}
-        postRef={postRef}
         user={user}
         iconActive={iconActive}
         usersInPost={users}
-        handleCommentSubmit={handleCommentSubmit}
+        commentsInPost={comments}
+        formatTimeStamp={formatTimeStamp}
       />
     </div>
   );
