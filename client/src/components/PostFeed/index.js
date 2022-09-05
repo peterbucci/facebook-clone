@@ -9,7 +9,7 @@ import Post from "../../components/Post";
 import { useStateValue } from "../../providers/StateProvider";
 import { useApiUtil } from "../../providers/ApiUtil";
 
-function Feed({ page, user }) {
+function PostFeed({ page, user }) {
   const [initialRender, setInitialRender] = useState(true);
   const {
     state,
@@ -92,4 +92,4 @@ function Feed({ page, user }) {
   );
 }
 
-export default Feed;
+export default PostFeed;

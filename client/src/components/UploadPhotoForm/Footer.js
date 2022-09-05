@@ -1,7 +1,7 @@
 import React from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import WallpaperIcon from '@material-ui/icons/Wallpaper'
-import './Footer.css'
+import './styles/footer.css'
 
 function Footer({
   image,

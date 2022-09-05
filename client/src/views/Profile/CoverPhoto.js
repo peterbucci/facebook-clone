@@ -1,6 +1,6 @@
 import React from 'react'
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import './CoverPhoto.css'
+import './styles/cover_photo.css'
 // STATE
 import { useStateValue } from '../../providers/StateProvider'
 

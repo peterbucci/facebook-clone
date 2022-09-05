@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PublicIcon from '@material-ui/icons/Public';
-import './Bio.css'
+import './styles/bio.css'
 // FIREBASE
 import db from '../../firebase'
 // STATE

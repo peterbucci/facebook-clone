@@ -4,9 +4,9 @@ import Badge from '@material-ui/core/Badge';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 import WallpaperIcon from '@material-ui/icons/Wallpaper';
-import './ProfilePhoto.css'
+import './styles/profile_photo.css'
 // COMPONENTS
-import UploadPhotoForm from './UploadPhotoForm'
+import UploadPhotoForm from '../../components/UploadPhotoForm'
 import ViewPhoto from './ViewPhoto'
 import { useStateValue } from '../../providers/StateProvider'
 

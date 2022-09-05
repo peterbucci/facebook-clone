@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ImageUploading from 'react-images-uploading'
 import CloseIcon from '@material-ui/icons/Close'
 import PublicIcon from '@material-ui/icons/Public'
-import './index.css'
+import './styles/upload_photo_form.css'
 
 import Description from './Description'
 import Photo from './Photo'
@@ -10,7 +10,7 @@ import ZoomSlider from './ZoomSlider'
 import Options from './Options'
 import Footer from './Footer'
 
-import { useStateValue } from '../../../providers/StateProvider'
+import { useStateValue } from '../../providers/StateProvider'
 
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string

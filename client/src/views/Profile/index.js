@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import "./index.css";
+import "./styles/profile.css";
 // COMPONENTS
-import Feed from "../UserFeed/Feed";
+import PostFeed from '../../components/PostFeed'
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import Bio from "./Bio";
@@ -72,7 +72,7 @@ function Profile() {
           <div className="profile_body_left_col">
           </div>
           <div className="profile_body_right_col">
-          <Feed page='userWall' user={currentProfile} />
+          <PostFeed page='userWall' user={currentProfile} />
           </div>
         </div>
       </div>

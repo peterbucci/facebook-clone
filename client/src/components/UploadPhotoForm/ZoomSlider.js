@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Slider from '@material-ui/core/Slider'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Remove'
-import './ZoomSlider.css'
+import './styles/zoom_slider.css'
 
-import { useStateValue } from '../../../providers/StateProvider'
+import { useStateValue } from '../../providers/StateProvider'
 
 function ZoomSlider({
   image,

@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles/sidebar_row.css'
 
-import NewAvatar from '../../components/Avatar/'
+import NewAvatar from '../../components/Avatar'
 
 function SidebarRow({ pictureId, Icon, title }) {
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Select from '@material-ui/core/Select'
 import CropIcon from '@material-ui/icons/Crop'
 import WatchLaterIcon from '@material-ui/icons/WatchLater'
-import './Options.css'
+import './styles/options.css'
 
 function Options({
   cropped,

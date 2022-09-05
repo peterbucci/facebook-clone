@@ -1,7 +1,7 @@
 import React from 'react'
 // ICONS
 import CloseIcon from '@material-ui/icons/Close'
-import './ViewPhoto.css'
+import './styles/view_photo.css'
 // COMPONENTS
 import PostHeader from '../../components/Post/PostHeader'
 

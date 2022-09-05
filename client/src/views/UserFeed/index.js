@@ -1,10 +1,10 @@
 import React from 'react'
 // COMPONENTS
-import Sidebar from '../../fragments/Sidebar'
-import Feed from './Feed'
-import Widget from '../../fragments/Widget'
+import Sidebar from './sidebar'
+import PostFeed from '../../components/PostFeed'
+import Widget from './widget'
 // STATE
-import { useStateValue, useApiUtil } from "../../providers/StateProvider";
+import { useStateValue } from "../../providers/StateProvider";
 
 export default function UserFeed() {
   const {
@@ -14,7 +14,7 @@ export default function UserFeed() {
   } = useStateValue();
   return <>
     <Sidebar />
-    <Feed page='userFeed' user={user} />
+    <PostFeed page='userFeed' user={user} />
     <Widget />
   </>
 }

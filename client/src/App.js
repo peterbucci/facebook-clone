@@ -7,7 +7,7 @@ import Login from "./views/Login";
 import UserFeed from "./views/UserFeed/";
 import Profile from "./views/Profile";
 // FRAGMENTS
-import Header from "./fragments/Header";
+import Header from "./components/Header";
 // STATE
 import { useStateValue } from "./providers/StateProvider";
 
