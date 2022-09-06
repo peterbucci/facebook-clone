@@ -100,25 +100,24 @@ export const ApiUtil = ({ children }) => {
       query = query.startAfter(startAt[startAt.length - 1].timestamp);
 
     return query.limit(limit).get().then((snapshot) => {
-      console.log(snapshot.docs.map(doc => doc.data()))
       return snapshot.docs
     });
   };
 
-  const getComments = (postId, limit, orderBy = ["timestamp", 'desc']) => {
+  const getComments = (postId, limit, endBefore, orderBy = ["timestamp", 'desc']) => {
     let query = db
       .collectionGroup("comments")
       .where("postId", "==", postId)
       .orderBy(...orderBy)
+    if (endBefore) query = query.endBefore(endBefore)
     if (limit) query = query.limit(limit)
     return query
       .get()
       .then((snapshot) => snapshot.docs.map(doc => doc.data()));
   }
 
-  const getSingleCommentFeed = (postId) => {
-    getComments(postId, null, ["timestamp"]).then((comments) => {
-      console.log(comments, 'comments')
+  const getSingleCommentFeed = (postId, endBefore) => {
+    getComments(postId, null, endBefore, ["timestamp"]).then((comments) => {
       dispatch({
         type: actionTypes.UPDATE_COMMENTS,
         postId,
@@ -169,12 +168,13 @@ export const ApiUtil = ({ children }) => {
       }
   }
 
-  const addNewPost = (userId, wallId, timestamp, message, image) => {
-    const newPost = db.collection('users')
+  const addNewPost = async (userId, wallId, timestamp, message, image) => {
+    const postQuery = db
+      .collection('users')
       .doc(userId)
       .collection('posts')
       .doc()
-    const id = newPost.id
+    const id = postQuery.id
     const postContent = {
       id,
       type: 'Wall Post',
@@ -188,21 +188,24 @@ export const ApiUtil = ({ children }) => {
       }
     }
 
-    newPost.set(postContent).then(() => {
-      newPost.get().then((snapshot) => {
-        dispatch({
-          type: actionTypes.SET_POSTS,
-          posts: [snapshot.data()],
-          new: true
-        });
-      })
-    })
+    await postQuery.set(postContent)
+    const newPost = await postQuery.get()
+    const newUser = await getUsers([userId, wallId])
+    dispatch({
+      type: actionTypes.SET_USERS,
+      users: newUser
+    });
+    dispatch({
+      type: actionTypes.SET_POSTS,
+      posts: [newPost.data()],
+      new: true
+    });
   }
 
-  const addNewComment = (userId, postId, message, timestamp, aggregateCount) => {
+  const addNewComment = (originalUserId, userId, postId, message, timestamp, aggregateCount, parentComment = false) => {
     const newCommentDoc = db
       .collection("users")
-      .doc(userId)
+      .doc(originalUserId)
       .collection("posts")
       .doc(postId)
       .collection("comments")
@@ -215,6 +218,10 @@ export const ApiUtil = ({ children }) => {
       postId,
       timestamp,
       userId,
+      reactions: {
+        like: []
+      },
+      parentComment,
       aggregateCount: aggregateCount ? aggregateCount + 1 : 1
     }
 
@@ -229,28 +236,30 @@ export const ApiUtil = ({ children }) => {
     })
   }
 
-  const handleReactionClick = (reactions, type, userId, post, idx) => {
+  const handleReactionClick = (reactions, type, userId, post, idx, collection, comment) => {
     const change = reactions[type].indexOf(userId) >= 0
       ? {[type]: reactions[type].filter(reaction => reaction !== userId)}
       : {[type]: [...reactions[type], userId]}
     const updatedPost = {
-      ...post,
+      ...(collection === 'comments' ? comment : post),
       reactions: {
         ...reactions,
         ...change
       }
     }
 
-    db.collection("users")
-      .doc(userId)
+    let postQuery = db.collection("users")
+      .doc(post.userId)
       .collection("posts")
-      .doc(post.id)
-      .set(updatedPost)
+  
+    if (collection === 'comments') postQuery = postQuery.doc(comment.postId).collection("comments").doc(comment.id).update(updatedPost)
+    else postQuery.doc(post.id).update(updatedPost)
     
     dispatch({
       type: actionTypes.UPDATE_POST,
       post: updatedPost,
-      idx
+      idx,
+      collection
     });
   }
 

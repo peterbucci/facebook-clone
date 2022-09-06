@@ -12,7 +12,6 @@ import { useApiUtil } from "../../providers/ApiUtil";
 function PostFeed({ page, user }) {
   const [initialRender, setInitialRender] = useState(true);
   const {
-    state,
     state: {
       feed: { users, posts, comments },
     },
@@ -20,7 +19,6 @@ function PostFeed({ page, user }) {
   const { getFeedData } = useApiUtil();
   const userRef = useRef(user);
 
-  console.log(state);
   useEffect(() => {
     const numberOfFriends = 10;
     const getUserIds = (n) => {

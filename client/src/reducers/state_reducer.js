@@ -93,19 +93,35 @@ const reducer = (state, action) => {
           ...state.feed,
           comments: {
             ...state.feed.comments,
-            [action.postId]: action.comments
-          }
-        }
-      }
+            [action.postId]: [
+              ...action.comments,
+              ...state.feed.comments[action.postId],
+            ],
+          },
+        },
+      };
 
     case actionTypes.UPDATE_POST:
       return {
         ...state,
         feed: {
           ...state.feed,
-          posts: state.feed.posts.map((post, idx) =>
-            idx === action.idx ? action.post : post
-          ),
+          ...(action.collection === "posts"
+            ? {
+                posts: state.feed.posts.map((post, idx) =>
+                  idx === action.idx ? action.post : post
+                ),
+              }
+            : {
+                comments: {
+                  ...state.feed.comments,
+                  [action.post.postId]: state.feed.comments[
+                    action.post.postId
+                  ].map((comment, idx) =>
+                    idx === action.idx ? action.post : comment
+                  ),
+                },
+              }),
         },
       };
 
