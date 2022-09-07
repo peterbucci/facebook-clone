@@ -8,6 +8,7 @@
 
 .post__body {
   padding: 0 16px;
+  margin-bottom: 10px;
 }
 
 .post__body.small-font p {
@@ -17,4 +18,12 @@
 
 .post__body > p {
   font-size: 1.5rem;
+}
+
+.post__image {
+  display: flex;
+}
+
+.post__image > img {
+  flex: 1
 }

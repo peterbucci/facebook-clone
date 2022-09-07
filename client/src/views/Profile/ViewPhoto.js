@@ -3,7 +3,7 @@ import React from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import './styles/view_photo.css'
 // COMPONENTS
-import PostHeader from '../../components/Post/PostHeader'
+import PostHeader from 'components/Post/PostHeader'
 
 function ViewPhoto({
   modalRef,
@@ -12,6 +12,7 @@ function ViewPhoto({
   user
 }) {
   const { timestamp } = pictureData
+  console.log(user)
   return (
     <div className="profilePhoto__viewPicture">
       <div className="viewPicture__left">
@@ -25,8 +26,10 @@ function ViewPhoto({
       <div className="viewPicture__right">
         <div className="viewPicture__rightHeader"></div>
         <PostHeader
+          currentWall={user}
           originalPoster={user}
           timestamp={timestamp}
+          postType="post"
         />
         <div>
           {pictureData.message}

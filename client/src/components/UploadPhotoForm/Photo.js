@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import './styles/photo.css'
 
-import { actionTypes } from '../../reducers/state_reducer'
-import { useStateValue } from '../../providers/StateProvider'
+import { actionTypes } from 'reducers/state_reducer'
+import { useStateValue } from 'providers/StateProvider'
 
 function Photo({
   imageList,

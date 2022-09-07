@@ -6,10 +6,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import './styles/header.css'
 // COMPONENTS
-import NewAvatar from '../Avatar'
-import Logo from '../../common/icons/Logo'
+import NewAvatar from 'components/Avatar'
+import Logo from 'common/icons/Logo'
 // STATE
-import { useStateValue } from '../../providers/StateProvider'
+import { useStateValue } from 'providers/StateProvider'
 
 function Header() {
   const { state: {user} } = useStateValue()

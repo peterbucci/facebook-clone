@@ -2,7 +2,7 @@ import React from 'react'
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import './styles/cover_photo.css'
 // STATE
-import { useStateValue } from '../../providers/StateProvider'
+import { useStateValue } from 'providers/StateProvider'
 
 function CoverPhoto({ currentProfile }) {
   const { state: {user} } = useStateValue()

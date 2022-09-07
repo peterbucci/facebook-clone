@@ -6,9 +6,9 @@ import CameraAltOutlinedIcon from '@material-ui/icons/CameraAltOutlined';
 import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import './styles/profile_photo.css'
 // COMPONENTS
-import UploadPhotoForm from '../../components/UploadPhotoForm'
+import UploadPhotoForm from 'components/UploadPhotoForm'
 import ViewPhoto from './ViewPhoto'
-import { useStateValue } from '../../providers/StateProvider'
+import { useStateValue } from 'providers/StateProvider'
 
 function useOutsideAlerter(ref, closeAllMenus) {
   useEffect(() => {

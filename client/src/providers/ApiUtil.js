@@ -4,8 +4,8 @@ import React, {
   useEffect,
   useState
 } from "react";
-import db, { auth } from "../firebase";
-import { actionTypes } from "../reducers/state_reducer";
+import db, { auth } from "firebase.js";
+import { actionTypes } from "reducers/state_reducer";
 import { useStateValue } from "./StateProvider";
 
 const ApiContext = createContext();

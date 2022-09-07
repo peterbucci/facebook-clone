@@ -2,7 +2,7 @@ import React from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import './styles/story_reel.css'
 
-import Story from '../Story'
+import Story from 'components/Story'
 
 function StoryReel({
   stories

@@ -1,15 +1,15 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { Redirect } from "react-router";
-import "./App.css";
+import "App.css";
 // VIEWS
-import Login from "./views/Login";
-import UserFeed from "./views/UserFeed/";
-import Profile from "./views/Profile";
+import Login from "views/Login";
+import UserFeed from "views/UserFeed/";
+import Profile from "views/Profile";
 // FRAGMENTS
-import Header from "./components/Header";
+import Header from "components/Header";
 // STATE
-import { useStateValue } from "./providers/StateProvider";
+import { useStateValue } from "providers/StateProvider";
 
 function App() {
   const {

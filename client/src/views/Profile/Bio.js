@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import PublicIcon from '@material-ui/icons/Public';
 import './styles/bio.css'
 // FIREBASE
-import db from '../../firebase'
+import db from 'firebase.js'
 // STATE
-import { useStateValue } from '../../providers/StateProvider'
+import { useStateValue } from 'providers/StateProvider'
 
 function Bio({
   currentBio,

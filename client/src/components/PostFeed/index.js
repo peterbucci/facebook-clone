@@ -30,7 +30,8 @@ function PostFeed({ page, user }) {
       // window.document.body.offsetHeight * .75 <= window.pageYOffset + window.innerHeight
       if (
         window.document.body.offsetHeight ===
-        window.pageYOffset + window.innerHeight && !initialRender
+          window.pageYOffset + window.innerHeight &&
+        !initialRender
       ) {
         getFeedData(
           getUserIds(numberOfFriends),
@@ -62,19 +63,14 @@ function PostFeed({ page, user }) {
         {page === "userFeed" && <StoryReel />}
         <MessageSender wallId={user.id} />
         {page === "userFeed" && <VideoFeed />}
-        {posts.map((post, i) => {
+        {posts.map((post, idx) => {
           return (
             <Post
-              idx={i}
+              idx={idx}
               users={users}
               key={post.id}
               post={post}
               comments={comments[post.id]}
-              action={
-                post.type === "Profile Picture"
-                  ? "updated their profile picture."
-                  : ""
-              }
             />
           );
         })}

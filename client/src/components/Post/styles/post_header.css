@@ -15,6 +15,11 @@
   font-weight: 500 !important;
 }
 
+.headerInfo__action {
+  color: #777;
+  font-weight: normal;
+}
+
 .post__headerInfo > .headerInfo__timestamp {
   font-size: small;
   color: gray;

@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import './styles/login.css'
 
-import { auth, googleProvider } from '../../firebase'
+import { auth, googleProvider } from 'firebase.js'
 
 export default function Login() {
   const signIn = (provider) => {

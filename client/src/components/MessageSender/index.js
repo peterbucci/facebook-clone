@@ -6,10 +6,10 @@ import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import './styles/message_sender.css'
 
-import NewAvatar from '../../components/Avatar/'
+import NewAvatar from 'components/Avatar/'
 
-import { useStateValue } from '../../providers/StateProvider'
-import { useApiUtil } from '../../providers/ApiUtil';
+import { useStateValue } from 'providers/StateProvider'
+import { useApiUtil } from 'providers/ApiUtil';
 
 function MessageSender({ wallId }) {
   const { state: {user} } = useStateValue()

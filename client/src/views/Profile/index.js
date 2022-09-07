@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import "./styles/profile.css";
 // COMPONENTS
-import PostFeed from '../../components/PostFeed'
+import PostFeed from 'components/PostFeed'
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import Bio from "./Bio";
 // FIREBASE
-import db from "../../firebase";
+import db from "firebase.js";
 
 function Profile() {
   const [initialRender, setInitialRender] = useState(true)

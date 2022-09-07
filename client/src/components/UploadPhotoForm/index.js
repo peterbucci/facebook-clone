@@ -10,7 +10,7 @@ import ZoomSlider from './ZoomSlider'
 import Options from './Options'
 import Footer from './Footer'
 
-import { useStateValue } from '../../providers/StateProvider'
+import { useStateValue } from 'providers/StateProvider'
 
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string

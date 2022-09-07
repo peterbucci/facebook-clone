@@ -3,15 +3,20 @@ import { Link } from "react-router-dom"
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import './styles/post_header.css'
 // COMPONENTS
-import NewAvatar from '../../components/Avatar/'
+import NewAvatar from 'components/Avatar/'
+import { formatTimeStamp } from 'common/format_timestamp';
+
+const actions = {
+  "Profile Picture": "updated their profile picture."
+}
 
 function PostHeader({
   originalPoster,
-  action,
-  timestamp,
   currentWall,
-  formatTimeStamp
+  postType,
+  timestamp
 }) {
+  const action = actions[postType]
   return (
     <div className="post__header">
       <Link to={`/${originalPoster.url}`}>
@@ -29,8 +34,10 @@ function PostHeader({
               {`${currentWall.firstName} ${currentWall.lastName}`}
             </Link>
           </>}
-          
-          {action && ' ' + action}
+          {action && <span className="headerInfo__action">
+            <span>&nbsp;</span>
+            {action}
+          </span>}
         </h3>
         <p className="headerInfo__timestamp">
           {formatTimeStamp(timestamp.seconds, 'post')}
