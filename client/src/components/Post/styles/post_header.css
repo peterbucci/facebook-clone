@@ -8,11 +8,19 @@
   margin-right: 10px;
 }
 
-.post__headerInfo > .headerInfo__name {
+.headerInfo__name {
   display: flex;
   color: #65676b;
   font-size: 17px;
   font-weight: 500 !important;
+}
+
+.headerInfo__name > a {
+  text-decoration: none;
+  color: #000;
+}
+.headerInfo__name > a:hover {
+  text-decoration: underline;
 }
 
 .headerInfo__action {

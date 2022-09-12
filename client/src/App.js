@@ -6,6 +6,7 @@ import "App.css";
 import Login from "views/Login";
 import UserFeed from "views/UserFeed/";
 import Profile from "views/Profile";
+import Photo from "views/Photo";
 // FRAGMENTS
 import Header from "components/Header";
 // STATE
@@ -25,6 +26,7 @@ function App() {
           <Header />
           <div className="body">
             <Switch>
+              <Route path="/photo" component={Photo} />
               <Route path="/me">
                 <Redirect to={`/${user.url}`} />
               </Route>

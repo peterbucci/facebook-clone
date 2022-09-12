@@ -7,56 +7,53 @@ import PostFeed from 'components/PostFeed'
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import Bio from "./Bio";
-// FIREBASE
-import db from "firebase.js";
+import { useApiUtil } from "providers/ApiUtil";
 
-function Profile() {
-  const [initialRender, setInitialRender] = useState(true)
-  const [currentProfile, setCurrentProfile] = useState(null);
+function Profile({ history }) {
+  const state = history.location.state
+  const [currentUser, setCurrentUser] = useState(state?.user)
+  const [currentProfilePic, setCurrentProfilePic] = useState(state?.pic)
+  const [title, setTitle] = useState(state?.user ? state.user.firstName + " " + state.user.lastName : null)
+
+  const { getProfile } = useApiUtil();
   let { profileURL } = useParams();
 
   useEffect(() => {
-    db.collection("users")
-      .where("url", "==", profileURL)
-      .get()
-      .then((res) => {
-        const userData = res.docs[0].data();
-        const profile = db.collection("users").doc(userData.id);
+    if (title) document.title = title + " | Facebook"
+    return () => document.title = "Facebook"
+  }, [title])
 
-        if (userData.profilePic) {
-          profile
-            .collection("posts")
-            .doc(userData.profilePic)
-            .get()
-            .then((res) => {
-              setCurrentProfile({
-                ...userData,
-                profilePicData: res.data(),
-              });
-              setInitialRender(false)
-            });
-        } else {
-          setCurrentProfile({
-            ...userData,
-          });
-          setInitialRender(false)
-        }
-      });
-  }, [profileURL]);
+  useEffect(() => {
+    window.history.replaceState(null, '')
+  }, [])
 
-  return initialRender ? (
-    <></>
-  ) : (
+  useEffect(() => {
+    if(!currentUser || profileURL !== currentUser.url) {
+      getProfile(profileURL).then((profile) => {
+        setCurrentProfilePic(profile.pic)
+        setCurrentUser(profile.user)
+        setTitle(profile.user.firstName + " " + profile.user.lastName)
+      })
+    }
+  }, [profileURL, getProfile, currentUser]);
+
+  return !currentUser || profileURL !== currentUser.url
+    ?
+      <></>
+    : (
     <div className="profile">
       <div className="profile_wrapper">
         <div className="profile__header">
-          <CoverPhoto currentProfile={currentProfile} />
-          <ProfilePhoto currentProfile={currentProfile} />
+          <CoverPhoto currentProfile={currentUser} />
+          <ProfilePhoto 
+            currentProfile={currentUser} 
+            profilePic={currentProfilePic} 
+          />
 
           <h1 className="header__name">
-            {currentProfile.firstName} {currentProfile.lastName}
+            {currentUser.firstName} {currentUser.lastName}
           </h1>
-          <Bio currentBio={currentProfile.bio} userId={currentProfile.id} />
+          <Bio currentBio={currentUser.bio} userId={currentUser.id} />
 
           <ul className="header__nav">
             <li className="active">Posts</li>
@@ -72,7 +69,7 @@ function Profile() {
           <div className="profile_body_left_col">
           </div>
           <div className="profile_body_right_col">
-          <PostFeed page='userWall' user={currentProfile} />
+          <PostFeed page='userWall' user={currentUser} />
           </div>
         </div>
       </div>
@@ -81,4 +78,3 @@ function Profile() {
 }
 
 export default Profile;
-

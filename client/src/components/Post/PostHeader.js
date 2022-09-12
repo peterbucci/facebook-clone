@@ -20,7 +20,7 @@ function PostHeader({
   return (
     <div className="post__header">
       <Link to={`/${originalPoster.url}`}>
-        <NewAvatar pictureId={originalPoster.profilePic} className="post__avatar" />
+        <NewAvatar profilePicData={originalPoster.profilePicData}  className="post__avatar" />
       </Link>
 
       <div className="post__headerInfo">

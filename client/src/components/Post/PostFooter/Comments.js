@@ -40,7 +40,7 @@ function Comments({
           <div className="post__comment" key={comment.id}>
             <Link to={`/${commentUser.url}`}>
               <NewAvatar
-                pictureId={commentUser.profilePic}
+                profilePicData={commentUser.profilePicData} 
                 className={`${classes.small} comment__avatar`}
               />
             </Link>

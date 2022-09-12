@@ -7,13 +7,12 @@ import Widget from "./widget";
 import { useStateValue } from "../../providers/StateProvider";
 
 export default function UserFeed() {
-  const {
-    state: { user },
-  } = useStateValue();
+  const { state } = useStateValue();
+
   return (
     <>
       <Sidebar />
-      <PostFeed page="userFeed" user={user} />
+      <PostFeed page="userFeed" user={state.user} />
       <Widget />
     </>
   );

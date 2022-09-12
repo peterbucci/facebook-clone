@@ -1,14 +1,15 @@
 import React from 'react'
 import './styles/sidebar_row.css'
+import { Avatar } from '@material-ui/core'
 
 import NewAvatar from '../../components/Avatar'
 
-function SidebarRow({ pictureId, Icon, title }) {
+function SidebarRow({ profilePicData, Icon, title }) {
   return (
     <div className="sidebarRow">
       {Icon 
         ? <img src={`./icons/${Icon}.png`} alt="" />
-        : <NewAvatar pictureId={pictureId} />
+        : <NewAvatar profilePicData={profilePicData} />
       }
       <h4>{title}</h4>
     </div>

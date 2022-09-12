@@ -1,10 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState
-} from "react";
-import db, { auth } from "firebase.js";
+import React, { createContext, useContext } from "react";
+import db from "firebase.js";
 import { actionTypes } from "reducers/state_reducer";
 import { useStateValue } from "./StateProvider";
 
@@ -12,84 +7,52 @@ const ApiContext = createContext();
 
 export const ApiUtil = ({ children }) => {
   const { state, dispatch } = useStateValue();
-  const [initialRender, setInitialRender] = useState(true);
 
-  useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        const { displayName, email } = authUser;
-
-        db.collection("users")
-          .where("email", "==", email)
-          .onSnapshot((snapshot) => {
-            if (snapshot.empty) {
-              const ref = db.collection("users").doc();
-              const id = ref.id;
-              const newUser = {
-                id,
-                profilePic: null,
-                firstName: displayName,
-                lastName: "",
-                email: email,
-                notifications: {
-                  comments: [],
-                  reactions: {
-                    like: [],
-                  },
-                },
-              };
-
-              db.collection("users").doc(id).set(newUser);
-
-              dispatch({
-                type: actionTypes.SET_USER,
-                user: newUser,
-              });
-            } else {
-              const user = snapshot.docs[0].data();
-              const userId = snapshot.docs[0].id;
-              dispatch({
-                type: actionTypes.SET_USER,
-                user: {
-                  id: userId,
-                  ...user,
-                },
-              });
-            }
-            setInitialRender(false);
-          });
-      } else {
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: null,
-        });
-        setInitialRender(false);
-      }
-    });
-  }, [dispatch]);
-
-  const getUsers = (ids, initialRender) => {
-    const { users } = state.feed
+  const getUsers = async (ids, initialRender) => {
+    const { users } = state.feed;
     const filteredUsers = initialRender ? ids : ids.filter((id) => !users[id]);
-    return filteredUsers.length 
-      ? db.collectionGroup("users")
-        .where("id", "in", filteredUsers)
+    const profilePicIds = [];
+    const requestedUsers = filteredUsers.length
+      ? await db
+          .collectionGroup("users")
+          .where("id", "in", filteredUsers)
+          .get()
+          .then((snapshot) => {
+            return snapshot.docs.reduce((users, user) => {
+              const userData = user.data();
+              if (userData.profilePic) profilePicIds.push(userData.profilePic);
+              return {
+                [user.id]: {
+                  ...userData,
+                },
+                ...users,
+              };
+            }, {});
+          })
+      : {};
+
+    profilePicIds.length &&
+      (await db
+        .collectionGroup("posts")
+        .where("id", "in", profilePicIds)
         .get()
-        .then((snapshot) => {
-          return snapshot.docs.reduce((users, user) => ({ 
-            [user.id]: user.data(), 
-            ...users 
-          }), {})
-        })
-      : {}
-  }
+        .then((snapshot) =>
+          snapshot.docs.forEach(
+            (doc) =>
+              (requestedUsers[doc.data().userId].profilePicData = doc.data())
+          )
+        ));
+
+    return requestedUsers;
+  };
 
   const getPosts = (userId, posts, additionalFilter, limit, initialRender) => {
-    const startAt = !posts || initialRender
-      ? []
-      : Object.values(posts)
-          .sort((x, y) => (x.timestamp < y.timestamp ? 1 : -1))
-          .filter((post) => post.userId === userId && post.timestamp);
+    const startAt =
+      !posts || initialRender
+        ? []
+        : Object.values(posts)
+            .sort((x, y) => (x.timestamp < y.timestamp ? 1 : -1))
+            .filter((post) => post.userId === userId && post.timestamp);
 
     let query = db.collectionGroup("posts").where("userId", "==", userId);
 
@@ -99,22 +62,30 @@ export const ApiUtil = ({ children }) => {
     if (startAt.length)
       query = query.startAfter(startAt[startAt.length - 1].timestamp);
 
-    return query.limit(limit).get().then((snapshot) => {
-      return snapshot.docs
-    });
+    return query
+      .limit(limit)
+      .get()
+      .then((snapshot) => {
+        return snapshot.docs;
+      });
   };
 
-  const getComments = (postId, limit, endBefore, orderBy = ["timestamp", 'desc']) => {
+  const getComments = (
+    postId,
+    limit,
+    endBefore,
+    orderBy = ["timestamp", "desc"]
+  ) => {
     let query = db
       .collectionGroup("comments")
       .where("postId", "==", postId)
-      .orderBy(...orderBy)
-    if (endBefore) query = query.endBefore(endBefore)
-    if (limit) query = query.limit(limit)
+      .orderBy(...orderBy);
+    if (endBefore) query = query.endBefore(endBefore);
+    if (limit) query = query.limit(limit);
     return query
       .get()
-      .then((snapshot) => snapshot.docs.map(doc => doc.data()));
-  }
+      .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+  };
 
   const getSingleCommentFeed = (postId, endBefore) => {
     getComments(postId, null, endBefore, ["timestamp"]).then((comments) => {
@@ -123,93 +94,164 @@ export const ApiUtil = ({ children }) => {
         postId,
         comments,
       });
-    })
-  }
+    });
+  };
 
-  const getFeedData = async (    
+  const getProfile = async (profileURL, uid, pid) => {
+    let user = db.collection("users");
+    user = profileURL ? user.where("url", "==", profileURL) : user.doc(uid);
+    user = await user
+      .get()
+      .then((res) => (profileURL ? res.docs[0].data() : res.data()));
+    const profilePicData = user.profilePic
+      ? await db
+          .collection("users")
+          .doc(user.id)
+          .collection("posts")
+          .doc(user.profilePic)
+          .get()
+          .then((res) => res.data())
+      : null;
+
+    const pic = pid || user.profilePic
+      ? await db
+        .collection("users")
+        .doc(user.id)
+        .collection("posts")
+        .doc(pid || user.profilePic)
+        .get()
+        .then((res) => res.data())
+      : null
+
+    return {
+      user: {
+        ...user,
+        profilePicData
+      },
+      pic,
+    };
+  };
+
+  const setPreloadedProfile = async (user, pic) => {
+    await dispatch({
+      type: actionTypes.SET_PRELOADED_PROFILE,
+      preloadedProfile: {
+        user,
+        pic,
+      },
+    });
+
+    return true;
+  };
+
+  const getFeedData = async (
+    posts,
     ids = [],
     numberOfPosts,
     additionalFilter,
-    initialRender
+    initialRender,
+    wallId
   ) => {
-      const  {posts} = state.feed
-      const postQueries = ids.map((userId) =>
-        getPosts(userId, posts, additionalFilter, numberOfPosts / ids.length, initialRender)
-      );
+    const postQueries = ids.map((userId) =>
+      getPosts(
+        userId,
+        posts,
+        additionalFilter,
+        numberOfPosts / ids.length,
+        initialRender
+      )
+    );
 
-      let newPosts = await Promise.all(postQueries)
-      newPosts = newPosts
-        .flat()
-        .sort((x, y) => (x.data().timestamp < y.data().timestamp ? 1 : -1))
-        .map((post) => post.data());
+    let newPosts = await Promise.all(postQueries);
+    newPosts = newPosts
+      .flat()
+      .sort((x, y) => (x.data().timestamp < y.data().timestamp ? 1 : -1))
+      .map((post) => post.data());
 
-      let commentQueries = newPosts.map((post, i, arr) => getComments(post.id, 1))
-      let newComments = await Promise.all(commentQueries)
-      newComments = newComments.flat()
+    let commentQueries = newPosts.map((post, i, arr) =>
+      getComments(post.id, 1)
+    );
+    let newComments = await Promise.all(commentQueries);
+    newComments = newComments.flat();
 
-      const newUsers = await getUsers([...new Set([...ids, ...newComments.map(comment => comment.userId)])], initialRender);
+    const newUsers = await getUsers(
+      [...new Set([...ids, ...newComments.map((comment) => comment.userId)])],
+      initialRender
+    );
 
-      if (newPosts.length) {
-        dispatch({
-          type: actionTypes.SET_USERS,
-          users: newUsers,
-          initialRender
-        });
-        dispatch({
-          type: actionTypes.SET_POSTS,
-          posts: newPosts,
-          initialRender
-        });
-        dispatch({
-          type: actionTypes.SET_COMMENTS,
-          comments: newComments,
-          initialRender
-        });
-      }
-  }
+    if (newPosts.length) {
+      dispatch({
+        type: actionTypes.SET_WALL_ID,
+        wallId,
+      });
+      dispatch({
+        type: actionTypes.SET_USERS,
+        users: newUsers,
+        initialRender,
+      });
+      dispatch({
+        type: actionTypes.SET_POSTS,
+        posts: newPosts,
+        initialRender,
+      });
+      dispatch({
+        type: actionTypes.SET_COMMENTS,
+        comments: newComments,
+        initialRender,
+      });
+    }
+  };
 
   const addNewPost = async (userId, wallId, timestamp, message, image) => {
     const postQuery = db
-      .collection('users')
+      .collection("users")
       .doc(userId)
-      .collection('posts')
-      .doc()
-    const id = postQuery.id
+      .collection("posts")
+      .doc();
+    const id = postQuery.id;
     const postContent = {
       id,
-      type: 'Wall Post',
+      type: "Wall Post",
       userId,
       wallId,
       timestamp,
       message,
       image,
       reactions: {
-        like: []
-      }
-    }
+        like: [],
+      },
+    };
 
-    await postQuery.set(postContent)
-    const newPost = await postQuery.get()
-    const newUser = await getUsers([userId, wallId])
+    await postQuery.set(postContent);
+    const newPost = await postQuery.get();
+    const newUser = await getUsers([userId, wallId]);
     dispatch({
       type: actionTypes.SET_USERS,
-      users: newUser
+      users: newUser,
     });
     dispatch({
       type: actionTypes.SET_POSTS,
       posts: [newPost.data()],
-      new: true
+      new: true,
     });
-  }
+  };
 
-  const addNewComment = (originalUserId, userId, postId, message, timestamp, aggregateCount, parentComment = false) => {
+  const addNewComment = (
+    originalUserId,
+    userId,
+    postId,
+    message,
+    timestamp,
+    aggregateCount,
+    parentComment = false
+  ) => {
     const newCommentDoc = db
       .collection("users")
       .doc(originalUserId)
       .collection("posts")
       .doc(postId)
       .collection("comments")
-      .doc()
+      .doc();
 
     const newComment = {
       id: newCommentDoc.id,
@@ -219,53 +261,75 @@ export const ApiUtil = ({ children }) => {
       timestamp,
       userId,
       reactions: {
-        like: []
+        like: [],
       },
       parentComment,
-      aggregateCount: aggregateCount ? aggregateCount + 1 : 1
-    }
+      aggregateCount: aggregateCount ? aggregateCount + 1 : 1,
+    };
 
     newCommentDoc.set(newComment).then(() => {
       newCommentDoc.get().then((snapshot) => {
         dispatch({
           type: actionTypes.SET_COMMENTS,
           comments: [snapshot.data()],
-          new: true
+          new: true,
         });
-      })
-    })
-  }
+      });
+    });
+  };
 
-  const handleReactionClick = (reactions, type, userId, post, idx, collection, comment) => {
-    const change = reactions[type].indexOf(userId) >= 0
-      ? {[type]: reactions[type].filter(reaction => reaction !== userId)}
-      : {[type]: [...reactions[type], userId]}
+  const handleReactionClick = (
+    reactions,
+    type,
+    userId,
+    post,
+    idx,
+    collection,
+    comment
+  ) => {
+    const change =
+      reactions[type].indexOf(userId) >= 0
+        ? { [type]: reactions[type].filter((reaction) => reaction !== userId) }
+        : { [type]: [...reactions[type], userId] };
     const updatedPost = {
-      ...(collection === 'comments' ? comment : post),
+      ...(collection === "comments" ? comment : post),
       reactions: {
         ...reactions,
-        ...change
-      }
-    }
+        ...change,
+      },
+    };
 
-    let postQuery = db.collection("users")
-      .doc(post.userId)
-      .collection("posts")
-  
-    if (collection === 'comments') postQuery = postQuery.doc(comment.postId).collection("comments").doc(comment.id).update(updatedPost)
-    else postQuery.doc(post.id).update(updatedPost)
-    
+    let postQuery = db.collection("users").doc(post.userId).collection("posts");
+
+    if (collection === "comments")
+      postQuery = postQuery
+        .doc(comment.postId)
+        .collection("comments")
+        .doc(comment.id)
+        .update(updatedPost);
+    else postQuery.doc(post.id).update(updatedPost);
+
     dispatch({
       type: actionTypes.UPDATE_POST,
       post: updatedPost,
       idx,
-      collection
+      collection,
     });
-  }
+  };
 
   return (
-    <ApiContext.Provider value={{ getFeedData, addNewPost, handleReactionClick, addNewComment, getSingleCommentFeed }}>
-      {initialRender ? <></> : children}
+    <ApiContext.Provider
+      value={{
+        getFeedData,
+        addNewPost,
+        handleReactionClick,
+        addNewComment,
+        getSingleCommentFeed,
+        getProfile,
+        setPreloadedProfile,
+      }}
+    >
+      {children}
     </ApiContext.Provider>
   );
 };

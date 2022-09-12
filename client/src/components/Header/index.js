@@ -121,9 +121,7 @@ function Header() {
 
       <div className="header__right">
         <Link to="/me" className={`header__right__info${location.pathname === '/me' ? ' active' : ''}`}>
-          <NewAvatar className="header__right__info__profile-pic" pictureId={user.profilePic}>
-            <img src="./default_avatar.png" alt="" />
-          </NewAvatar>
+          <NewAvatar className="header__right__info__profile-pic" profilePicData={user.profilePicData} />
           <h4>{user.firstName}</h4>
         </Link>
 

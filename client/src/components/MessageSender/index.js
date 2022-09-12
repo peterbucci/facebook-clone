@@ -27,7 +27,7 @@ function MessageSender({ wallId }) {
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <NewAvatar pictureId={user.profilePic} />
+        <NewAvatar profilePicData={user.profilePicData} />
         <form>
           <input
             value={input}

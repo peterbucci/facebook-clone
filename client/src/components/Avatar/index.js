@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Avatar } from '@material-ui/core'
+import React, { useEffect, useState } from "react";
+import { Avatar } from "@material-ui/core";
 // Firebase
-import db from 'firebase.js'
+import db from "firebase.js";
 
-function NewAvatar({ pictureId, className }) {
-  const [thumbnail, setThumbnail] = useState(null)
+const { REACT_APP_PHOTOS_FOLDER } = process.env;
 
-  useEffect(() => {
-    db.collectionGroup('posts')
-      .where('id', '==', pictureId)
-      .get().then(res => {
-        res.forEach(doc => setThumbnail(`http://localhost:3001/images/${doc.data().thumbnail}`))
-      })
-  }, [pictureId])
+function NewAvatar({ profilePicData, className }) {
+  const props = {
+    ...(profilePicData
+      ? { src: REACT_APP_PHOTOS_FOLDER + profilePicData.thumbnail }
+      : {}),
+    className,
+  };
 
   return (
-    <Avatar src={thumbnail} className={className} />
-  )
+    <Avatar {...props}>
+      <img
+        style={{ width: "100%" }}
+        src={REACT_APP_PHOTOS_FOLDER + "default_avatar.png"}
+        alt="Profile Default"
+      />
+    </Avatar>
+  );
 }
 
-export default NewAvatar
+export default NewAvatar;

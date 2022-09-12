@@ -33,7 +33,7 @@ function CommentSender({
   return (
       <div className="post__commentSender">
         <NewAvatar
-          pictureId={user.profilePic}
+          profilePicData={user.profilePicData} 
           className={`${avatarClass} commentSender__avatar`}
         />
         <form>

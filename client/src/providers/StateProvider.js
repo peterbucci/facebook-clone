@@ -2,23 +2,27 @@ import React, {
   createContext,
   useContext,
   useReducer,
+  useEffect,
+  useState,
 } from "react";
+import db, { auth } from "firebase.js";
 import { ApiUtil } from "./ApiUtil";
+import { actionTypes } from "reducers/state_reducer";
 
 const StateContext = createContext();
 
 export const StateProvider = ({ reducer, children }) => {
+  const [initialRender, setInitialRender] = useState(true);
   const [state, dispatch] = useReducer(reducer, {
     user: null,
+    users: {},
+    posts: {},
+    postOrder: [],
+    commentOrder: [],
     feed: {
       posts: [],
       users: {},
       comments: {},
-    },
-    db: {
-      gettingUsers: true,
-      gettingPosts: true,
-      gettingComments: true,
     },
     uploadPhotoForm: {
       imageRef: null,
@@ -28,9 +32,73 @@ export const StateProvider = ({ reducer, children }) => {
     },
   });
 
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        const { displayName, email } = authUser;
+
+        db.collection("users")
+          .where("email", "==", email)
+          .onSnapshot(async (snapshot) => {
+            if (snapshot.empty) {
+              const ref = db.collection("users").doc();
+              const id = ref.id;
+              const newUser = {
+                id,
+                profilePic: null,
+                firstName: displayName,
+                lastName: "",
+                email: email,
+                notifications: {
+                  comments: [],
+                  reactions: {
+                    like: [],
+                  },
+                },
+              };
+
+              db.collection("users").doc(id).set(newUser);
+
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: newUser,
+              });
+            } else {
+              const userDoc = snapshot.docs[0];
+              const user = userDoc.data();
+              const profilePic = user.profilePic
+              const profilePicData = profilePic
+                ? await userDoc.ref
+                    .collection("posts")
+                    .doc(profilePic)
+                    .get()
+                    .then((snapshot) => snapshot.data())
+                : null;
+
+              dispatch({
+                type: actionTypes.SET_USER,
+                user: {
+                  id: userDoc.id,
+                  ...user,
+                  profilePicData,
+                },
+              });
+            }
+            setInitialRender(false);
+          });
+      } else {
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: null,
+        });
+        setInitialRender(false);
+      }
+    });
+  }, [dispatch]);
+
   return (
     <StateContext.Provider value={{ state, dispatch }}>
-      <ApiUtil>{children}</ApiUtil>
+      <ApiUtil>{initialRender ? <></> : children}</ApiUtil>
     </StateContext.Provider>
   );
 };
