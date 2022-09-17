@@ -40,7 +40,8 @@ function UploadPhotoForm({
   closeAllMenus,
   modalRef
 }) {
-  const { state: { user, uploadPhotoForm: { imageRef, imageContainerRef, imageThumbnailRef, croppedImageRef } } } = useStateValue()
+  const { state: { user, users, uploadPhotoForm: { imageRef, imageContainerRef, imageThumbnailRef, croppedImageRef } } } = useStateValue()
+  const currentUser = users[user]
   
   const [description, setDescription] = useState('')
   const [image, setImage] = useState([])
@@ -87,11 +88,12 @@ function UploadPhotoForm({
       }
 
       const formData = new FormData()
-      formData.append('userId', user.id)
+      formData.append('wallId', currentUser.id)
+      formData.append('userId', currentUser.id)
       formData.append('message', description)
       formData.append('picture', image.file)
       formData.append('thumbnail', dataURItoBlob(canvas.toDataURL()))
-      formData.append('cropped', false)
+      formData.append('cropped', cropped)
       formData.append('temporary', false)
       formData.append('type', 'Profile Picture')
 
@@ -99,8 +101,7 @@ function UploadPhotoForm({
         method: 'POST',
         body: formData
       })
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => closeAllMenus())
     }
 
     img.src = image['data_url']

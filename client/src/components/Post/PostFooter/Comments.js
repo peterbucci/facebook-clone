@@ -8,39 +8,53 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import NewAvatar from "components/Avatar/";
 // DATABASE
 import { useApiUtil } from "providers/ApiUtil";
+import { useStateValue } from "providers/StateProvider";
 
 function Comments({
   post,
   user,
-  commentsInPost,
-  usersInPost,
   formatTimeStamp,
   aggregateCount,
   classes,
+  expandComments,
+  commentsInPost,
 }) {
   const { handleReactionClick, getSingleCommentFeed } = useApiUtil();
-  const [commentsCollapsed, setCommentsCollapsed] = useState(true);
+  const {
+    state: { posts, users },
+  } = useStateValue();
+  const [commentsCollapsed, setCommentsCollapsed] = useState(!expandComments);
+  const commentsToRender =
+    commentsCollapsed && commentsInPost.length
+      ? [commentsInPost[0]]
+      : commentsInPost;
 
   const handleCommentFeedExpand = () => {
     setCommentsCollapsed(false);
-    getSingleCommentFeed(post.id, commentsInPost[0].timestamp);
+    aggregateCount !== commentsInPost.length &&
+      getSingleCommentFeed(post.id, commentsInPost[0].timestamp, "UPDATE_COMMENTS");
   };
 
   return (
     <div className="post__comments">
       <div className="post__comments_expand" onClick={handleCommentFeedExpand}>
-        {commentsCollapsed && aggregateCount - commentsInPost.length > 0 && (
-          <p>View {aggregateCount - commentsInPost.length} previous comments</p>
+        {commentsCollapsed && aggregateCount - 1 !== 0 && (
+          <p>View {aggregateCount - 1} previous comments</p>
         )}
       </div>
 
-      {commentsInPost.map((comment, idx2) => {
-        const commentUser = usersInPost[comment.userId];
+      {commentsToRender.map((comment) => {
+        const commentUser = users[comment.userId];
         return (
           <div className="post__comment" key={comment.id}>
-            <Link to={`/${commentUser.url}`}>
+            <Link
+              to={{
+                pathname: `/${commentUser.url}`,
+                state: { uid: commentUser.id },
+              }}
+            >
               <NewAvatar
-                profilePicData={commentUser.profilePicData} 
+                profilePicData={posts[commentUser.profilePic]}
                 className={`${classes.small} comment__avatar`}
               />
             </Link>
@@ -79,7 +93,6 @@ function Comments({
                       "like",
                       user.id,
                       post,
-                      idx2,
                       "comments",
                       comment
                     )

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 // ICONS
 import CloseIcon from "@material-ui/icons/Close";
@@ -6,6 +6,8 @@ import "./styles/photo.css";
 // COMPONENTS
 import PostHeader from "components/Post/PostHeader";
 import PostFooter from "components/Post/PostFooter";
+// STATE
+import { useStateValue } from "providers/StateProvider";
 
 import { useApiUtil } from "providers/ApiUtil";
 
@@ -18,35 +20,33 @@ function useQuery() {
 }
 
 function Photo({ history }) {
-  const state = history.location.state;
-  const [referred] = useState(state?.user);
-  const [currentPhoto, setCurrentPhoto] = useState(state?.pic);
-  const [currentUser, setCurrentUser] = useState(state?.user);
-  const [usersInPost, setUsersInPost] = useState(null);
-  const [commentsInPost, setCommentsInPost] = useState(null);
-  const { getProfile } = useApiUtil();
-
+  const initalRender = useRef(true)
+  const [referred] = useState(history.location.state?.referred);
+  const [scrollToY] = useState(history.location.state?.scrollToY)
+  const [height] = useState(history.location.state?.height)
+  const { getProfile, getSingleCommentFeed } = useApiUtil();
+  const { state: { user, users, posts, commentOrder, comments } } = useStateValue()
   const query = useQuery();
   const pid = query.get("pid");
   const uid = query.get("uid");
 
-  const handleClose = () => {
-    referred &&
-      history.push(currentUser.url, { user: currentUser, pic: currentPhoto });
-  };
+  const currentPhoto = posts[pid]
+  const currentUser = users[uid]
+  const handleClose = () => history.push(referred, { scrollToY, height });
 
   useEffect(() => {
     window.history.replaceState(null, "");
   }, []);
 
   useEffect(() => {
-    if (!currentUser || (currentPhoto && pid !== currentPhoto.id)) {
-      getProfile(null, uid, pid).then((profile) => {
-        setCurrentPhoto(profile.pic);
-        setCurrentUser(profile.user);
-      });
+    if (!currentPhoto || (currentPhoto && pid !== currentPhoto.id)) getProfile(null, uid, pid)
+    if (initalRender.current) {
+      const order = commentOrder[pid]
+      const latestPost = order ? comments[order[0]] : null
+      initalRender.current = false
+      if (!order || (latestPost?.aggregateCount !== order.length)) getSingleCommentFeed(pid, latestPost?.timestamp, "UPDATE_COMMENTS")
     }
-  }, [getProfile, currentUser, pid, uid, currentPhoto]);
+  }, [getProfile, pid, uid, currentPhoto, getSingleCommentFeed, commentOrder, comments]);
 
   return !currentPhoto ? (
     <></>
@@ -57,16 +57,16 @@ function Photo({ history }) {
       }`}
     >
       <div className="viewPicture__left">
-        <div className="viewPicture__leftHeader">
-          {referred && <CloseIcon onClick={handleClose} />}
-        </div>
+        {referred && <CloseIcon onClick={handleClose} className="viewPicture__clone-icon" />}
         <div className="viewPicture__leftBody">
-          <img src={REACT_APP_PHOTOS_FOLDER + currentPhoto.image} alt="" />
+          <img src={REACT_APP_PHOTOS_FOLDER + (currentPhoto.cropped ? currentPhoto.thumbnail : currentPhoto.image
+)} alt="" />
         </div>
       </div>
       <div className="viewPicture__right">
         <div className="viewPicture__rightHeader"></div>
         <PostHeader
+          profilePicData={posts[users[user].profilePic]}
           originalPoster={currentUser}
           currentWall={currentUser}
           timestamp={currentPhoto.timestamp}
@@ -76,8 +76,7 @@ function Photo({ history }) {
         </div>
         <PostFooter
           post={currentPhoto}
-          usersInPost={usersInPost}
-          commentsInPost={commentsInPost}
+          expandComments={true}
         />
       </div>
     </div>

@@ -9,7 +9,6 @@ import ReplyIcon from "@material-ui/icons/Reply";
 import { useApiUtil } from "providers/ApiUtil";
 
 function Options({
-  idx,
   post,
   userId,
   iconActive,
@@ -22,7 +21,7 @@ function Options({
         <button
           className="post__option"
           onClick={() =>
-            handleReactionClick(reactions, "like", userId, post, idx, "posts")
+            handleReactionClick(reactions, "like", userId, post, "posts")
           }
         >
           <ThumbUpIcon className={iconActive} />

@@ -4,13 +4,21 @@ export const actionTypes = {
   SET_LOG_OUT: "SET_LOG_OUT",
   SET_USERS: "SET_USERS",
   SET_POSTS: "SET_POSTS",
-  SET_WALL_ID: "SET_WALL_ID",
   SET_PROFILE: "SET_PROFILE",
-  SET_PRELOADED_PROFILE: "SET_PRELOADED_PROFILE",
   UPDATE_POST: "UPDATE_POST",
-  UPDATE_COMMENTS: "UPDATE_COMMENTS",
   SET_COMMENTS: "SET_COMMENTS",
+  UPDATE_COMMENTS: "UPDATE_COMMENTS"
 };
+
+const reduceById = (arr) => {
+  return arr.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item.id]: item,
+    }),
+    {}
+  )
+}
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -32,110 +40,98 @@ const reducer = (state, action) => {
     case actionTypes.SET_USERS:
       return {
         ...state,
-        feed: {
-          ...state.feed,
-          users: {
-            ...(action.initialRender ? [] : state.feed.users),
-            ...action.users,
-          },
-        },
-        db: {
-          ...state.db,
-          gettingUsers: false,
+        users: reduceById(action.users)
+      };
+
+    case actionTypes.UPDATE_USERS:
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          ...reduceById(action.users)
         },
       };
 
     case actionTypes.SET_POSTS:
       return {
         ...state,
-        feed: {
-          ...state.feed,
-          posts: [
-            ...(action.new ? action.posts : []),
-            ...(action.initialRender ? [] : state.feed.posts),
-            ...(!action.new ? action.posts : []),
-          ],
+        wallId: action.wallId ?? state.wallId,
+        posts: {
+          ...(action.initialRender ? {} : state.posts),
+          ...[
+            ...(action.posts ?? []),
+            ...(action.profilePics ?? []),
+          ].reduce(
+            (Posts, post) => ({
+              ...Posts,
+              [post.id]: post,
+            }),
+            {}
+          ),
         },
-        db: {
-          ...state.db,
-          gettingPosts: false,
-        },
+        postOrder: action.posts
+          ? [
+              ...(action.new ? action.posts.map((post) => post.id) : []),
+              ...(action.initialRender ? [] : state.postOrder),
+              ...(!action.new ? action.posts.map((post) => post.id) : []),
+            ]
+          : state.postOrder
       };
 
     case actionTypes.SET_COMMENTS:
       return {
         ...state,
-        feed: {
-          ...state.feed,
-          comments: {
-            ...(action.initialRender ? {} : state.feed.comments),
-            ...action.comments.reduce((comments, comment) => {
-              return {
-                ...comments,
-                [comment.postId]: [
-                  ...(state.feed.comments[comment.postId] &&
-                  !action.initialRender
-                    ? state.feed.comments[comment.postId]
-                    : []),
-                  comment,
-                ],
-              };
-            }, {}),
-          },
-        },
-        db: {
-          ...state.db,
-          gettingComments: action.gettingComments,
-        },
+        comments: reduceById(action.comments),
+        commentOrder: action.comments.reduce((comments, comment) => {
+                return {
+                  ...comments,
+                  [comment.postId]: [
+                    ...(comments[comment.postId]
+                      ? comments[comment.postId]
+                      : []),
+                    comment.id,
+                  ],
+                };
+              }, {})
       };
 
     case actionTypes.UPDATE_COMMENTS:
       return {
         ...state,
-        feed: {
-          ...state.feed,
-          comments: {
-            ...state.feed.comments,
-            [action.postId]: [...action.comments, ...state.feed.comments[action.postId]]
-          }
-        }
+        comments: {
+          ...state.comments,
+          ...reduceById(action.comments)
+        },
+        commentOrder: {
+          ...state.commentOrder,
+          ...action.comments.reduce((comments, comment) => {
+                return {
+                  ...comments,
+                  [comment.postId]: [
+                    ...(comments[comment.postId]
+                      ? comments[comment.postId]
+                      : state.commentOrder[comment.postId]
+                      ? state.commentOrder[comment.postId]
+                      :[]),
+                    comment.id,
+                  ],
+                };
+              }, {})
+            }
       };
-
+    
     case actionTypes.SET_PROFILE:
-        return {
-          ...state,
-          profile: action.profile
-        };
-
-    case actionTypes.SET_PRELOADED_PROFILE:
       return {
         ...state,
-        preloadedProfile: action.preloadedProfile
-      };
-
-    case actionTypes.SET_WALL_ID:
-      return {
-        ...state,
-        feed: {
-          ...state.feed,
-         wallId: action.wallId
-        }
+        profile: action.profile,
       };
 
     case actionTypes.UPDATE_POST:
       return {
         ...state,
-        feed: {
-          ...state.feed,
-          ...(action.collection === 'posts'
-            ? { posts: state.feed.posts.map((post, idx) => idx === action.idx ? action.post : post )}
-            : {
-              comments: {
-                ...state.feed.comments,
-                [action.post.postId]: state.feed.comments[action.post.postId].map((comment, idx) => idx === action.idx ? action.post : comment )
-              }
-            }
-          ),
+        posts: {
+          ...state.posts,
+          [action.post.id]: action.post,
         },
       };
 

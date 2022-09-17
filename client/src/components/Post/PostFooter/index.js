@@ -18,20 +18,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PostFooter({
-  idx,
-  post,
-  commentsInPost,
-  usersInPost,
-}) {
+function PostFooter({ post, expandComments }) {
   const {
-    state: { user },
+    state: { user, users, posts, commentOrder, comments },
   } = useStateValue();
+  const currentUser = users[user];
   const { reactions } = post;
   const classes = useStyles();
-  const iconActive = post.reactions.like.indexOf(user.id) >= 0 ? "blue" : "";
+  const iconActive = reactions.like.indexOf(currentUser.id) >= 0 ? "blue" : "";
+  const commentIds = commentOrder[post.id];
+  const commentsInPost = commentIds ? commentIds.map((id) => comments[id]) : null;
   const aggregateCount = commentsInPost
-    ? commentsInPost[commentsInPost.length - 1].aggregateCount
+    ? commentsInPost[0].aggregateCount
     : null;
 
   return (
@@ -40,23 +38,24 @@ function PostFooter({
         <Counters reactions={reactions} aggregateCount={aggregateCount} />
       )}
 
-      <Options idx={idx} post={post} userId={user.id} iconActive={iconActive} />
+      <Options post={post} userId={currentUser.id} iconActive={iconActive} />
 
       {commentsInPost && (
         <Comments
           post={post}
-          user={user}
-          commentsInPost={commentsInPost}
-          usersInPost={usersInPost}
+          user={currentUser}
           formatTimeStamp={formatTimeStamp}
           aggregateCount={aggregateCount}
           classes={classes}
+          expandComments={expandComments}
+          commentsInPost={commentsInPost}
         />
       )}
 
       <CommentSender
+        posts={posts}
         post={post}
-        user={user}
+        user={currentUser}
         aggregateCount={aggregateCount}
         avatarClass={classes.small}
       />

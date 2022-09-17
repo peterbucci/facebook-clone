@@ -9,7 +9,6 @@ import "./styles/profile_photo.css";
 // COMPONENTS
 import UploadPhotoForm from "components/UploadPhotoForm";
 import { useStateValue } from "providers/StateProvider";
-import { useApiUtil } from "providers/ApiUtil"
 
 function useOutsideAlerter(ref, closeAllMenus) {
   useEffect(() => {
@@ -60,12 +59,12 @@ function ProfilePhoto({ currentProfile, profilePic }) {
   );
 
   const handleViewPhoto = () => {
-    history.push(`/photo?uid=${currentProfile.id}&pid=${profilePic.id}`, { pic: profilePic, user: currentProfile})
+    history.push(`/photo?uid=${currentProfile.id}&pid=${profilePic.id}`, { referred: currentProfile.url })
   };
 
   return (
     <div className="header__profilePhoto">
-      {user.id === currentProfile.id ? (
+      {user === currentProfile.id ? (
         <Badge
           overlap="circle"
           anchorOrigin={{
@@ -86,7 +85,7 @@ function ProfilePhoto({ currentProfile, profilePic }) {
       )}
 
       {toggleProfilePhotoMenu &&
-        !(user.id !== currentProfile.id && !currentProfile.profilePic) && (
+        !(user !== currentProfile.id && !currentProfile.profilePic) && (
           <div className="modalBackground" ref={modalRef}>
             <div className="profilePhoto__menu">
               <ul>
@@ -95,7 +94,7 @@ function ProfilePhoto({ currentProfile, profilePic }) {
                     <WallpaperIcon /> View Profile Picture
                   </li>
                 )}
-                {user.id === currentProfile.id && (
+                {user === currentProfile.id && (
                   <>
                     <li
                       onClick={() =>

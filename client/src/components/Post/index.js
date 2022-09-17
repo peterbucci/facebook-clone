@@ -1,28 +1,32 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 // CSS
 import "./styles/post.css";
 // COMPONENTS
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter/";
 
-function Post({ post, users, comments, idx }) {
-  const {
-    image,
-    message,
-    timestamp,
-    userId,
-    wallId,
-    type,
-    thumbnail,
-  } = post;
+const SCROLL_POSTION = "scroll-position-y";
+
+function Post({ post, userOfPost, wallOfPost, profilePicData, feedRef, page }) {
+  const { image, message, timestamp, type, thumbnail } = post;
   const postFontSize =
     type === "Profile Picture" || message.length >= 85 ? " small-font" : "";
+  const history = useHistory();
+  const handleViewPhoto = (e) => {
+    history.push(`/photo?uid=${post.userId}&pid=${post.id}`, {
+      referred: page === 'userWall' ? wallOfPost.url : '/',
+      scrollToY: window.scrollY,
+      height: feedRef.current.offsetHeight,
+    });
+  };
 
   return (
     <div className="post" key={post.id}>
       <PostHeader
-        originalPoster={users[userId]}
-        currentWall={users[wallId]}
+        profilePicData={profilePicData}
+        originalPoster={userOfPost}
+        currentWall={wallOfPost}
         postType={type}
         timestamp={timestamp}
       />
@@ -32,7 +36,7 @@ function Post({ post, users, comments, idx }) {
       </div>
 
       {image && (
-        <div className="post__image">
+        <div className="post__image" onClick={handleViewPhoto}>
           {type === "Wall Post" && <img src={image} alt="" />}
           {type === "Profile Picture" && (
             <img src={`http://localhost:3001/images/${thumbnail}`} alt="" />
@@ -40,12 +44,7 @@ function Post({ post, users, comments, idx }) {
         </div>
       )}
 
-      <PostFooter
-        idx={idx}
-        post={post}
-        usersInPost={users}
-        commentsInPost={comments}
-      />
+      <PostFooter post={post} />
     </div>
   );
 }

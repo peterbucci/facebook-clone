@@ -7,16 +7,21 @@ import PostFeed from 'components/PostFeed'
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import Bio from "./Bio";
+// STATE
+import { useStateValue } from "providers/StateProvider";
 import { useApiUtil } from "providers/ApiUtil";
 
 function Profile({ history }) {
-  const state = history.location.state
-  const [currentUser, setCurrentUser] = useState(state?.user)
-  const [currentProfilePic, setCurrentProfilePic] = useState(state?.pic)
-  const [title, setTitle] = useState(state?.user ? state.user.firstName + " " + state.user.lastName : null)
+  const { state: { users, posts } } = useStateValue()
+  const { profileURL } = useParams();
+  const prevUser = users[history.location.state?.uid]
+  const prevProfilePic = posts[prevUser?.profilePic]
+  const [currentUser, setCurrentUser] = useState(prevUser)
+  const [currentProfilePic, setCurrentProfilePic] = useState(prevProfilePic)
+  const [title, setTitle] = useState(currentUser ? currentUser.firstName + " " + currentUser.lastName : null)
 
   const { getProfile } = useApiUtil();
-  let { profileURL } = useParams();
+
 
   useEffect(() => {
     if (title) document.title = title + " | Facebook"
@@ -25,17 +30,18 @@ function Profile({ history }) {
 
   useEffect(() => {
     window.history.replaceState(null, '')
+    window.scrollTo(0, 0)
   }, [])
 
   useEffect(() => {
     if(!currentUser || profileURL !== currentUser.url) {
-      getProfile(profileURL).then((profile) => {
-        setCurrentProfilePic(profile.pic)
-        setCurrentUser(profile.user)
-        setTitle(profile.user.firstName + " " + profile.user.lastName)
+      getProfile(profileURL).then(({ user, pic}) => {
+        setCurrentUser(user)
+        setCurrentProfilePic(pic)
+        setTitle(user.firstName + " " + user.lastName)
       })
     }
-  }, [profileURL, getProfile, currentUser]);
+    }, [profileURL, getProfile, currentUser]);
 
   return !currentUser || profileURL !== currentUser.url
     ?

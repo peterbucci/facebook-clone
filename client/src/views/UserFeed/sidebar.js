@@ -5,15 +5,15 @@ import "./styles/sidebar.css";
 import { useStateValue } from "../../providers/StateProvider";
 
 function Sidebar() {
-  const {
-    state: { user },
-  } = useStateValue();
+  const { state: { user, users, posts } } = useStateValue()
+  const currentUser = users[user]
+  const profilePicData = posts[currentUser.profilePic]
 
   return (
     <div className="sidebar">
       <SidebarRow
-        profilePicData={user.profilePicData}
-        title={`${user.firstName} ${user.lastName}`}
+        profilePicData={profilePicData}
+        title={`${currentUser.firstName} ${currentUser.lastName}`}
       />
       <SidebarRow Icon="findFriends" title="Find Friends" />
       <SidebarRow Icon="mostRecent" title="Most Recent" />

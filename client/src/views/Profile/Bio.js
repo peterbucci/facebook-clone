@@ -10,7 +10,7 @@ function Bio({
   currentBio,
   userId
 }) {
-  const { state: {user} } = useStateValue()
+  const { state: { user } } = useStateValue()
   const [editBio, setEditBio] = useState(false)
   const [newBio, setNewBio] = useState(currentBio)
 
@@ -59,7 +59,7 @@ function Bio({
         </>
         : <>
           <p className="bio__text">{currentBio}</p>
-          {userId === user.id && <span className="bio__editButton" onClick={() => setEditBio(true)}>{currentBio ? 'Edit' : 'Add Bio'}</span>}
+          {userId === user && <span className="bio__editButton" onClick={() => setEditBio(true)}>{currentBio ? 'Edit' : 'Add Bio'}</span>}
         </>
       }
 

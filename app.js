@@ -48,7 +48,7 @@ app.post('/me', cpUpload, async (req, res) => {
         like: []
       },
       ...req.body
-    }).then(res => res.json())
+    }).then(() => res.json())
   })
 })
  

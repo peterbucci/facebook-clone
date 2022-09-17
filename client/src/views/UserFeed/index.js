@@ -8,11 +8,13 @@ import { useStateValue } from "../../providers/StateProvider";
 
 export default function UserFeed() {
   const { state } = useStateValue();
+  const { user, users } = state
+  const currentUser = users[user]
 
   return (
     <>
       <Sidebar />
-      <PostFeed page="userFeed" user={state.user} />
+      <PostFeed page="userFeed" user={currentUser} />
       <Widget />
     </>
   );

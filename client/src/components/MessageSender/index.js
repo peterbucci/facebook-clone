@@ -12,14 +12,16 @@ import { useStateValue } from 'providers/StateProvider'
 import { useApiUtil } from 'providers/ApiUtil';
 
 function MessageSender({ wallId }) {
-  const { state: {user} } = useStateValue()
+  const { state: { user, users, posts } } = useStateValue()
+  const currentUser = users[user]
+  const profilePicData = posts[currentUser.profilePic]
   const {addNewPost} = useApiUtil()
   const [input, setInput] = useState('')
   const [imageURL, setImageURL] = useState('')
 
   const handleSubmit = e => {
     e.preventDefault()
-    addNewPost(user.id, wallId, firebase.firestore.FieldValue.serverTimestamp(), input, imageURL)
+    addNewPost(currentUser.id, wallId, firebase.firestore.FieldValue.serverTimestamp(), input, imageURL)
     setInput('')
     setImageURL('')
   }
@@ -27,13 +29,13 @@ function MessageSender({ wallId }) {
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <NewAvatar profilePicData={user.profilePicData} />
+        <NewAvatar profilePicData={profilePicData} />
         <form>
           <input
             value={input}
             onChange={({ target }) => setInput(target.value)}
             className="messageSender__input"
-            placeholder={`What's on your mind, ${user.firstName}?`}
+            placeholder={`What's on your mind, ${currentUser.firstName}?`}
           />
           <button onClick={handleSubmit} type="submit">
             Hidden submit

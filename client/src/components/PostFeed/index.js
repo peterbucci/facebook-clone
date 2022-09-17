@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import "./styles/feed.css";
 // COMPONENTS
 import StoryReel from "../../components/StoryReel/";
@@ -10,13 +11,26 @@ import { useStateValue } from "../../providers/StateProvider";
 import { useApiUtil } from "../../providers/ApiUtil";
 
 function PostFeed({ page, user }) {
+  const feedRef = useRef(null)
   const {
     state: {
-      feed: { users, posts, comments, wallId },
+      users, posts, wallId, postOrder
     },
   } = useStateValue();
   const { getFeedData } = useApiUtil();
   const changingWall = wallId !== (page === "userWall" ? user.id : page);
+  const history = useHistory();
+  const scrollToY = history.location.state?.scrollToY
+  const height = history.location.state?.height
+  
+  const wallPosts = postOrder.map(id => posts[id])
+
+  useEffect(() => {
+    if (scrollToY) {
+      window.scrollTo(0, scrollToY)
+      window.history.replaceState(null, "");
+    }
+}, [scrollToY])
 
   useEffect(() => {
     const setFeedData = (initialRender, numberOfFriends = 10) => {
@@ -26,7 +40,7 @@ function PostFeed({ page, user }) {
       };
 
       getFeedData(
-        posts,
+        wallPosts,
         getUserIds(numberOfFriends),
         numberOfFriends,
         page === "userWall" ? ["wallId", "==", user.id] : null,
@@ -49,25 +63,27 @@ function PostFeed({ page, user }) {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [user.friends, page, user.id, getFeedData, user, posts, changingWall]);
+  }, [user.friends, page, user.id, getFeedData, user, wallPosts, changingWall]);
 
   return (
-    <div className="feed">
-      <div className="feed__container">
+    <div className="feed" style={{ height: height ?? "auto"}} >
+      <div className="feed__container" ref={feedRef}>
         {page === "userFeed" && <StoryReel />}
         <MessageSender wallId={user.id} />
         {page === "userFeed" && <VideoFeed />}
         {changingWall ? (
           <></>
         ) : (
-          posts.map((post, idx) => {
+          wallPosts.map((post) => {
             return (
               <Post
-                idx={idx}
-                users={users}
                 key={post.id}
                 post={post}
-                comments={comments[post.id]}
+                userOfPost={users[post.userId]}
+                wallOfPost={users[post.wallId]}
+                profilePicData={posts[users[post.userId].profilePic]}
+                feedRef={feedRef}
+                page={page}
               />
             );
           })

@@ -8,7 +8,7 @@ function CoverPhoto({ currentProfile }) {
   const { state: {user} } = useStateValue()
   return (
     <div className="header__coverPhoto">
-        {currentProfile.id === user.id && <button> 
+        {currentProfile.id === user && <button> 
           <CameraAltIcon /> Add Cover Photo
         </button>}
     </div>
