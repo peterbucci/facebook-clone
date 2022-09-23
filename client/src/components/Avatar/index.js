@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar } from "@material-ui/core";
-// Firebase
-import db from "firebase.js";
 
 const { REACT_APP_PHOTOS_FOLDER } = process.env;
 
-function NewAvatar({ profilePicData, className }) {
+function NewAvatar({ profilePicData, className, onClick }) {
   const props = {
     ...(profilePicData
       ? { src: REACT_APP_PHOTOS_FOLDER + profilePicData.thumbnail }
       : {}),
     className,
+    onClick
   };
 
   return (

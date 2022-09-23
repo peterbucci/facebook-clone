@@ -96,28 +96,34 @@ const reducer = (state, action) => {
       };
 
     case actionTypes.UPDATE_COMMENTS:
+      const newComments = action.comments.reduce((comments, comment) => {
+        return {
+          ...comments,
+          [comment.postId]: [
+            ...(action.new ? [comment.id] : []),
+            ...(comments[comment.postId]
+              ? comments[comment.postId]
+              : []),
+            ...(!action.new ? [comment.id] : []),
+          ],
+        };
+      }, {})
       return {
         ...state,
         comments: {
           ...state.comments,
           ...reduceById(action.comments)
         },
-        commentOrder: {
-          ...state.commentOrder,
-          ...action.comments.reduce((comments, comment) => {
-                return {
-                  ...comments,
-                  [comment.postId]: [
-                    ...(comments[comment.postId]
-                      ? comments[comment.postId]
-                      : state.commentOrder[comment.postId]
-                      ? state.commentOrder[comment.postId]
-                      :[]),
-                    comment.id,
-                  ],
-                };
-              }, {})
-            }
+        commentOrder: [...Object.keys(state.commentOrder), ...Object.keys(newComments)].reduce((comments, postId) => {
+          return {
+            ...comments,
+            [postId]: [
+              ...(newComments[postId] && !action.new ? newComments[postId] : []), 
+              ...(state.commentOrder[postId] ?? []),
+              ...(newComments[postId] && action.new ? newComments[postId] : []), 
+            ]
+          }
+        }, {})
       };
     
     case actionTypes.SET_PROFILE:
@@ -129,8 +135,8 @@ const reducer = (state, action) => {
     case actionTypes.UPDATE_POST:
       return {
         ...state,
-        posts: {
-          ...state.posts,
+        [action.collection]: {
+          ...state.[action.collection],
           [action.post.id]: action.post,
         },
       };

@@ -5,13 +5,26 @@
   padding: 15px;
 }
 
+@media (min-Height: 700px) {
+  .feed__container {
+    max-width: 590px !important;
+  }
+}
+
+@media (min-Height: 790px) {
+  .feed__container {
+    max-width: 680px !important;
+  }
+}
+
 .feed__container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   flex: 1;
-  max-width: 680px;
+  max-width: 500px;
+  width: 100%;
 }
 
 .feed__noMorePosts {

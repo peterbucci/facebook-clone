@@ -6,16 +6,27 @@ import "./styles/post.css";
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter/";
 
-const SCROLL_POSTION = "scroll-position-y";
-
-function Post({ post, userOfPost, wallOfPost, profilePicData, feedRef, page }) {
+function Post({
+  post,
+  commentsInPost,
+  commentUsers,
+  commentUserPics,
+  author,
+  authorPic,
+  wall,
+  feedRef,
+  page,
+  currentUser,
+  currentUserPic,
+}) {
+  const history = useHistory();
   const { image, message, timestamp, type, thumbnail } = post;
   const postFontSize =
     type === "Profile Picture" || message.length >= 85 ? " small-font" : "";
-  const history = useHistory();
+
   const handleViewPhoto = (e) => {
     history.push(`/photo?uid=${post.userId}&pid=${post.id}`, {
-      referred: page === 'userWall' ? wallOfPost.url : '/',
+      referred: page === "userWall" ? wall.url : "/",
       scrollToY: window.scrollY,
       height: feedRef.current.offsetHeight,
     });
@@ -24,9 +35,9 @@ function Post({ post, userOfPost, wallOfPost, profilePicData, feedRef, page }) {
   return (
     <div className="post" key={post.id}>
       <PostHeader
-        profilePicData={profilePicData}
-        originalPoster={userOfPost}
-        currentWall={wallOfPost}
+        profilePicData={authorPic}
+        originalPoster={author}
+        currentWall={wall}
         postType={type}
         timestamp={timestamp}
       />
@@ -44,7 +55,14 @@ function Post({ post, userOfPost, wallOfPost, profilePicData, feedRef, page }) {
         </div>
       )}
 
-      <PostFooter post={post} />
+      <PostFooter
+        post={post}
+        commentsInPost={commentsInPost}
+        commentUsers={commentUsers}
+        commentUserPics={commentUserPics}
+        currentUser={currentUser}
+        currentUserPic={currentUserPic}
+      />
     </div>
   );
 }

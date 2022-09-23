@@ -38,7 +38,7 @@ app.post('/me', cpUpload, async (req, res) => {
   const newImageRef = userRef.collection('posts').doc()
   userRef.set({
     profilePic: newImageRef.id
-  }, { merge: true }).then(res => {
+  }, { merge: true }).then(() => {
     newImageRef.set({
       id: newImageRef.id,
       image: req.files.picture[0].filename,
@@ -48,7 +48,7 @@ app.post('/me', cpUpload, async (req, res) => {
         like: []
       },
       ...req.body
-    }).then(() => res.json())
+    })
   })
 })
  

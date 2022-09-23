@@ -1,9 +1,14 @@
+@media (max-width: 900px){
+  .header__profilePhoto {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+}
+
 .header__profilePhoto {
   position: absolute;
-  top: calc(350px - 160px);
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  left: 0;
+  top: -90px;
 }
 
 .profilePhoto__image {
@@ -25,7 +30,7 @@
 }
 
 .profilePhoto__menu {
-  margin-top: 80px;
+  position: absolute;
   padding: 10px;
   width: 344px;
   background-color: #fff;
@@ -59,83 +64,12 @@
 }
 
 .modalBackground {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  z-index: 500;
+  right: 0;
+  z-index: 99;
   overflow-y: scroll;
   cursor: pointer;
 }
 
-.profilePhoto__viewPicture {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  z-index: 500;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.profilePhoto__viewPicture::-webkit-scrollbar {
-  display: none;
-}
-
-.viewPicture__left {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex: 1;
-  height: 100%;
-  background: #000;
-}
-
-.viewPicture__leftHeader {
-  display: flex;
-  align-items: center;
-  height: 60px;
-  padding: 16px;
-  color: #fff;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;   
-}
-
-.viewPicture__leftHeader svg {
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.viewPicture__leftBody {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.viewPicture__leftBody img {
-  max-width: 100%;
-}
-
-.viewPicture__right{
-  width: 360px;
-  height: 100%;
-  background: #fff;
-}
-
-.viewPicture__rightHeader {
-  height: 60px;
-  border-bottom: solid 1px #ced0d4;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;  
-}

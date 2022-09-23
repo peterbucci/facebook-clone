@@ -8,13 +8,24 @@ import { useStateValue } from "../../providers/StateProvider";
 
 export default function UserFeed() {
   const { state } = useStateValue();
-  const { user, users } = state
-  const currentUser = users[user]
+  const { user, users, posts, postOrder, comments, commentOrder, wallId } = state;
+  const currentUser = users[user];
+  const currentUserPic = posts[currentUser.profilePic];
 
   return (
     <>
-      <Sidebar />
-      <PostFeed page="userFeed" user={currentUser} />
+      <Sidebar currentUser={currentUser} currentUserPic={currentUserPic} />
+      <PostFeed 
+        page="userFeed" 
+        currentUser={currentUser}
+        currentUserPic={currentUserPic}
+        users={users} 
+        posts={posts}
+        postOrder={postOrder}
+        comments={comments}
+        commentOrder={commentOrder}
+        wallId={wallId}
+      />
       <Widget />
     </>
   );

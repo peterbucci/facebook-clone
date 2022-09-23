@@ -2,17 +2,11 @@ import React from "react";
 import SidebarRow from "./sidebar_row";
 import "./styles/sidebar.css";
 
-import { useStateValue } from "../../providers/StateProvider";
-
-function Sidebar() {
-  const { state: { user, users, posts } } = useStateValue()
-  const currentUser = users[user]
-  const profilePicData = posts[currentUser.profilePic]
-
+function Sidebar({ currentUser, currentUserPic}) {
   return (
     <div className="sidebar">
       <SidebarRow
-        profilePicData={profilePicData}
+        currentUserPic={currentUserPic}
         title={`${currentUser.firstName} ${currentUser.lastName}`}
       />
       <SidebarRow Icon="findFriends" title="Find Friends" />

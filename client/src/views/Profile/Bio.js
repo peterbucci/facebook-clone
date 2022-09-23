@@ -3,16 +3,14 @@ import PublicIcon from '@material-ui/icons/Public';
 import './styles/bio.css'
 // FIREBASE
 import db from 'firebase.js'
-// STATE
-import { useStateValue } from 'providers/StateProvider'
 
 function Bio({
-  currentBio,
+  currentUser,
+  userBio,
   userId
 }) {
-  const { state: { user } } = useStateValue()
   const [editBio, setEditBio] = useState(false)
-  const [newBio, setNewBio] = useState(currentBio)
+  const [newBio, setNewBio] = useState(userBio)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -42,7 +40,7 @@ function Bio({
             <button
               className="cancel"
               onClick={() => {
-                setNewBio(currentBio)
+                setNewBio(userBio)
                 setEditBio(false)
               }}
             >
@@ -50,7 +48,7 @@ function Bio({
             </button>
             <button 
               className="submit"
-              disabled={currentBio === newBio}
+              disabled={userBio === newBio}
               onClick={handleSubmit}
             >
               Save
@@ -58,8 +56,8 @@ function Bio({
           </div>
         </>
         : <>
-          <p className="bio__text">{currentBio}</p>
-          {userId === user && <span className="bio__editButton" onClick={() => setEditBio(true)}>{currentBio ? 'Edit' : 'Add Bio'}</span>}
+          <p className="bio__text">{userBio}</p>
+          {userId === currentUser && <span className="sidebar_container_button bio__editButton" onClick={() => setEditBio(true)}>{userBio ? 'Edit bio' : 'Add bio'}</span>}
         </>
       }
 

@@ -1,23 +1,17 @@
 .profilePhoto__viewPicture {
-  position: fixed;
-  top: 54px;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  position: fixed;
+  top: 55px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 500;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
 }
 
 .viewPicture__referred {
   top: 0;
-}
-
-.profilePhoto__viewPicture::-webkit-scrollbar {
-  display: none;
 }
 
 .viewPicture__left {
@@ -65,15 +59,18 @@
 }
 
 .viewPicture__right{
+  display: flex;
+  flex-direction: column;
   width: 360px;
   height: 100%;
   background: #fff;
 }
 
 .viewPicture__rightHeader {
-  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 54px;
   border-bottom: solid 1px #ced0d4;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;  
 }

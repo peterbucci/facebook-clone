@@ -4,7 +4,8 @@
   align-items: flex-end;
   justify-content: flex-end;
   height: 350px;
-  width: 940px;
+  width: 100%;
+  max-width: 940px;
   background: rgb(127,129,130);
   background: linear-gradient(0deg, rgba(127,129,130,1) 0%, rgba(240,242,245,1) 28%, rgba(240,242,245,1) 100%);
   border-radius: 0 0 8px 8px;
@@ -20,10 +21,10 @@
   border: none;
   border-radius: 6px;
   font-size: 13.5px;
-  font-weight: 551;
+  font-weight: 550;
   text-transform: none;
   cursor: pointer;
-  z-index: 100;
+  z-index: 55;
 }
 
 .header__coverPhoto button svg {

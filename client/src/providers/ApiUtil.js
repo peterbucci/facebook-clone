@@ -68,22 +68,22 @@ export const ApiUtil = ({ children }) => {
   const getComments = (
     postId,
     limit,
-    startAfter,
+    endBefore,
     orderBy = ["timestamp", "desc"]
   ) => {
     let query = db
       .collectionGroup("comments")
       .where("postId", "==", postId)
       .orderBy(...orderBy);
-    if (startAfter) query = query.startAfter(startAfter);
+    if (endBefore) query = query.endBefore(endBefore);
     if (limit) query = query.limit(limit);
     return query
       .get()
       .then((snapshot) => snapshot.docs.map((doc) => doc.data()));
   };
 
-  const getSingleCommentFeed = async (postId, startAfter, update) => {
-    await getComments(postId, null, startAfter).then((comments) => {
+  const getSingleCommentFeed = async (postId, endBefore, update) => {
+    await getComments(postId, null, endBefore, ["timestamp"]).then((comments) => {
       dispatch({
         type: actionTypes[update],
         comments
@@ -202,7 +202,7 @@ export const ApiUtil = ({ children }) => {
     const newUser = await getUsers([userId, wallId]);
     console.log(newUser)
     dispatch({
-      type: actionTypes.SET_USERS,
+      type: actionTypes.UPDATE_USERS,
       users: newUser.requestedUsers,
     });
     dispatch({
@@ -247,9 +247,9 @@ export const ApiUtil = ({ children }) => {
     newCommentDoc.set(newComment).then(() => {
       newCommentDoc.get().then((snapshot) => {
         dispatch({
-          type: actionTypes.SET_POSTS,
+          type: actionTypes.UPDATE_COMMENTS,
           comments: [snapshot.data()],
-          new: true,
+          new: true
         });
       });
     });
@@ -288,6 +288,7 @@ export const ApiUtil = ({ children }) => {
     dispatch({
       type: actionTypes.UPDATE_POST,
       post: updatedPost,
+      collection
     });
   };
 

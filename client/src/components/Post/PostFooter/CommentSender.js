@@ -9,7 +9,7 @@ import NewAvatar from "components/Avatar/";
 import { useApiUtil } from "providers/ApiUtil";
 
 function CommentSender({
-  posts,
+  currentUserPic,
   post,
   user,
   aggregateCount,
@@ -34,7 +34,7 @@ function CommentSender({
   return (
       <div className="post__commentSender">
         <NewAvatar
-          profilePicData={posts[user.profilePic]} 
+          profilePicData={currentUserPic} 
           className={`${avatarClass} commentSender__avatar`}
         />
         <form>

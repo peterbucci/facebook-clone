@@ -8,8 +8,6 @@ import Counters from "./Counters";
 import Options from "./Options";
 import CommentSender from "./CommentSender";
 import { formatTimeStamp } from "common/format_timestamp";
-// STATE
-import { useStateValue } from "providers/StateProvider";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -18,42 +16,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function PostFooter({ post, expandComments }) {
-  const {
-    state: { user, users, posts, commentOrder, comments },
-  } = useStateValue();
-  const currentUser = users[user];
+function PostFooter({
+  post,
+  commentsInPost,
+  commentUsers,
+  commentUserPics,
+  currentUser,
+  currentUserPic,
+  expandComments
+}) {
   const { reactions } = post;
   const classes = useStyles();
   const iconActive = reactions.like.indexOf(currentUser.id) >= 0 ? "blue" : "";
-  const commentIds = commentOrder[post.id];
-  const commentsInPost = commentIds ? commentIds.map((id) => comments[id]) : null;
-  const aggregateCount = commentsInPost
-    ? commentsInPost[0].aggregateCount
+
+  const aggregateCount = commentsInPost.length > 0 
+    ? commentsInPost[commentsInPost.length - 1].aggregateCount
     : null;
 
   return (
     <div className="post__footer">
-      {(reactions.like.length > 0 || commentsInPost) && (
+      {(reactions.like.length > 0 || commentsInPost.length > 0 ) && (
         <Counters reactions={reactions} aggregateCount={aggregateCount} />
       )}
 
       <Options post={post} userId={currentUser.id} iconActive={iconActive} />
 
-      {commentsInPost && (
+      {commentsInPost.length > 0 && (
         <Comments
           post={post}
-          user={currentUser}
+          currentUser={currentUser}
           formatTimeStamp={formatTimeStamp}
           aggregateCount={aggregateCount}
           classes={classes}
           expandComments={expandComments}
           commentsInPost={commentsInPost}
+          commentUsers={commentUsers}
+          commentUserPics={commentUserPics}
         />
       )}
 
       <CommentSender
-        posts={posts}
+        currentUserPic={currentUserPic}
         post={post}
         user={currentUser}
         aggregateCount={aggregateCount}

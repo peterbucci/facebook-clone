@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import VideocamIcon from '@material-ui/icons/Videocam'
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import './styles/message_sender.css'
+import VideocamIcon from "@material-ui/icons/Videocam";
+import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import "./styles/message_sender.css";
+import NewAvatar from "components/Avatar/";
+import { useApiUtil } from "providers/ApiUtil";
 
-import NewAvatar from 'components/Avatar/'
+function MessageSender({ wallId, currentUser, currentUserPic }) {
+  const { addNewPost } = useApiUtil();
+  const [input, setInput] = useState("");
+  const [imageURL, setImageURL] = useState("");
 
-import { useStateValue } from 'providers/StateProvider'
-import { useApiUtil } from 'providers/ApiUtil';
-
-function MessageSender({ wallId }) {
-  const { state: { user, users, posts } } = useStateValue()
-  const currentUser = users[user]
-  const profilePicData = posts[currentUser.profilePic]
-  const {addNewPost} = useApiUtil()
-  const [input, setInput] = useState('')
-  const [imageURL, setImageURL] = useState('')
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    addNewPost(currentUser.id, wallId, firebase.firestore.FieldValue.serverTimestamp(), input, imageURL)
-    setInput('')
-    setImageURL('')
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addNewPost(
+      currentUser.id,
+      wallId,
+      firebase.firestore.FieldValue.serverTimestamp(),
+      input,
+      imageURL
+    );
+    setInput("");
+    setImageURL("");
+  };
 
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <NewAvatar profilePicData={profilePicData} />
+        <NewAvatar profilePicData={currentUserPic} />
         <form>
           <input
             value={input}
@@ -57,7 +57,7 @@ function MessageSender({ wallId }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default MessageSender
+export default MessageSender;

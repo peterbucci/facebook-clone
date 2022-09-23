@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import React from "react";
+import { Switch, Route } from "react-router-dom";
 import { Redirect } from "react-router";
 import "App.css";
 // VIEWS
@@ -7,7 +7,7 @@ import Login from "views/Login";
 import UserFeed from "views/UserFeed/";
 import Profile from "views/Profile";
 import Photo from "views/Photo";
-// FRAGMENTS
+// COMPONENTS
 import Header from "components/Header";
 // STATE
 import { useStateValue } from "providers/StateProvider";

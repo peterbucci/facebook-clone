@@ -8,31 +8,33 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import NewAvatar from "components/Avatar/";
 // DATABASE
 import { useApiUtil } from "providers/ApiUtil";
-import { useStateValue } from "providers/StateProvider";
 
 function Comments({
   post,
-  user,
+  currentUser,
   formatTimeStamp,
   aggregateCount,
   classes,
   expandComments,
   commentsInPost,
+  commentUsers,
+  commentUserPics,
 }) {
   const { handleReactionClick, getSingleCommentFeed } = useApiUtil();
-  const {
-    state: { posts, users },
-  } = useStateValue();
   const [commentsCollapsed, setCommentsCollapsed] = useState(!expandComments);
   const commentsToRender =
     commentsCollapsed && commentsInPost.length
-      ? [commentsInPost[0]]
+      ? [commentsInPost[commentsInPost.length - 1]]
       : commentsInPost;
 
   const handleCommentFeedExpand = () => {
     setCommentsCollapsed(false);
     aggregateCount !== commentsInPost.length &&
-      getSingleCommentFeed(post.id, commentsInPost[0].timestamp, "UPDATE_COMMENTS");
+      getSingleCommentFeed(
+        post.id,
+        commentsInPost[commentsInPost.length - 1].timestamp,
+        "UPDATE_COMMENTS"
+      );
   };
 
   return (
@@ -43,8 +45,8 @@ function Comments({
         )}
       </div>
 
-      {commentsToRender.map((comment) => {
-        const commentUser = users[comment.userId];
+      {commentsToRender.map((comment, i) => {
+        const commentUser = commentUsers[i];
         return (
           <div className="post__comment" key={comment.id}>
             <Link
@@ -54,7 +56,7 @@ function Comments({
               }}
             >
               <NewAvatar
-                profilePicData={posts[commentUser.profilePic]}
+                profilePicData={commentUserPics[i]}
                 className={`${classes.small} comment__avatar`}
               />
             </Link>
@@ -68,7 +70,7 @@ function Comments({
                 <p>{comment.message}</p>
 
                 {comment.reactions.like.length > 0 && (
-                  <div className="post__reactions comment__reactions">
+                  <div className={`post__reactions comment__reactions${comment.message.length < 13 ? "_short" : ""}`}>
                     <ThumbUpIcon
                       style={{ fontSize: "small" }}
                       className="likeIcon"
@@ -83,7 +85,7 @@ function Comments({
               <ul className="comment__interaction">
                 <li
                   className={
-                    comment.reactions.like.indexOf(user.id) >= 0
+                    comment.reactions.like.indexOf(currentUser.id) >= 0
                       ? "comment__liked"
                       : ""
                   }
@@ -91,7 +93,7 @@ function Comments({
                     handleReactionClick(
                       comment.reactions,
                       "like",
-                      user.id,
+                      currentUser.id,
                       post,
                       "comments",
                       comment
