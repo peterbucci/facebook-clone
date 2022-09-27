@@ -1,12 +1,19 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Bio from "./Bio";
 
 function BodySidebar({ userId, currentProfile }) {
+  const windowSize = window.innerWidth
+  const [activeEventListener, setActiveEventListener] = useState(windowSize > 775)
   const containerRef = useRef(null);
   const stickyRef = useRef(null);
   const scrollNameRef = useRef(null);
   const prevScrollMainRef = useRef(null);
   const prevScrollSidebarRef = useRef(null);
+
+  useEffect(() => {
+    if (windowSize < 900) setActiveEventListener(false)
+    else setActiveEventListener(true)
+  }, [windowSize])
 
   useEffect(() => {
     const stickyContainer = stickyRef.current;
@@ -62,20 +69,20 @@ function BodySidebar({ userId, currentProfile }) {
       }
     };
 
-    stickyContainer.addEventListener("scroll", onSidebarScroll);
-    window.addEventListener("scroll", onMainScroll);
+    activeEventListener && stickyContainer.addEventListener("scroll", onSidebarScroll);
+    activeEventListener && window.addEventListener("scroll", onMainScroll);
     return () => {
       stickyContainer.removeEventListener("scroll", onSidebarScroll);
       window.removeEventListener("scroll", onMainScroll);
     };
-  }, []);
+  }, [activeEventListener]);
 
   return (
     <div className="profile_body_left_col" ref={containerRef}>
       <div
         className="left_col_sidebar"
         style={{
-          height: window.innerHeight - 115,
+          height: activeEventListener ? window.innerHeight - 115 : "auto",
         }}
         ref={stickyRef}
       >

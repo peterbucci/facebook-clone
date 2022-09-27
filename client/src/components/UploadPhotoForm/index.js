@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import ImageUploading from 'react-images-uploading'
 import CloseIcon from '@material-ui/icons/Close'
 import PublicIcon from '@material-ui/icons/Public'

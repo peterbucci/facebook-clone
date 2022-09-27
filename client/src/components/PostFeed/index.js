@@ -19,24 +19,17 @@ function PostFeed({
   comments,
   commentOrder,
   wallId,
-  containerClass,
+  feedClass,
+  feedBodyClass
 }) {
   const feedRef = useRef(null);
-  const gettingDataRef = useRef(false)
+  const gettingDataRef = useRef(false);
   const { getFeedData } = useApiUtil();
   const changingWall = wallId !== (page === "userWall" ? currentUser.id : page);
   const history = useHistory();
-  const scrollToY = history.location.state?.scrollToY;
   const height = history.location.state?.height;
 
   const wallPosts = postOrder.map((id) => posts[id]);
-
-  useEffect(() => {
-    if (scrollToY) {
-      window.scrollTo(0, scrollToY);
-      window.history.replaceState(null, "");
-    }
-  }, [scrollToY]);
 
   useEffect(() => {
     const setFeedData = (initialRender, numberOfFriends = 10) => {
@@ -51,8 +44,8 @@ function PostFeed({
         numberOfFriends,
         page === "userWall" ? ["wallId", "==", currentUser.id] : null,
         initialRender,
-        page === "userWall" ? currentUser.id : page,
-      )
+        page === "userWall" ? currentUser.id : page
+      );
     };
 
     const onScroll = () => {
@@ -61,7 +54,7 @@ function PostFeed({
         window.pageYOffset + window.innerHeight
       ) {
         if (!changingWall && !gettingDataRef.current) {
-          gettingDataRef.current = true
+          gettingDataRef.current = true;
           setFeedData(false);
         }
       }
@@ -82,51 +75,55 @@ function PostFeed({
   ]);
 
   return (
-    <div
-      className={`feed${containerClass ? " " + containerClass : ""}`}
-      style={{ height: height ?? "auto" }}
-    >
-      <div className="feed__container" ref={feedRef}>
+      <div
+        className={`feed${
+          feedClass ? " " + feedClass : ""
+        }`}
+        ref={feedRef}
+        style={{ height: height ?? "auto" }}
+      >
         {page === "userFeed" && <StoryReel />}
-        <MessageSender
-          wallId={currentUser.id}
-          currentUser={currentUser}
-          currentUserPic={currentUserPic}
-        />
-        {page === "userFeed" && <VideoFeed />}
-        {changingWall ? (
-          <></>
-        ) : (
-          wallPosts.map((post) => {
-            const commentIds = commentOrder[post.id];
-            const commentsInPost = commentIds
-              ? commentIds.map((id) => comments[id])
-              : [];
-            const commentUsers = commentsInPost.map(
-              (comment) => users[comment.userId]
-            );
-            const commentUserPics = commentUsers.map(
-              (user) => posts[user.profilePic]
-            );
+        <div className={feedBodyClass ? feedBodyClass : ""}>
+          <MessageSender
+            wallId={currentUser.id}
+            currentUser={currentUser}
+            currentUserPic={currentUserPic}
+          />
+          {page === "userFeed" && <VideoFeed />}
+          {changingWall ? (
+            <></>
+          ) : (
+            wallPosts.map((post) => {
+              const commentIds = commentOrder[post.id];
+              const commentsInPost = commentIds
+                ? commentIds.map((id) => comments[id])
+                : [];
+              const commentUsers = commentsInPost.map(
+                (comment) => users[comment.userId]
+              );
+              const commentUserPics = commentUsers.map(
+                (user) => posts[user.profilePic]
+              );
 
-            return (
-              <Post
-                key={post.id}
-                post={post}
-                commentsInPost={commentsInPost}
-                commentUsers={commentUsers}
-                commentUserPics={commentUserPics}
-                author={users[post.userId]}
-                wall={users[post.wallId]}
-                authorPic={posts[users[post.userId].profilePic]}
-                feedRef={feedRef}
-                page={page}
-                currentUser={currentUser}
-                currentUserPic={currentUserPic}
-              />
-            );
-          })
-        )}
+              return (
+                <Post
+                  key={post.id}
+                  post={post}
+                  commentsInPost={commentsInPost}
+                  commentUsers={commentUsers}
+                  commentUserPics={commentUserPics}
+                  author={users[post.userId]}
+                  wall={users[post.wallId]}
+                  authorPic={posts[users[post.userId].profilePic]}
+                  feedRef={feedRef}
+                  page={page}
+                  currentUser={currentUser}
+                  currentUserPic={currentUserPic}
+                />
+              );
+            })
+          )}
+        </div>
         {page === "userFeed" && (
           <div className="feed__noMorePosts">
             <h3>No More Posts</h3>
@@ -135,7 +132,6 @@ function PostFeed({
           </div>
         )}
       </div>
-    </div>
   );
 }
 

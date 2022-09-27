@@ -1,6 +1,6 @@
 .videoFeed {
+  display: flex;
   margin-top: 15px;
-  width: 100%;
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);

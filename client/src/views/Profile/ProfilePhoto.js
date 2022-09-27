@@ -44,7 +44,7 @@ function ProfilePhoto({
     <div className="header__profilePhoto" ref={profilePhotoRef}>
       {user === currentProfile.id ? (
         <Badge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",

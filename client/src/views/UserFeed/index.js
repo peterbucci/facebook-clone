@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/user_feed.css";
 // COMPONENTS
 import Sidebar from "./sidebar";
 import PostFeed from "../../components/PostFeed";
@@ -13,7 +14,7 @@ export default function UserFeed() {
   const currentUserPic = posts[currentUser.profilePic];
 
   return (
-    <>
+    <div className="user__home">
       <Sidebar currentUser={currentUser} currentUserPic={currentUserPic} />
       <PostFeed 
         page="userFeed" 
@@ -25,8 +26,10 @@ export default function UserFeed() {
         comments={comments}
         commentOrder={commentOrder}
         wallId={wallId}
+        feedClass="user__feed"
+        feedBodyClass="user__feed_body"
       />
       <Widget />
-    </>
+    </div>
   );
 }

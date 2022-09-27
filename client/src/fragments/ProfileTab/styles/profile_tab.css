@@ -1,0 +1,106 @@
+.profile_about .profile_card_header {
+  margin-bottom: 12px;
+  padding: 5px 8px;
+}
+
+.profile_card h2 {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.profile_card h2 a {
+  all: unset;
+}
+
+.profile_card h2:hover {
+  text-decoration: underline;
+}
+
+.profile_card {
+  margin: 16px 0;
+  padding: 16px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 5px 7px -7px rgba(0, 0, 0, 0.75);
+}
+
+.profile_card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile_card_header_left {
+  display: flex;
+  align-items: center;
+}
+
+.profile_card_text {
+  padding: 0 12px;
+  font-size: .9375rem;
+  font-weight: 600;
+  color: #1877f2;
+  cursor: pointer;
+}
+
+.profile_card_text:hover {
+  text-decoration: underline;
+}
+
+.profile_card_dropdown_button {
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  padding: 4px 16px;
+  height: 36px;
+  background-color: #E4E6EB;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile_card_dropdown_button:hover {
+  background: #cfd1d5;
+}
+
+.profile_card_dropdown_button_text {
+  background-image: url(http://192.168.1.154:3001/icons/RyUtCFgSzDn.png);
+  background-position: -119px -147px;
+  background-position-x: -119px;
+  background-position-y: -147px;
+  background-size: auto;
+  width: 16px;
+  height: 16px;
+}
+
+.profile_card_nav {
+  margin-bottom: 16px;
+}
+
+.profile_card_body {
+    display: flex;
+}
+
+.photo_grid_item {
+  width: calc(100% / 6);
+  margin: 4px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.photo_grid_item:first-child {
+  margin-left: 0;
+}
+
+.photo_grid_item:last-child {
+  margin-right: 0;
+}
+
+.photo_grid_item img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}

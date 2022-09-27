@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 import "./styles/profile.css";
 // COMPONENTS
-import PostFeed from "components/PostFeed";
 import CoverPhoto from "./CoverPhoto";
 import ProfilePhoto from "./ProfilePhoto";
 import ProfilePhotoMenu from "./ProfilePhotoMenu";
@@ -12,7 +11,10 @@ import UploadPhotoForm from "components/UploadPhotoForm";
 // STATE
 import { useStateValue } from "providers/StateProvider";
 import { useApiUtil } from "providers/ApiUtil";
-import BodySidebar from "./BodySidebar";
+
+import ProfilePosts from "fragments/ProfilePosts";
+import ProfileTab from "fragments/ProfileTab";
+import ScrollOnMount from "common/ScrollOnMount";
 
 function useOutsideAlerter(ref, closeAllMenus) {
   useEffect(() => {
@@ -29,26 +31,52 @@ function useOutsideAlerter(ref, closeAllMenus) {
   }, [ref, closeAllMenus]);
 }
 
-function Profile({ history }) {
+function ProfileWrapper() {
   const {
-    state: { user, users, posts, postOrder, comments, commentOrder, wallId },
+    state: { user, users, posts },
   } = useStateValue();
+  const { getProfile } = useApiUtil();
   const { profileURL } = useParams();
+  const history = useHistory();
   const prevUser = users[history.location.state?.uid];
   const prevProfilePic = posts[prevUser?.profilePic];
   const [currentProfile, setCurrentProfile] = useState(prevUser);
   const [currentProfilePic, setCurrentProfilePic] = useState(prevProfilePic);
-  const [title, setTitle] = useState(
-    currentProfile
-      ? currentProfile.firstName + " " + currentProfile.lastName
-      : null
-  );
 
-  const { getProfile } = useApiUtil();
+  const location = useLocation();
+  const splitPath = location.pathname.split("/");
+  const path = splitPath[splitPath.length - 1];
+
+  useEffect(() => {
+    if (!currentProfile || profileURL !== currentProfile.url) {
+      getProfile(profileURL).then(({ user, pic }) => {
+        setCurrentProfile(user);
+        setCurrentProfilePic(pic);
+      });
+    }
+  }, [profileURL, getProfile, currentProfile]);
 
   const [toggleProfilePhotoMenu, setToggleProfilePhotoMenu] = useState(false);
   const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false);
   const [profilePhotoPos, setProfilePhotoPos] = useState([0, 0]);
+
+  const scrollToY = history.location.state?.scrollToY;
+
+  useEffect(() => {
+    window.history.replaceState(null, "");
+    scrollToTop("auto");
+    
+  }, []);
+
+  useEffect(() => {
+    if (currentProfile)
+      document.title =
+        currentProfile.firstName +
+        " " +
+        currentProfile.lastName +
+        " | Facebook";
+    return () => (document.title = "Facebook");
+  }, [currentProfile]);
 
   const closeAllMenus = () => {
     setToggleProfilePhotoMenu(false);
@@ -58,30 +86,11 @@ function Profile({ history }) {
   const modalRef = useRef(null);
   useOutsideAlerter(modalRef, closeAllMenus);
 
-  useEffect(() => {
-    if (title) document.title = title + " | Facebook";
-    return () => (document.title = "Facebook");
-  }, [title]);
-
-  useEffect(() => {
-    window.history.replaceState(null, "");
-    scrollToTop("auto");
-  }, []);
-
-  useEffect(() => {
-    if (!currentProfile || profileURL !== currentProfile.url) {
-      getProfile(profileURL).then(({ user, pic }) => {
-        setCurrentProfile(user);
-        setCurrentProfilePic(pic);
-        setTitle(user.firstName + " " + user.lastName);
-      });
-    }
-  }, [profileURL, getProfile, currentProfile]);
-
   return !currentProfile || profileURL !== currentProfile.url ? (
     <></>
   ) : (
     <div className="profile">
+      {scrollToY && <ScrollOnMount x={0} y={scrollToY} />}
       {toggleProfilePhotoMenu &&
         !(user !== currentProfile.id && !currentProfile.profilePic) && (
           <ProfilePhotoMenu
@@ -123,25 +132,21 @@ function Profile({ history }) {
         scrollToTop={() => scrollToTop()}
       />
 
-      <div className="profile_body profile_wrapper">
-        <BodySidebar userId={user} currentProfile={currentProfile} />
-        <div className="profile_body_right_col">
-          <PostFeed
-            page="userWall"
-            currentUser={currentProfile}
-            currentUserPic={currentProfilePic}
-            users={users}
-            posts={posts}
-            postOrder={postOrder}
-            comments={comments}
-            commentOrder={commentOrder}
-            wallId={wallId}
-            containerClass="no_padding"
-          />
-        </div>
-      </div>
+      {path === currentProfile.url || path === "" ? (
+        <ProfilePosts
+          currentProfile={currentProfile}
+          currentProfilePic={currentProfilePic}
+        />
+      ) : (
+        <ProfileTab
+          currentProfile={currentProfile}
+          currentProfilePic={currentProfilePic}
+          posts={posts}
+          path={path}
+        />
+      )}
     </div>
   );
 }
 
-export default Profile;
+export default ProfileWrapper;

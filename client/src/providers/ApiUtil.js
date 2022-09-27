@@ -57,8 +57,10 @@ export const ApiUtil = ({ children }) => {
     if (startAt.length)
       query = query.startAfter(startAt[startAt.length - 1].timestamp);
 
+    if (limit)
+      query = query.limit(limit)
+
     return query
-      .limit(limit)
       .get()
       .then((snapshot) => {
         return snapshot.docs;
@@ -301,7 +303,8 @@ export const ApiUtil = ({ children }) => {
         addNewComment,
         getSingleCommentFeed,
         getProfile,
-        getComments
+        getComments,
+        getPosts,
       }}
     >
       {children}

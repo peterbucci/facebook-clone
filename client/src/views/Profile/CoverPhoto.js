@@ -9,7 +9,7 @@ function CoverPhoto({ currentProfile }) {
   return (
     <div className="header__coverPhoto">
         {currentProfile.id === user && <button> 
-          <CameraAltIcon /> Add Cover Photo
+          <CameraAltIcon /> <span>Add Cover Photo</span>
         </button>}
     </div>
   )

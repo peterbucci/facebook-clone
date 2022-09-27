@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
 import WallpaperIcon from "@material-ui/icons/Wallpaper";
-import "./styles/profile_photo.css";
 
 function ProfilePhotoMenu({
   currentProfile,
@@ -13,6 +12,7 @@ function ProfilePhotoMenu({
   top,
   left,
 }) {
+  const location = useLocation()
   const history = useHistory();
   const menuRef = useRef(null);
 
@@ -20,7 +20,8 @@ function ProfilePhotoMenu({
     history.push(
       `/photo?uid=${currentProfile.id}&pid=${currentProfile.profilePic}`,
       {
-        referred: currentProfile.url,
+        referred: location.pathname,
+        scrollToY: window.scrollY
       }
     );
   };

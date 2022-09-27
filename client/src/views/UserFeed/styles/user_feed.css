@@ -1,0 +1,35 @@
+.user__home {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.user__feed {
+  max-width: 590px;
+  flex: 2;
+  flex-shrink: 1;
+}
+
+@media (max-height: 700px) {
+  .user__feed_body {
+    padding: 0 45px;
+  }
+}
+
+@media (min-height: 790px) {
+  .user__feed  {
+    max-width: 680px;
+  }
+}
+
+@media (min-width: 900px) {
+  .user__home {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1930px) {
+  .user__home {
+    justify-content: center;
+  }
+}

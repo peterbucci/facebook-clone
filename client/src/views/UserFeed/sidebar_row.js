@@ -1,7 +1,5 @@
 import React from 'react'
 import './styles/sidebar_row.css'
-import { Avatar } from '@material-ui/core'
-
 import NewAvatar from '../../components/Avatar'
 
 function SidebarRow({ currentUserPic, Icon, title }) {

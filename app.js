@@ -29,7 +29,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 const app = express()
-app.use(express.static('public'))
+var publicDir = require('path').join(__dirname,'/public');
+app.use(express.static(publicDir));
 const port = 3001
  
 const cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }])

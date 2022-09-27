@@ -1,10 +1,12 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 // CSS
 import "./styles/post.css";
 // COMPONENTS
 import PostHeader from "./PostHeader";
 import PostFooter from "./PostFooter/";
+
+const { REACT_APP_PHOTOS_FOLDER } = process.env;
 
 function Post({
   post,
@@ -20,13 +22,16 @@ function Post({
   currentUserPic,
 }) {
   const history = useHistory();
+  const location = useLocation();
   const { image, message, timestamp, type, thumbnail } = post;
   const postFontSize =
     type === "Profile Picture" || message.length >= 85 ? " small-font" : "";
 
+
   const handleViewPhoto = (e) => {
+    console.log(location.pathname)
     history.push(`/photo?uid=${post.userId}&pid=${post.id}`, {
-      referred: page === "userWall" ? wall.url : "/",
+      referred: location.pathname,
       scrollToY: window.scrollY,
       height: feedRef.current.offsetHeight,
     });
@@ -50,7 +55,7 @@ function Post({
         <div className="post__image" onClick={handleViewPhoto}>
           {type === "Wall Post" && <img src={image} alt="" />}
           {type === "Profile Picture" && (
-            <img src={`http://localhost:3001/images/${thumbnail}`} alt="" />
+            <img src={REACT_APP_PHOTOS_FOLDER + thumbnail} alt="" />
           )}
         </div>
       )}

@@ -1,18 +1,48 @@
+
+@media (max-width: 900px){
+  .header__coverPhoto button span {
+    display: none;
+  }
+}
+
+@media (max-width: 700px){
+  .header__center__option {
+    display: none !important;
+  }
+  .header__center__option.more {
+    display: flex !important;
+  }
+  .header__center__container {
+    padding: 0 !important;
+  }
+}
+
+
 .header {
-  display: flex;
-  justify-content: space-between;
   position: sticky;
-  padding: 0 16px 0 0;
-  height: 54px;
+  height: 56px;
   background-color: white;
   z-index: 100;
   top: 0;
   box-shadow: 0px 5px 8px -9px rgba(0, 0, 0, 0.75);
 }
 
-.header__left {
+.header__container {
+  display: flex;
+  justify-content: center;
   position: relative;
-  width: 300px;
+  height: 56px;
+}
+
+.header__left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+}
+
+.header__left_search {
+  height: 56px;
   display: flex;
   align-items: center;
 }
@@ -70,7 +100,7 @@
   top: 0;
   left: 0;
   width: 288px;
-  height: 54px;
+  height: 56px;
 }
 
 .header__left__absolute-container.clicked {
@@ -164,8 +194,8 @@
   align-items: center;
   flex: 1;
   margin-left: 8px;
-  min-width: 50px;
-  max-width: 115px;
+  width: 100%;
+  max-width: 111px;
   cursor: pointer;
   border: solid 2px #fff;
 }
@@ -201,47 +231,15 @@
 .header__right {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  flex: 0;
+  position: absolute;
+  top: 0;
+  right: 16px;
+  height: 56px;
 }
 
-.header__right__info {
+.header__right_container {
   display: flex;
   align-items: center;
-  padding: 4px 12px 4px 4px;
-  height: 28px;
-  border-radius: 16px;
-  text-decoration: none;
-}
-
-.header__right__info:hover {
-  background-color: #eff2f5;
-}
-
-.header__right__info.active {
-  background-color: #e7f3ff;
-  
-}
-
-.header__right__info.active h4 {
-  color: #1877f2;
-}
-
-.header__right__info__profile-pic {
-  height: 28px;
-  width: 28px;
-}
-
-.header__right__info img {
-  height: auto;
-  width: 100%;
-}
-
-.header__right__info > h4 {
-  margin-left: 7px;
-  vertical-align: middle;
-  color: black;
-  font-weight: 500;
 }
 
 .header__right button {
@@ -262,4 +260,13 @@
 .header__right button span {
   height: 20px;
   width: 20px;
+}
+
+.header_right_avatar {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  height: 28px;
+  width: 28px;
+  text-decoration: none;
 }
