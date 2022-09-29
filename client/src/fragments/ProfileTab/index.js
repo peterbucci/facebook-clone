@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { useHistory } from "react-router-dom";
 import "./styles/profile_tab.css";
 import About from "./About";
 import Photos from "./Photos";
@@ -9,15 +8,11 @@ import CheckIns from "./CheckIns";
 
 function ProfileTab({ currentProfile, currentProfilePic, posts, path }) {
   const containerRef = useRef(null);
-  const history = useHistory();
-  const height = history.location.state?.height;
-  const style = height ? { height } : {};
 
   return (
     <div
       className="profile_tab profile_wrapper"
       ref={containerRef}
-      style={style}
     >
       {path.startsWith("about") && <About path={path} />}
       {path.startsWith("friends") && <Friends path={path} />}
@@ -28,6 +23,7 @@ function ProfileTab({ currentProfile, currentProfilePic, posts, path }) {
           path={path}
           userId={currentProfile.id}
           containerRef={containerRef}
+          posts={posts}
         />
       )}
       {path.startsWith("videos") && <Videos path={path} />}

@@ -1,0 +1,138 @@
+.header__left {
+  position: fixed;
+  top: 0;
+  z-index: 501;
+  transition: left .2s;
+}
+
+.header__left_search {
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.header__left__logo-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 65px;
+  transition: all .2s;
+  z-index: 101;
+  cursor: pointer;
+}
+
+.header__left__logo-icon.clicked {
+  left: 55px;
+  opacity: 0;
+  z-index: 0 !important;
+}
+
+.header__left__arrow-back-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 84px;
+  padding: 7px;
+  border-radius: 50%;
+  color: #5f6770;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.header__left__arrow-back-icon:hover {
+  background-color: #f0f2f5;
+}
+
+.header__left__arrow-back-icon:active {
+  background-color: #e6e6e6;
+}
+
+.header__left__arrow-back-icon.clicked {
+  left: 54px;
+  opacity: 1;
+  transition: all .2s;
+}
+
+.header__left__logo-fill {
+  fill: white;
+}
+
+.header__left__absolute-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  top: 0;
+  left: 50px;
+  width: 288px;
+  height: 56px;
+}
+
+.header__left__absolute-container.clicked {
+  padding-right: 15px;
+  width: 288px;
+  height: auto;
+  border-radius: 7px;
+  background-color: #fff;
+  overflow: visible;
+  box-shadow: 0 12px 12px 1px rgba(112, 112, 112, 0.6);
+}
+
+.header__left__input {
+  position: relative;
+  padding: 10px;
+  margin-top: 7px;
+  margin-left: 60px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  background-color: #f0f2f5;
+  border-radius: 999px;
+  transition: all .2s;
+  cursor: text;
+}
+
+.header__left__input.clicked {
+  margin-top: 7px;
+  margin-left: 50px;
+  max-width: 288px;
+  cursor: text;
+}
+
+.header__left__input > input {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 39px;
+  border: none;
+  background-color: transparent;
+  color: #5f6770;
+  outline-width: 0;
+  transition: left .2s;
+  font-size: 16px;
+}
+
+.header__left__input > input.focused {
+  left: 12px;
+}
+
+.header__left__input svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px;
+  color: #5f6770;
+  transition: all .2s;
+}
+
+.header__left__input svg.focused {
+  left: -10px;
+  opacity: 0;
+}
+
+.header__left__search-history p {
+  padding: 16px 0;
+  color: #9a9da0;
+  text-align: center;
+}

@@ -37,22 +37,24 @@ const cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'thumb
 app.post('/me', cpUpload, async (req, res) => {
   const userRef = db.collection('users').doc(req.body.userId)
   const newImageRef = userRef.collection('posts').doc()
-  userRef.set({
-    profilePic: newImageRef.id
-  }, { merge: true }).then(() => {
-    newImageRef.set({
-      id: newImageRef.id,
-      image: req.files.picture[0].filename,
-      thumbnail: req.files.thumbnail[0].filename,
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      reactions: {
-        like: []
-      },
-      ...req.body
-    })
+  newImageRef.set({
+    id: newImageRef.id,
+    image: req.files.picture[0].filename,
+    thumbnail: req.files.thumbnail[0].filename,
+    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    reactions: {
+      like: []
+    },
+    ...req.body
+  }).then(() => {
+    userRef.set({
+      profilePic: newImageRef.id
+    }, { merge: true })
   })
+
+  res.json()
 })
  
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`App listening at http://localhost:${port}`)
 })

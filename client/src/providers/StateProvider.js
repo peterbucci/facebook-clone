@@ -56,7 +56,7 @@ export const StateProvider = ({ reducer, children }) => {
 
               dispatch({
                 type: actionTypes.SET_USERS,
-                users: [newUser]
+                users: [newUser],
               });
               dispatch({
                 type: actionTypes.SET_USER,
@@ -65,7 +65,7 @@ export const StateProvider = ({ reducer, children }) => {
             } else {
               const userDoc = snapshot.docs[0];
               const user = userDoc.data();
-              const profilePic = user.profilePic
+              const profilePic = user.profilePic;
               const profilePicData = profilePic
                 ? await userDoc.ref
                     .collection("posts")
@@ -73,15 +73,15 @@ export const StateProvider = ({ reducer, children }) => {
                     .get()
                     .then((snapshot) => snapshot.data())
                 : null;
-
               dispatch({
-                type: actionTypes.SET_USERS,
-                users: [user]
+                type: actionTypes.UPDATE_USERS,
+                users: [user],
               });
-              dispatch({
-                type: actionTypes.SET_POSTS,
-                posts: [profilePicData]
-              });
+              if (profilePicData)
+                dispatch({
+                  type: actionTypes.SET_POSTS,
+                  profilePics: [profilePicData],
+                });
               dispatch({
                 type: actionTypes.SET_USER,
                 user: user.id,
@@ -97,8 +97,9 @@ export const StateProvider = ({ reducer, children }) => {
         setInitialRender(false);
       }
     });
-  }, [dispatch]);
-  console.log(state)
+  }, [dispatch, initialRender]);
+  // console.log(state)
+
   return (
     <StateContext.Provider value={{ state, dispatch }}>
       <ApiUtil>{initialRender ? <></> : children}</ApiUtil>

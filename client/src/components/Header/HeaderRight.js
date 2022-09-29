@@ -1,14 +1,12 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./styles/header_right.css"
 // COMPONENTS
 import NewAvatar from "components/Avatar";
 
 function HeaderRight({ currentUser, profilePicData }) {
-  const location = useLocation();
-
   return (
     <div className="header__right">
-      <div className="header__right_container">
         <button>
           <svg viewBox="0 0 44 44" width="20" height="20">
             <circle cx="7" cy="7" r="6"></circle>
@@ -41,7 +39,6 @@ function HeaderRight({ currentUser, profilePicData }) {
         >
           <NewAvatar profilePicData={profilePicData} />
         </Link>
-      </div>
     </div>
   );
 }

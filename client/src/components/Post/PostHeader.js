@@ -7,17 +7,17 @@ import NewAvatar from "components/Avatar/";
 import { formatTimeStamp } from "common/format_timestamp";
 
 const actions = {
-  "Profile Picture": "updated their profile picture.",
+  "Profile Photo": "updated their profile picture.",
 };
 
 function PostHeader({
   profilePicData,
   originalPoster,
   currentWall,
-  postType,
+  actionKey,
   timestamp,
 }) {
-  const action = actions[postType];
+  const action = actions[actionKey];
   return (
     <div className="post__header">
       <Link

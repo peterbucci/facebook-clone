@@ -30,18 +30,21 @@
   height: 60px;
   padding: 16px;
   color: #fff;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;   
   box-sizing: border-box;   
 }
 
-.viewPicture__clone-icon {
+.viewPicture__close-icon {
   position: absolute;
-  top: 0;
-  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 5px;
+  padding: 15px;
   font-size: 28px;
   color: #fff;
   cursor: pointer;
+  z-index: 502;
 }
 
 .viewPicture__leftBody {

@@ -17,23 +17,22 @@ function Post({
   authorPic,
   wall,
   feedRef,
-  page,
   currentUser,
   currentUserPic,
 }) {
   const history = useHistory();
   const location = useLocation();
-  const { image, message, timestamp, type, thumbnail } = post;
+  const { image, message, timestamp, type, subtype, thumbnail } = post;
   const postFontSize =
-    type === "Profile Picture" || message.length >= 85 ? " small-font" : "";
+    type === "Photo" || message.length >= 85 ? " small-font" : "";
 
 
   const handleViewPhoto = (e) => {
-    console.log(location.pathname)
+    const appRef = document.getElementsByClassName("app")[0]
     history.push(`/photo?uid=${post.userId}&pid=${post.id}`, {
       referred: location.pathname,
       scrollToY: window.scrollY,
-      height: feedRef.current.offsetHeight,
+      height: appRef.offsetHeight,
     });
   };
 
@@ -43,7 +42,7 @@ function Post({
         profilePicData={authorPic}
         originalPoster={author}
         currentWall={wall}
-        postType={type}
+        actionKey={subtype}
         timestamp={timestamp}
       />
 
@@ -53,10 +52,7 @@ function Post({
 
       {image && (
         <div className="post__image" onClick={handleViewPhoto}>
-          {type === "Wall Post" && <img src={image} alt="" />}
-          {type === "Profile Picture" && (
             <img src={REACT_APP_PHOTOS_FOLDER + thumbnail} alt="" />
-          )}
         </div>
       )}
 

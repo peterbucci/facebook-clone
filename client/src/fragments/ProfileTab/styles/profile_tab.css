@@ -80,27 +80,5 @@
 }
 
 .profile_card_body {
-    display: flex;
-}
-
-.photo_grid_item {
-  width: calc(100% / 6);
-  margin: 4px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.photo_grid_item:first-child {
-  margin-left: 0;
-}
-
-.photo_grid_item:last-child {
-  margin-right: 0;
-}
-
-.photo_grid_item img {
-  width: 100%;
-  height: auto;
-  cursor: pointer;
+  display: flex;
 }

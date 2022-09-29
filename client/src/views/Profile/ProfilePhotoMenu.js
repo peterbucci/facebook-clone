@@ -17,11 +17,13 @@ function ProfilePhotoMenu({
   const menuRef = useRef(null);
 
   const handleViewPhoto = () => {
+    const appRef = document.getElementsByClassName("app")[0]
     history.push(
       `/photo?uid=${currentProfile.id}&pid=${currentProfile.profilePic}`,
       {
         referred: location.pathname,
-        scrollToY: window.scrollY
+        scrollToY: window.scrollY,
+        height: appRef.offsetHeight
       }
     );
   };

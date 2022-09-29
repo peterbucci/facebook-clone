@@ -1,0 +1,27 @@
+.dropdown_container {
+  position: relative;
+}
+
+.dropdown_menu {
+  position: absolute;
+  top: 100%;
+  background-color: #fff;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
+  border-radius: 8px;
+  z-index: 999;
+}
+
+.dropdown_menu ul {
+  padding: 8px 0;
+  list-style: none;
+}
+
+.dropdown_menu ul li {
+  margin: 0 8px;
+  padding: 12px 8px;
+  font-size: .9375rem;
+  font-weight: 525;
+  cursor: pointer;
+  white-space: nowrap;
+}

@@ -1,0 +1,38 @@
+.header__right {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 16px;
+  height: 56px;
+  z-index: 501;
+}
+
+.header__right button {
+  margin-left: 8px;
+  height: 40px;
+  width: 40px;
+  background-color: #e4e6eb;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.header__right button:hover {
+  background-color: #cfd1d6;
+}
+
+.header__right button span {
+  height: 20px;
+  width: 20px;
+}
+
+.header_right_avatar {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  height: 28px;
+  width: 28px;
+  text-decoration: none;
+}

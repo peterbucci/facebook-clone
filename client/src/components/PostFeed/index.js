@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import "./styles/feed.css";
 // COMPONENTS
 import StoryReel from "../../components/StoryReel/";
@@ -20,15 +19,12 @@ function PostFeed({
   commentOrder,
   wallId,
   feedClass,
-  feedBodyClass
+  feedBodyClass,
 }) {
   const feedRef = useRef(null);
   const gettingDataRef = useRef(false);
   const { getFeedData } = useApiUtil();
   const changingWall = wallId !== (page === "userWall" ? currentUser.id : page);
-  const history = useHistory();
-  const height = history.location.state?.height;
-
   const wallPosts = postOrder.map((id) => posts[id]);
 
   useEffect(() => {
@@ -75,63 +71,56 @@ function PostFeed({
   ]);
 
   return (
-      <div
-        className={`feed${
-          feedClass ? " " + feedClass : ""
-        }`}
-        ref={feedRef}
-        style={{ height: height ?? "auto" }}
-      >
-        {page === "userFeed" && <StoryReel />}
-        <div className={feedBodyClass ? feedBodyClass : ""}>
-          <MessageSender
-            wallId={currentUser.id}
-            currentUser={currentUser}
-            currentUserPic={currentUserPic}
-          />
-          {page === "userFeed" && <VideoFeed />}
-          {changingWall ? (
-            <></>
-          ) : (
-            wallPosts.map((post) => {
-              const commentIds = commentOrder[post.id];
-              const commentsInPost = commentIds
-                ? commentIds.map((id) => comments[id])
-                : [];
-              const commentUsers = commentsInPost.map(
-                (comment) => users[comment.userId]
-              );
-              const commentUserPics = commentUsers.map(
-                (user) => posts[user.profilePic]
-              );
+    <div className={`feed${feedClass ? " " + feedClass : ""}`} ref={feedRef}>
+      {page === "userFeed" && <StoryReel />}
+      <div className={feedBodyClass ? feedBodyClass : ""}>
+        <MessageSender
+          wallId={currentUser.id}
+          currentUser={currentUser}
+          currentUserPic={currentUserPic}
+        />
+        {page === "userFeed" && <VideoFeed />}
+        {changingWall ? (
+          <></>
+        ) : (
+          wallPosts.map((post) => {
+            const commentIds = commentOrder[post.id];
+            const commentsInPost = commentIds
+              ? commentIds.map((id) => comments[id])
+              : [];
+            const commentUsers = commentsInPost.map(
+              (comment) => users[comment.userId]
+            );
+            const commentUserPics = commentUsers.map(
+              (user) => posts[user.profilePic]
+            );
 
-              return (
-                <Post
-                  key={post.id}
-                  post={post}
-                  commentsInPost={commentsInPost}
-                  commentUsers={commentUsers}
-                  commentUserPics={commentUserPics}
-                  author={users[post.userId]}
-                  wall={users[post.wallId]}
-                  authorPic={posts[users[post.userId].profilePic]}
-                  feedRef={feedRef}
-                  page={page}
-                  currentUser={currentUser}
-                  currentUserPic={currentUserPic}
-                />
-              );
-            })
-          )}
-        </div>
-        {page === "userFeed" && (
-          <div className="feed__noMorePosts">
-            <h3>No More Posts</h3>
-            <p>Add more friends to see more posts in your News Feed</p>
-            <button>Find Friends</button>
-          </div>
+            return (
+              <Post
+                key={post.id}
+                post={post}
+                commentsInPost={commentsInPost}
+                commentUsers={commentUsers}
+                commentUserPics={commentUserPics}
+                author={users[post.userId]}
+                wall={users[post.wallId]}
+                authorPic={posts[users[post.userId].profilePic]}
+                feedRef={feedRef}
+                currentUser={currentUser}
+                currentUserPic={currentUserPic}
+              />
+            );
+          })
         )}
       </div>
+      {page === "userFeed" && (
+        <div className="feed__noMorePosts">
+          <h3>No More Posts</h3>
+          <p>Add more friends to see more posts in your News Feed</p>
+          <button>Find Friends</button>
+        </div>
+      )}
+    </div>
   );
 }
 

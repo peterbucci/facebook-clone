@@ -1,3 +1,10 @@
+@media (max-width: 900px){
+  .header__coverPhoto button span {
+    display: none;
+  }
+}
+
+
 .header__coverPhoto {
   display: flex;
   flex-direction: column;

@@ -14,7 +14,6 @@ import { useApiUtil } from "providers/ApiUtil";
 
 import ProfilePosts from "fragments/ProfilePosts";
 import ProfileTab from "fragments/ProfileTab";
-import ScrollOnMount from "common/ScrollOnMount";
 
 function useOutsideAlerter(ref, closeAllMenus) {
   useEffect(() => {
@@ -60,14 +59,6 @@ function ProfileWrapper() {
   const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false);
   const [profilePhotoPos, setProfilePhotoPos] = useState([0, 0]);
 
-  const scrollToY = history.location.state?.scrollToY;
-
-  useEffect(() => {
-    window.history.replaceState(null, "");
-    scrollToTop("auto");
-    
-  }, []);
-
   useEffect(() => {
     if (currentProfile)
       document.title =
@@ -90,7 +81,6 @@ function ProfileWrapper() {
     <></>
   ) : (
     <div className="profile">
-      {scrollToY && <ScrollOnMount x={0} y={scrollToY} />}
       {toggleProfilePhotoMenu &&
         !(user !== currentProfile.id && !currentProfile.profilePic) && (
           <ProfilePhotoMenu

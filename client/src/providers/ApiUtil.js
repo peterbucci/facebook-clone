@@ -19,25 +19,24 @@ export const ApiUtil = ({ children }) => {
           .get()
           .then((snapshot) => {
             return snapshot.docs.map((user) => {
-              const userData = user.data()
-              if (userData.profilePic) profilePicIds.push(userData.profilePic)
-              return userData
+              const userData = user.data();
+              if (userData.profilePic) profilePicIds.push(userData.profilePic);
+              return userData;
             });
           })
       : [];
 
-    const requestedProfilePics = profilePicIds.length 
-      ? (await db
+    const requestedProfilePics = profilePicIds.length
+      ? await db
           .collectionGroup("posts")
           .where("id", "in", profilePicIds)
           .get()
           .then((snapshot) => snapshot.docs.map((doc) => doc.data()))
-        )
-      : null
+      : null;
 
     return {
       requestedUsers,
-      requestedProfilePics
+      requestedProfilePics,
     };
   };
 
@@ -57,14 +56,11 @@ export const ApiUtil = ({ children }) => {
     if (startAt.length)
       query = query.startAfter(startAt[startAt.length - 1].timestamp);
 
-    if (limit)
-      query = query.limit(limit)
+    if (limit) query = query.limit(limit);
 
-    return query
-      .get()
-      .then((snapshot) => {
-        return snapshot.docs;
-      });
+    return query.get().then((snapshot) => {
+      return snapshot.docs;
+    });
   };
 
   const getComments = (
@@ -85,12 +81,14 @@ export const ApiUtil = ({ children }) => {
   };
 
   const getSingleCommentFeed = async (postId, endBefore, update) => {
-    await getComments(postId, null, endBefore, ["timestamp"]).then((comments) => {
-      dispatch({
-        type: actionTypes[update],
-        comments
-      });
-    });
+    await getComments(postId, null, endBefore, ["timestamp"]).then(
+      (comments) => {
+        dispatch({
+          type: actionTypes[update],
+          comments,
+        });
+      }
+    );
   };
 
   const getProfile = async (profileURL, uid, pid) => {
@@ -100,30 +98,31 @@ export const ApiUtil = ({ children }) => {
     user = await user
       .get()
       .then((res) => (profileURL ? res.docs[0].data() : res.data()));
-    const pic = pid || user.profilePic
-      ? await db
-        .collection("users")
-        .doc(user.id)
-        .collection("posts")
-        .doc(pid ?? user.profilePic)
-        .get()
-        .then((res) => res.data())
-      : null
-  
+    const pic =
+      pid || user.profilePic
+        ? await db
+            .collection("users")
+            .doc(user.id)
+            .collection("posts")
+            .doc(pid ?? user.profilePic)
+            .get()
+            .then((res) => res.data())
+        : null;
+
+    dispatch({
+      type: actionTypes.UPDATE_USERS,
+      users: [user],
+    });
+    pic &&
       dispatch({
-        type: actionTypes.UPDATE_USERS,
-        users: [user],
-      });
-      pic && dispatch({
         type: actionTypes.SET_POSTS,
         profilePics: [pic],
       });
-      return {
-        user,
-        pic
-      }
+    return {
+      user,
+      pic,
+    };
   };
-
 
   const getFeedData = async (
     posts,
@@ -163,7 +162,7 @@ export const ApiUtil = ({ children }) => {
     if (newPosts.length) {
       dispatch({
         type: initialRender ? actionTypes.SET_USERS : actionTypes.UPDATE_USERS,
-        users: newUserData.requestedUsers
+        users: newUserData.requestedUsers,
       });
       dispatch({
         type: actionTypes.SET_POSTS,
@@ -173,13 +172,22 @@ export const ApiUtil = ({ children }) => {
         initialRender,
       });
       dispatch({
-        type: initialRender ? actionTypes.SET_COMMENTS : actionTypes.UPDATE_COMMENTS,
+        type: initialRender
+          ? actionTypes.SET_COMMENTS
+          : actionTypes.UPDATE_COMMENTS,
         comments: newComments,
       });
     }
   };
 
-  const addNewPost = async (userId, wallId, timestamp, message, image) => {
+  const addNewPost = async (
+    userId,
+    wallId,
+    timestamp,
+    message,
+    image,
+    rest = {}
+  ) => {
     const postQuery = db
       .collection("users")
       .doc(userId)
@@ -197,20 +205,21 @@ export const ApiUtil = ({ children }) => {
       reactions: {
         like: [],
       },
+      ...rest,
     };
 
     await postQuery.set(postContent);
     const newPost = await postQuery.get();
-    const newUser = await getUsers([userId, wallId]);
-    console.log(newUser)
+    const userData = await getUsers([userId, wallId]);
+
     dispatch({
       type: actionTypes.UPDATE_USERS,
-      users: newUser.requestedUsers,
+      users: userData.requestedUsers,
     });
     dispatch({
       type: actionTypes.SET_POSTS,
       posts: [newPost.data()],
-      profilePics: newUser.requestedProfilePics,
+      profilePics: userData.requestedProfilePics,
       new: true,
     });
   };
@@ -251,7 +260,7 @@ export const ApiUtil = ({ children }) => {
         dispatch({
           type: actionTypes.UPDATE_COMMENTS,
           comments: [snapshot.data()],
-          new: true
+          new: true,
         });
       });
     });
@@ -290,8 +299,38 @@ export const ApiUtil = ({ children }) => {
     dispatch({
       type: actionTypes.UPDATE_POST,
       post: updatedPost,
-      collection
+      collection,
     });
+  };
+
+  const getAlbums = async (userId) => {
+    const albums = await db
+      .collectionGroup("albums")
+      .where("userId", "==", userId)
+      .orderBy("timestamp")
+      .get()
+      .then((snapshot) => {
+        return snapshot.docs.map((doc) => doc.data());
+      });
+
+    const albumCoverIds = albums.reduce((albums, album) => {
+      return album.cover ? [...albums, album.cover] : albums;
+    }, []);
+
+    const albumCovers = await db
+      .collectionGroup("posts")
+      .where("id", "in", albumCoverIds)
+      .get()
+      .then((snapshot) => {
+        return snapshot.docs.map((doc) => doc.data());
+      });
+
+    dispatch({
+      type: actionTypes.SET_POSTS,
+      profilePics: albumCovers,
+    });
+
+    return albums
   };
 
   return (
@@ -305,6 +344,7 @@ export const ApiUtil = ({ children }) => {
         getProfile,
         getComments,
         getPosts,
+        getAlbums,
       }}
     >
       {children}

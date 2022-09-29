@@ -62,8 +62,8 @@ const reducer = (state, action) => {
             ...(action.posts ?? []),
             ...(action.profilePics ?? []),
           ].reduce(
-            (Posts, post) => ({
-              ...Posts,
+            (posts, post) => ({
+              ...posts,
               [post.id]: post,
             }),
             {}
