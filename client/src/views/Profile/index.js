@@ -1,36 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import "./styles/profile.css";
 // COMPONENTS
 import CoverPhoto from "./CoverPhoto";
-import ProfilePhoto from "./ProfilePhoto";
-import ProfilePhotoMenu from "./ProfilePhotoMenu";
 import StickyHeaderMenu from "./StickyHeaderMenu";
 import { scrollToTop } from "common/scroll_to_top";
-import UploadPhotoForm from "components/UploadPhotoForm";
+import ProfilePosts from "fragments/ProfilePosts";
+import ProfileTab from "fragments/ProfileTab";
+import ProfilePhoto from "./ProfilePhoto";
 // STATE
 import { useStateValue } from "providers/StateProvider";
 import { useApiUtil } from "providers/ApiUtil";
 
-import ProfilePosts from "fragments/ProfilePosts";
-import ProfileTab from "fragments/ProfileTab";
-
-function useOutsideAlerter(ref, closeAllMenus) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current === event.target) {
-        closeAllMenus();
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, closeAllMenus]);
-}
-
-function ProfileWrapper() {
+function Profile() {
   const {
     state: { user, users, posts },
   } = useStateValue();
@@ -55,10 +37,6 @@ function ProfileWrapper() {
     }
   }, [profileURL, getProfile, currentProfile]);
 
-  const [toggleProfilePhotoMenu, setToggleProfilePhotoMenu] = useState(false);
-  const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false);
-  const [profilePhotoPos, setProfilePhotoPos] = useState([0, 0]);
-
   useEffect(() => {
     if (currentProfile)
       document.title =
@@ -69,33 +47,10 @@ function ProfileWrapper() {
     return () => (document.title = "Facebook");
   }, [currentProfile]);
 
-  const closeAllMenus = () => {
-    setToggleProfilePhotoMenu(false);
-    setToggleUploadPhotoForm(false);
-  };
-
-  const modalRef = useRef(null);
-  useOutsideAlerter(modalRef, closeAllMenus);
-
   return !currentProfile || profileURL !== currentProfile.url ? (
     <></>
   ) : (
     <div className="profile">
-      {toggleProfilePhotoMenu &&
-        !(user !== currentProfile.id && !currentProfile.profilePic) && (
-          <ProfilePhotoMenu
-            currentProfile={currentProfile}
-            userId={user}
-            setToggleUploadPhotoForm={setToggleUploadPhotoForm}
-            toggleUploadPhotoForm={toggleUploadPhotoForm}
-            modalRef={modalRef}
-            top={profilePhotoPos[0]}
-            left={profilePhotoPos[1]}
-          />
-        )}
-      {toggleUploadPhotoForm && (
-        <UploadPhotoForm closeAllMenus={closeAllMenus} modalRef={modalRef} />
-      )}
       <div className="profile__header">
         <CoverPhoto currentProfile={currentProfile} />
         <div className="profile_wrapper">
@@ -103,11 +58,7 @@ function ProfileWrapper() {
             <ProfilePhoto
               user={user}
               currentProfile={currentProfile}
-              profilePic={currentProfilePic}
-              toggleProfilePhotoMenu={toggleProfilePhotoMenu}
-              setToggleProfilePhotoMenu={setToggleProfilePhotoMenu}
-              setToggleUploadPhotoForm={setToggleUploadPhotoForm}
-              setProfilePhotoPos={setProfilePhotoPos}
+              currentProfilePic={currentProfilePic} 
             />
             <h1 className="header__name">
               {currentProfile.firstName} {currentProfile.lastName}
@@ -139,4 +90,4 @@ function ProfileWrapper() {
   );
 }
 
-export default ProfileWrapper;
+export default Profile;

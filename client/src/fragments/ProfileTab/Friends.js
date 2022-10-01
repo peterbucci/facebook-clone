@@ -10,7 +10,7 @@ function Friends({ path }) {
           <span className="profile_card_text">Friend requests</span>
           <span className="profile_card_text">Find Friends</span>
           <DropdownMenu
-            listItems={{ "Edit Privacy": "photos" }}
+            listItems={{ "Edit Privacy": { onClick: "photos" } }}
             right={.02}
             width={344}
           />

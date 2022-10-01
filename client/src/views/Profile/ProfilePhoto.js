@@ -1,71 +1,70 @@
-import React, { useRef, useEffect } from "react";
-import Badge from "@material-ui/core/Badge";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import React, { useState, useRef } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import "./styles/profile_photo.css";
-// COMPONENTS
-import NewAvatar from "components/Avatar";
+import UploadPhotoForm from "components/UploadPhotoForm";
+import BackgroundIcon from "common/icons/BackgroundIcon";
+import useOutsideAlerter from "common/icons/use_outside_alerter";
+import DropdownMenu from "components/DropdownMenu";
+import ProfileAvatar from "./ProfileAvatar";
 
+function ProfilePhoto({ user, currentProfile, currentProfilePic }) {
+  const location = useLocation();
+  const history = useHistory();
+  const [toggleUploadPhotoForm, setToggleUploadPhotoForm] = useState(false);
 
-function ProfilePhoto({
-  user,
-  currentProfile,
-  profilePic,
-  toggleProfilePhotoMenu,
-  setToggleProfilePhotoMenu,
-  setToggleUploadPhotoForm,
-  setProfilePhotoPos
-}) {
-  const profilePhotoRef = useRef(null);
+  const modalRef = useRef(null);
+  const closeAllMenus = () => setToggleUploadPhotoForm(false);
+  useOutsideAlerter(modalRef, closeAllMenus);
 
-  useEffect(() => {
-    const photoContainer = profilePhotoRef.current;
-    if (photoContainer) {
-      const handleResize = (photoContainer) => {
-        const top =
-          window.innerHeight - photoContainer.getBoundingClientRect().top <= 350
-            ? photoContainer.getBoundingClientRect().top + window.scrollY - 140 + "px"
-            : photoContainer.getBoundingClientRect().top + window.scrollY + 185 + "px";
-        const leftNum = photoContainer.getBoundingClientRect().left + window.scrollX - 84
-        const left = leftNum < 10 ?  "10px" : leftNum + "px";
-        setProfilePhotoPos([top, left]);
-      };
-
-      handleResize(photoContainer);
-      window.addEventListener("resize", () => handleResize(photoContainer));
-      window.addEventListener("scroll", () => handleResize(photoContainer));
-      return () => {
-        window.removeEventListener("resize", () => handleResize(photoContainer));
-        window.removeEventListener("scroll", () => handleResize(photoContainer));
+  const handleViewPhoto = () => {
+    const appRef = document.getElementsByClassName("app")[0];
+    history.push(
+      `/photo?uid=${currentProfile.id}&pid=${currentProfile.profilePic}`,
+      {
+        referred: location.pathname,
+        scrollToY: window.scrollY,
+        height: appRef.offsetHeight,
       }
-    }
-  }, [setProfilePhotoPos]);
+    );
+  };
 
   return (
-    <div className="header__profilePhoto" ref={profilePhotoRef}>
-      {user === currentProfile.id ? (
-        <Badge
-          overlap="circular"
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          badgeContent={
-            <CameraAltIcon
-              className="profilePhoto__updateBadge"
-              onClick={() => setToggleUploadPhotoForm(true)}
-            />
-          }
-        >
-          <NewAvatar 
-            profilePicData={profilePic}
-            className="profilePhoto__image"
-            onClick={() => setToggleProfilePhotoMenu(!toggleProfilePhotoMenu)}
-          />
-        </Badge>
-      ) : (
-        <NewAvatar />
+    <>
+    {toggleUploadPhotoForm && (
+        <UploadPhotoForm closeAllMenus={closeAllMenus} modalRef={modalRef} />
       )}
-    </div>
+      <DropdownMenu
+        listItems={{
+          "View Profile Picture": {
+            onClick: handleViewPhoto,
+            Icon: () => (
+              <BackgroundIcon image="nnebAkjFy_c" position={[0, -84]} />
+            ),
+          },
+          "Add Photo": {
+            onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
+            Icon: () => (
+              <BackgroundIcon image="fgWwJT0JD-x" position={[0, -406]} />
+            ),
+          },
+        }}
+        width={344}
+        left={1}
+        align="center"
+        customContainerClass="header__profilePhoto"
+        customMenuClass="profilePhoto__menu"
+        customButton={(handleClick, buttonRef) => (
+          <ProfileAvatar
+            user={user}
+            currentProfile={currentProfile}
+            setToggleUploadPhotoForm={setToggleUploadPhotoForm}
+            profilePic={currentProfilePic}
+            handleClick={handleClick}
+            buttonRef={buttonRef}
+          />
+        )}
+      />
+    </>
   );
 }
 

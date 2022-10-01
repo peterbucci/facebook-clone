@@ -45,7 +45,7 @@ function Photos({ path, userId, posts, containerRef }) {
         <div className="profile_card_header_left">
           <span className="profile_card_text">Add photos/video</span>
           <DropdownMenu
-            listItems={{ "See Photos Hidden From Timeline": "photos" }}
+            listItems={{ "See Photos Hidden From Timeline": { onClick: "photos" }}}
             right={.02}
             width={344}
           />

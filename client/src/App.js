@@ -5,7 +5,7 @@ import "App.css";
 // VIEWS
 import Login from "views/Login";
 import UserFeed from "views/UserFeed/";
-import ProfileWrapper from "views/Profile";
+import Profile from "views/Profile";
 import Photo from "views/Photo";
 // COMPONENTS
 import Header from "components/Header";
@@ -17,7 +17,7 @@ function App() {
   const { state } = useStateValue();
   const { user, users } = state;
   const currentUser = users[user];
-  const history = useHistory()
+  const history = useHistory();
   const scrollToY = history.location.state?.scrollToY;
   const height = history.location.state?.height;
   const style = height ? { minHeight: height } : {};
@@ -30,13 +30,13 @@ function App() {
         <>
           <Header />
           <div className="body">
-          <ComponentDidMount scrollToY={scrollToY} />
+            <ComponentDidMount scrollToY={scrollToY} />
             <Switch>
               <Route path="/photo" component={Photo} />
               <Route path="/me">
                 <Redirect to={`/${currentUser.url}`} />
               </Route>
-              <Route path="/:profileURL" component={ProfileWrapper} />
+              <Route path="/:profileURL" component={Profile} />
               <Route path="/" component={UserFeed} />
             </Switch>
           </div>
