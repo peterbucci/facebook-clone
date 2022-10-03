@@ -9,27 +9,27 @@ function Menu({ menuRef, width, listItems, menuProps }) {
       style={{ width: width ? width + "px" : "auto", ...menuProps }}
     >
       <ul>
-        {Object.keys(listItems).map((key) => {
-          const onClick = listItems[key].onClick;
-          const Icon = listItems[key].Icon
-          const text = Icon ? (
+        {Object.keys(listItems).map((text) => {
+          const onClick = listItems[text].onClick;
+          const Icon = listItems[text].Icon
+          const item = Icon ? (
             <>
               <div className="dropdown_menu_icon">
                 <Icon />
               </div>
-              {key}
+              {text}
             </>
           ) : (
-            key
+            text
           );
 
 
           return typeof onClick === "string" ? (
             <li>
-              <Link to={onClick} className={`text_container${Icon ? " with_icons" : ""}`}>{text}</Link>
+              <Link to={onClick} className={`item_container${Icon ? " with_icons" : ""}`}>{item}</Link>
             </li>
           ) : (
-            <li onClick={onClick} className={`text_container${Icon ? " with_icons" : ""}`}>{text}</li>
+            <li onClick={onClick} className={`item_container${Icon ? " with_icons" : ""}`}>{item}</li>
           );
         })}
       </ul>

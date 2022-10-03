@@ -1,3 +1,12 @@
+@media (max-width: 940px), 
+(max-width: 1070px) and (min-Height: 700px),  
+(max-width: 1250px) and (min-Height: 790px){
+  .profile_wrapper {
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+  }
+}
+
 @media (max-width: 900px){
   .header__name_container {
     justify-content: center;
@@ -9,14 +18,12 @@
   }
 }
 
-@media (max-width: 940px), 
-(max-width: 1070px) and (min-Height: 700px),  
-(max-width: 1250px) and (min-Height: 790px){
+@media (max-width: 500px) {
   .profile_wrapper {
-    padding: 0 15px !important;
-    box-sizing: border-box !important;
+    padding: 0 !important;
   }
 }
+
 
 @media (min-Height: 700px) {
   .profile_wrapper {

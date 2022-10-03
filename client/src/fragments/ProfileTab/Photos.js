@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useApiUtil } from "providers/ApiUtil";
 import GalleryThumbnail from "components/GalleryThumbnail";
 import DropdownMenu from "components/DropdownMenu";
+import TabNavigator from "components/TabNavigator";
 
 function Photos({ path, userId, posts, containerRef }) {
   const { getPosts, getAlbums } = useApiUtil();
@@ -45,33 +46,35 @@ function Photos({ path, userId, posts, containerRef }) {
         <div className="profile_card_header_left">
           <span className="profile_card_text">Add photos/video</span>
           <DropdownMenu
-            listItems={{ "See Photos Hidden From Timeline": { onClick: "photos" }}}
-            right={.02}
+            listItems={{
+              "See Photos Hidden From Timeline": { onClick: "photos" },
+            }}
+            right={0.02}
             width={344}
           />
         </div>
       </div>
       <div className="profile_card_nav">
-        <ul className="header__nav">
-          <li
-            className={tab === "photos_by" || tab === "photos" ? "active" : ""}
-          >
-            {path.startsWith("photos") ? (
-              <Link to="photos_by">Your Photos</Link>
-            ) : (
-              <span onClick={() => setTab("photos_by")}>Your Photos</span>
-            )}
-          </li>
-          <li className={tab === "photos_albums" ? "active" : ""}>
-            {path.startsWith("photos") ? (
-              <Link to="photos_albums">Albums</Link>
-            ) : (
-              <span onClick={() => setTab("photos_albums")}>Albums</span>
-            )}
-          </li>
-        </ul>
+        <TabNavigator
+          listItems={{
+            photos_by: {
+              text: "Your Photos",
+              secondaryKeys: ["photos"],
+              onClick: path.startsWith("photos")
+                ? "photos_by"
+                : () => setTab("photos_by"),
+            },
+            photos_albums: {
+              text: "Albums",
+              onClick: path.startsWith("photos")
+                ? "photos_albums"
+                : () => setTab("photos_albums"),
+            },
+          }}
+          active={(key, secondaryKeys) => key === tab || (secondaryKeys && secondaryKeys.findIndex((key) => key === tab) !== -1)}
+        />
       </div>
-      <div className="profile_card_body">
+      <div className="profile_card_body gallery">
         {tab === "photos" || tab === "photos_by"
           ? renderedPhotos?.map((photo) => (
               <GalleryThumbnail

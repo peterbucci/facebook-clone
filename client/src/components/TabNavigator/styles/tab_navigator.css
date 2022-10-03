@@ -1,0 +1,43 @@
+.tab_navigator > ul {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  height: 60px;
+  overflow: hidden;
+}
+
+.tab_navigator > ul li {
+  display: flex;
+  align-items: center;
+  margin: 3px 0;
+  list-style-type: none;
+  color: #65676b;
+  font-weight: 600;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.tab_navigator > ul li:last-child {
+  padding: 0 16px;
+}
+
+.tab_navigator > ul li:hover {
+  background: #e4e6eb;
+}
+
+.tab_navigator > ul li.active {
+  margin: 0;
+  background: #fff;
+  border-bottom: solid 3px #1876f2;
+  border-radius: 0;
+  color: #1876f2;
+}
+
+.tab_navigator > ul li a, .tab_navigator > ul li span {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 100%;
+}

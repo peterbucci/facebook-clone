@@ -1,4 +1,4 @@
-@media (max-width: 900px){
+@media (max-width: 900px) {
   .header__profilePhoto {
     left: 50% !important;
     transform: translateX(-50%);
@@ -16,7 +16,6 @@
   height: 168px !important;
   width: 168px !important;
   border: solid 4px white;
-  cursor: pointer;
 }
 
 .profilePhoto__updateBadge {
@@ -26,7 +25,12 @@
   cursor: pointer;
 }
 
-.profilePhoto__image:hover, .profilePhoto__updateBadge:hover {
+.profilePhoto__wrapper.dropdown_active {
+  cursor: pointer;
+}
+
+.profilePhoto__wrapper.dropdown_active:hover .profilePhoto__image,
+.profilePhoto__updateBadge:hover {
   filter: brightness(90%);
 }
 
@@ -50,4 +54,3 @@
   overflow-y: scroll;
   cursor: pointer;
 }
-

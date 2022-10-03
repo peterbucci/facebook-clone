@@ -51,7 +51,7 @@ function BodySidebar({ userId, currentProfile }) {
           window.scrollY,
           prevScrollMainRef,
           "scrollTop",
-          stickyRef.current.getBoundingClientRect().top !== 115
+          stickyRef.current?.getBoundingClientRect().top !== 115
         );
       }
     };

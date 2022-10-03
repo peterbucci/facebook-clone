@@ -58,7 +58,7 @@ function Profile() {
             <ProfilePhoto
               user={user}
               currentProfile={currentProfile}
-              currentProfilePic={currentProfilePic} 
+              currentProfilePic={currentProfilePic}
             />
             <h1 className="header__name">
               {currentProfile.firstName} {currentProfile.lastName}
@@ -68,6 +68,7 @@ function Profile() {
       </div>
 
       <StickyHeaderMenu
+        user={user}
         currentProfilePic={currentProfilePic}
         currentProfile={currentProfile}
         scrollToTop={() => scrollToTop()}
@@ -80,6 +81,7 @@ function Profile() {
         />
       ) : (
         <ProfileTab
+          user={user}
           currentProfile={currentProfile}
           currentProfilePic={currentProfilePic}
           posts={posts}

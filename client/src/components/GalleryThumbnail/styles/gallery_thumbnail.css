@@ -1,9 +1,46 @@
+@media(min-width: 415px) {
+  .profile_card_body.gallery {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media(min-width: 575px) {
+  .profile_card_body.gallery {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media(min-width: 745px) {
+  .profile_card_body.gallery {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+@media(min-width: 915px) {
+  .profile_card_body.gallery {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+}
+
+@media(min-width: 1075px) {
+  .profile_card_body.gallery {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+}
+
+.profile_card_body.gallery {
+  display: inline-grid;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+}
+
 .gallery_item {
   display: flex;
   flex-direction: column;
-  flex-basis: calc(16.6666666667% - 6.66666666667px);
-  margin: 4px;
-  margin-bottom: 8px;
+  width: 100%;
 }
 
 .gallery_item:first-child {
@@ -23,6 +60,7 @@
   background-color: #e4e6eb;
   border: solid 1px #cdcfd3;
   box-sizing: border-box;
+  aspect-ratio: 1/1;
 }
 
 .gallery_img img {

@@ -28,26 +28,37 @@ function ProfilePhoto({ user, currentProfile, currentProfilePic }) {
     );
   };
 
-  return (
+  const listItems = currentProfilePic
+    ? {
+        "View profile picture": {
+          onClick: handleViewPhoto,
+          Icon: () => (
+            <BackgroundIcon image="nnebAkjFy_c" position={[0, -84]} />
+          ),
+        },
+        "Update profile picture": {
+          onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
+          Icon: () => (
+            <BackgroundIcon image="fgWwJT0JD-x" position={[0, -406]} />
+          ),
+        },
+      }
+    : {
+        "Add Photo": {
+          onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
+          Icon: () => (
+            <BackgroundIcon image="nnebAkjFy_c" position={[0, -21]} />
+          ),
+        },
+      };
+
+  return user === currentProfile.id ? (
     <>
-    {toggleUploadPhotoForm && (
+      {toggleUploadPhotoForm && (
         <UploadPhotoForm closeAllMenus={closeAllMenus} modalRef={modalRef} />
       )}
       <DropdownMenu
-        listItems={{
-          "View Profile Picture": {
-            onClick: handleViewPhoto,
-            Icon: () => (
-              <BackgroundIcon image="nnebAkjFy_c" position={[0, -84]} />
-            ),
-          },
-          "Add Photo": {
-            onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
-            Icon: () => (
-              <BackgroundIcon image="fgWwJT0JD-x" position={[0, -406]} />
-            ),
-          },
-        }}
+        listItems={listItems}
         width={344}
         left={1}
         align="center"
@@ -65,6 +76,16 @@ function ProfilePhoto({ user, currentProfile, currentProfilePic }) {
         )}
       />
     </>
+  ) : (
+    <div className="header__profilePhoto">
+      <ProfileAvatar
+        user={user}
+        currentProfile={currentProfile}
+        setToggleUploadPhotoForm={setToggleUploadPhotoForm}
+        profilePic={currentProfilePic}
+        handleClick={currentProfilePic ? handleViewPhoto : null}
+      />
+    </div>
   );
 }
 

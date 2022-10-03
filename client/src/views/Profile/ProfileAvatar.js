@@ -11,8 +11,9 @@ function ProfileAvatar({
   handleClick,
   buttonRef,
 }) {
+  
   return (
-    <div ref={buttonRef}>
+    <div ref={buttonRef} className={`profilePhoto__wrapper${profilePic || user === currentProfile.id ? " dropdown_active" : ""}`}>
       {user === currentProfile.id ? (
         <Badge
           overlap="circular"

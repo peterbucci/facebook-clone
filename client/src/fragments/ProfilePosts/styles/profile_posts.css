@@ -8,6 +8,9 @@
     overflow-y: hidden;
     width: 100%;
   }
+  .profile_body_left_col, .profile_body_right_col {
+    margin: 0 !important;
+  }
 }
 
 .profile_body {
