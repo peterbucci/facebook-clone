@@ -1,5 +1,6 @@
 .dropdown_container {
   position: relative;
+  display: inline-block;
 }
 
 .dropdown_button {
@@ -17,9 +18,21 @@
 }
 
 .dropdown_button_text {
+  all: unset;
+  position: relative;
+  display: inline-block;
   padding: 5px 12px;
   font-size: .9375rem;
   font-weight: 600;
+  text-align: center;
+}
+
+.dropdown_button:has( input ) {
+  padding-left: 0;
+}
+
+.dropdown_button > input {
+  padding-left: 0;
 }
 
 .dropdown_button:hover {
@@ -30,20 +43,18 @@
   position: absolute;
   top: 100%;
   background-color: #fff;
-  outline: none;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
   border-radius: 8px;
   z-index: 999;
 }
 
 .dropdown_menu ul {
-  display: flex;
-  flex-direction: column;
   padding: 8px 0;
   list-style: none;
 }
 
 .dropdown_menu ul .item_container {
+  flex: 1;
   display: flex;
   align-items: center;
   margin: 0 8px;

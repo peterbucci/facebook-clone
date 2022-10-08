@@ -4,4 +4,5 @@
   height: 20px;
   background-repeat: no-repeat;
   display: block;
+  box-sizing: border-box;
 }

@@ -11,6 +11,7 @@ function Friends({ path }) {
           <span className="profile_card_text">Find Friends</span>
           <DropdownMenu
             listItems={{ "Edit Privacy": { onClick: "photos" } }}
+            listOrder={["Edit Privacy"]}
             right={.02}
             width={344}
           />

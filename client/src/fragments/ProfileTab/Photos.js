@@ -49,6 +49,7 @@ function Photos({ path, userId, posts, containerRef }) {
             listItems={{
               "See Photos Hidden From Timeline": { onClick: "photos" },
             }}
+            listOrder={["See Photos Hidden From Timeline"]}
             right={0.02}
             width={344}
           />

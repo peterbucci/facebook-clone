@@ -1,0 +1,65 @@
+.profile_detail_form form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.profile_detail_form form h4 {
+  margin: 5px 0;
+  font-size: .9375rem;
+  font-weight: 600;
+}
+
+.profile_detail_form .text_box {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0.5px;
+  border-radius: 6px;
+}
+
+.profile_detail_form .text_box.outline {
+  outline: solid 2px #0571ed;
+  outline-offset: 2px;
+}
+
+.profile_detail_form .text_box_input {
+  all: unset;
+  width: 100%;
+  padding-top: 26px;
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 6px;
+  border: solid 1px #ced0d4;
+  box-sizing: border-box;
+}
+
+.profile_detail_form .text_box_input:hover {
+  border-color: #555;
+}
+
+.profile_detail_form .text_box_input.text_area {
+  vertical-align: top;
+  resize: none;
+}
+
+.profile_detail_form .text_box_placeholder {
+  position: absolute;
+  top: 20px;
+  left: 16px;
+  color: #65676b;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.profile_detail_form .text_box_placeholder.focused {
+  top: 10px;
+  color: #0571ed;
+  font-size: 0.75rem;
+}
+
+.profile_detail_form .text_box_placeholder.text_entered {
+  top: 10px;
+  font-size: 0.75rem;
+}

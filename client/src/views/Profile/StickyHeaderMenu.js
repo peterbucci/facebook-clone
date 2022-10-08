@@ -33,65 +33,45 @@ function StickyHeaderMenu({
       ? {
           "View As": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="drBXwZz93Qb" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="eye" />,
           },
           Search: {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="k906YnEfK-M" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="magnify" />,
           },
           "Account Status": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="3-XyaLzIaPa" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="account" />,
           },
           Archive: {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="Zpjt65E_R6g" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="box" />,
           },
           "Story archive": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="VPI6qcSjAdA" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="clock" />,
           },
           "Activity logs": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="xgytVckP4Ux" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="unorderedList" />,
           },
           "Profile and tagging settings": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="Duwrr6Ee1kj" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="profileSettings" />,
           },
         }
       : {
           Search: {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="k906YnEfK-M" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="magnify" />,
           },
           "Find support or report": {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="FdVZYQ7JEpw" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="support" />,
           },
           Block: {
             onClick: "photos",
-            Icon: () => (
-              <BackgroundIcon image="G3gURmvgvWg" position={[0, 0]} />
-            ),
+            Icon: () => <BackgroundIcon icon="profileBlock" />,
           },
         };
 
@@ -159,16 +139,31 @@ function StickyHeaderMenu({
                 {currentProfile.firstName} {currentProfile.lastName}
               </span>
             </div>
-          ) : (<>
-            <TabNavigator
-              listItems={tabNavigatorListItems}
-              active={isActive}
-            />
-            </>)}
+          ) : (
+            <>
+              <TabNavigator
+                listItems={tabNavigatorListItems}
+                active={isActive}
+              />
+            </>
+          )}
         </div>
         <div className="profile_header_nav_right">
           <DropdownMenu
             listItems={dropdownListItems}
+            listOrder={
+              user === currentProfile.id
+                ? [
+                    "View As",
+                    "Search",
+                    "Account Status",
+                    "Archive",
+                    "Story archive",
+                    "Activity logs",
+                    "Profile and tagging settings",
+                  ]
+                : ["Search", "Find support or report", "Block"]
+            }
             align="right"
             width={344}
           />

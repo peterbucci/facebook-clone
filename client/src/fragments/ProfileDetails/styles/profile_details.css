@@ -1,0 +1,66 @@
+.add_workplace > .employment_length {
+  margin-bottom: 12px;
+}
+
+.add_workplace > .employment_length > .date_select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.add_workplace > .employment_length > .date_select .dropdown_button {
+  padding-right: 8px;
+}
+
+.add_workplace > .employment_length > .date_select .dropdown_button > input {
+  padding-right: 0;
+}
+
+.add_workplace > .employment_length > .date_select > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.add_workplace > .employment_length > .date_select > div > select {
+  all: unset;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  padding: 4px 16px;
+  height: 36px;
+  background-color: #E4E6EB;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add_workplace > .employment_length > .date_select > div > select > option {
+  all: unset;
+  background-color: #fff;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
+  border: none;
+  border-radius: 8px;
+}
+
+.add_workplace > .employment_length > .date_select_from {
+  margin-right: 8px;
+}
+
+.add_workplace > .employment_length > .date_select_to {
+  margin: 0 8px;
+}
+
+.profile_details_form_footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: solid 1px #ced0d4;
+}
+

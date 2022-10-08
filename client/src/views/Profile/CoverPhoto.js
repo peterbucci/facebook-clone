@@ -17,21 +17,19 @@ function CoverPhoto({ currentProfile }) {
             "Select Photo": {
               onClick: "photos",
               Icon: () => (
-                <BackgroundIcon image="fgWwJT0JD-x" position={[0, -406]} />
+                <BackgroundIcon icon="photos" />
               ),
             },
             "Upload Photo": {
               onClick: "photos",
               Icon: () => (
-                <BackgroundIcon image="SyKgNW4aY0X" position={[0, -21]} />
+                <BackgroundIcon icon="upload" />
               ),
             },
           }}
+          listOrder={["Select Photo", "Upload Photo"]}
           buttonText="Add cover photo"
-          buttonIcon={{
-            file: "24cg4eigpiL",
-            pos: [0, -328],
-          }}
+          buttonIcon="cameraFilled"
           align="right"
           width={344}
         />

@@ -19,15 +19,15 @@ function About({ path, currentProfile, user }) {
         ) : path === "about_work_and_education" ? (
           <WorkAndEducation currentProfile={currentProfile} user={user} />
         ) : path === "about_places" ? (
-          <PlacesLived />
+          <PlacesLived currentProfile={currentProfile} user={user} />
         ) : path === "about_contact_and_basic_info" ? (
-          <ContactAndBasicInfo />
+          <ContactAndBasicInfo currentProfile={currentProfile} user={user} />
         ) : path === "about_family_and_relationships" ? (
-          <Relationships />
+          <Relationships currentProfile={currentProfile} user={user} />
         ) : path === "about_details" ? (
-          <AboutYou />
+          <AboutYou currentProfile={currentProfile} user={user} />
         ) : path === "about_life_events" ? (
-          <LifeEvents />
+          <LifeEvents currentProfile={currentProfile} user={user} />
         ) : (
           <span>Not found</span>
         )}

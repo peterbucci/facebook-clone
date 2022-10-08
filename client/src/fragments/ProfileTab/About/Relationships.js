@@ -1,15 +1,13 @@
-import {
-  RelationshipDetails,
-  FamilyMembersDetails,
-} from "fragments/ProfileDetails/";
+import ProfileDetails from "fragments/ProfileDetails/";
 
-function Relationships() {
+function Relationships({ currentProfile, user }) {
+  const isProfileUser = currentProfile.id === user
   return (
     <ul>
       <h3>Relationship</h3>
-      <RelationshipDetails />
+      <ProfileDetails isProfileUser={isProfileUser} detail="relationship" />
       <h3>Family Members</h3>
-      <FamilyMembersDetails />
+      <ProfileDetails isProfileUser={isProfileUser} detail="family" />
     </ul>
   );
 }

@@ -1,34 +1,38 @@
-import {
-  AddressDetails,
-  PhoneNumberDetails,
-  WebsiteDetails,
-  SocialLinkDetails,
-  LanguageDetails,
-  ReligiousViewsDetails,
-  PoliticalViewsDetails,
-  SexualPreferenceDetails,
-  GenderDetails,
-  BirthDateDetails,
-  BirthYearDetails,
-} from "fragments/ProfileDetails/";
+import { useEffect, useState } from "react"
+import ProfileDetails from "fragments/ProfileDetails/";
+import NoDetailToShow from "fragments/ProfileDetails/NoDetailToShow";
 
-function ContactAndBasicInfo() {
+function ContactAndBasicInfo({ currentProfile, user }) {
+  const isProfileUser = currentProfile.id === user
+  const [noContactInfo, setNoContactInfo] = useState(true)
+  const [noLinks, setNoLinks] = useState(true)
+  const [noBasicInfo, setNoBasicInfo] = useState(true)
+
+  useEffect(() => {
+    setNoContactInfo(!isProfileUser)
+    setNoLinks(!isProfileUser)
+    setNoBasicInfo(!isProfileUser)
+  }, [isProfileUser])
+
   return (
     <ul>
       <h3>Contact info</h3>
-      <AddressDetails />
-      <PhoneNumberDetails />
+      {noContactInfo && <NoDetailToShow detail="contactInfo" />}
+      <ProfileDetails isProfileUser={isProfileUser} detail="address" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="phone" disableDefault={true} />
       <h3>Websites and social links</h3>
-      <WebsiteDetails />
-      <SocialLinkDetails />
+      {noLinks && <NoDetailToShow detail="link" />}
+      <ProfileDetails isProfileUser={isProfileUser} detail="website" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="social" disableDefault={true} />
       <h3>Basic Info</h3>
-      <LanguageDetails />
-      <ReligiousViewsDetails />
-      <PoliticalViewsDetails />
-      <SexualPreferenceDetails />
-      <GenderDetails />
-      <BirthDateDetails />
-      <BirthYearDetails />
+      {noBasicInfo && <NoDetailToShow detail="basicInfo" />}
+      <ProfileDetails isProfileUser={isProfileUser} detail="language" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="religion" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="politics" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="sexuality" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="gender" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="birthDate" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="birthYear" disableDefault={true} />
     </ul>
   );
 }

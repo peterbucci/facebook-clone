@@ -1,25 +1,26 @@
-export { default as WorkplaceDetails } from "fragments/ProfileDetails/Workplace";
-export { default as HighSchoolDetails } from "fragments/ProfileDetails/HighSchool";
-export { default as CollegeDetails } from "fragments/ProfileDetails/College";
-export { default as CurrentCityDetails } from "fragments/ProfileDetails/CurrentCity";
-export { default as HometownDetails } from "fragments/ProfileDetails/Hometown";
-export { default as CityDetails } from "fragments/ProfileDetails/City";
-export { default as AddressDetails } from "fragments/ProfileDetails/Address";
-export { default as PhoneNumberDetails } from "fragments/ProfileDetails/PhoneNumber";
-export { default as WebsiteDetails } from "fragments/ProfileDetails/Website";
-export { default as SocialLinkDetails } from "fragments/ProfileDetails/SocialLink";
-export { default as LanguageDetails } from "fragments/ProfileDetails/Language";
-export { default as ReligiousViewsDetails } from "fragments/ProfileDetails/ReligiousViews"
-export { default as PoliticalViewsDetails } from "fragments/ProfileDetails/PoliticalViews"
-export { default as SexualPreferenceDetails } from "fragments/ProfileDetails/SexualPreference"
-export { default as GenderDetails } from "fragments/ProfileDetails/Gender"
-export { default as BirthDateDetails } from "fragments/ProfileDetails/BirthDate"
-export { default as BirthYearDetails } from "fragments/ProfileDetails/BirthYear"
-export { default as RelationshipDetails } from "fragments/ProfileDetails/Relationship"
-export { default as FamilyMembersDetails } from "fragments/ProfileDetails/FamilyMembers"
-export { default as AboutYouDetails } from "fragments/ProfileDetails/AboutYou"
-export { default as NamePronunciationDetails } from "fragments/ProfileDetails/NamePronunciation"
-export { default as OtherNamesDetails } from "fragments/ProfileDetails/OtherNames"
-export { default as FavoriteQuotesDetails } from "fragments/ProfileDetails/FavoriteQuotes"
-export { default as BloodDonationsDetails } from "fragments/ProfileDetails/BloodDonations"
-export { default as LifeEventsDetails } from "fragments/ProfileDetails/LifeEvents"
+import { useState } from "react";
+import "./styles/profile_details.css"
+import AddADetail from "./AddADetail";
+import NoDetailToShow from "./NoDetailToShow";
+import * as components from "fragments/ProfileDetailsForms/";
+
+function ProfileDetails({ isProfileUser, detail, disableDefault, onClick }) {
+  const [expanded, setExpanded] = useState(false);
+  const CurrentForm = components[detail];
+
+  return isProfileUser ? (
+    expanded ? (
+      <li className="profile_detail_form">
+        <CurrentForm handleReset={() => setExpanded(false)} />
+      </li>
+    ) : (
+      <AddADetail detail={detail} setExpanded={setExpanded} onClick={onClick} />
+    )
+  ) : disableDefault ? (
+    <></>
+  ) : (
+    <NoDetailToShow detail={detail} />
+  );
+}
+
+export default ProfileDetails;

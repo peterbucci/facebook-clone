@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 
-function Menu({ menuRef, width, listItems, menuProps }) {
+function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps }) {
+  const containerStyle = height ? { maxHeight: height } : {} 
+  const listStyle = containerStyle.maxHeight ? { maxHeight: height, overflow: "scroll" } : {}
+
   return (
     <div
       className="dropdown_menu"
       ref={menuRef}
       tabIndex={1}
-      style={{ width: width ? width + "px" : "auto", ...menuProps }}
+      style={{ width: width ? width + "px" : "auto", ...containerStyle, ...menuProps }}
     >
-      <ul>
-        {Object.keys(listItems).map((text) => {
+      <ul ref={listRef} style={listStyle}>
+        {listOrder.map((text) => {
           const onClick = listItems[text].onClick;
           const Icon = listItems[text].Icon
           const item = Icon ? (
