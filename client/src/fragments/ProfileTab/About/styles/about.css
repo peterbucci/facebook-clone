@@ -99,11 +99,11 @@
   font-size: 22px;
 }
 
-.profile_about_body > ul li span {
+.profile_about_body > ul > li > span {
   padding: 6px;
 }
 
-.profile_about_body > ul li > span {
+.profile_about_body > ul > li > span {
   font-size: .9375rem;
   font-weight: 500;
 }

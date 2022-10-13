@@ -1,0 +1,18 @@
+.privacy_button {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font-size: .9375rem;
+  font-weight: 600;
+  background-color: #e4e6eb;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.privacy_button:hover {
+  background-color: #cfd1d5;
+}
+
+.privacy_button .background_icon {
+  margin-right: 4px;
+}

@@ -6,6 +6,7 @@
 .dropdown_button {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 4px;
   padding: 4px 16px;
   height: 36px;

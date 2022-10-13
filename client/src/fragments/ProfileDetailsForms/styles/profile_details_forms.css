@@ -1,0 +1,80 @@
+.button_add_form_field {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background-color: #e7f3ff;
+  border-radius: 6px;
+  color: hsl(214deg 89% 52%);
+  font-size: .9375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.container_add_social_link {
+  display: flex;
+  align-items: flex-start;
+}
+
+.container_add_social_link .dropdown_button {
+  margin-left: 12px !important;
+}
+
+.container_add_social_link .text_box, .container_add_social_link .text_box > input {
+  width: 215px !important;
+}
+
+.container_add_interested_in {
+  margin-bottom: 12px;
+}
+
+.checkbox_show_on_timeline {
+  padding: 12px 0;
+}
+
+.container_gender > .dropdown_container > .dropdown_button {
+  margin-bottom: 12px;
+}
+
+.container_custom_gender {
+  display: flex;
+  flex-direction: column;
+}
+
+.container_custom_gender > * {
+  margin-bottom: 12px !important;
+}
+
+.container__birthday_row {
+  display: flex;
+  align-items: center;
+}
+
+.container__form_element {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.footer_message {
+  font-size: .8125rem;
+  font-weight: 400;
+}
+
+.relationship_message {
+  font-size: .9375rem;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+.button_add_form_field:hover {
+  background-color: #dbe7f2;
+}
+
+.button_add_form_field > .background_icon {
+  margin-right: 6px;
+  filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg) brightness(97%) contrast(96%);
+  -webkit-filter: invert(39%) sepia(57%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(200%) saturate(147.75%) hue-rotate(202deg) brightness(97%) contrast(96%);
+  font-size: 22px;
+}

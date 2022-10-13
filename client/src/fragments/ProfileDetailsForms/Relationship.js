@@ -1,10 +1,36 @@
-import AddIcon from "@mui/icons-material/Add";
+import SelectDropdown from "components/SelectDropdown";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function RelationshipForm() {
+function RelationshipForm({ handleReset }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add a relationship status</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <div className="container__form_element">
+        <SelectDropdown
+          label="relationshipStatus"
+          listOrder={[
+            "Status",
+            "Single",
+            "In a relationship",
+            "Engaged",
+            "Married",
+            "In a civil union",
+            "In a domestic partnership",
+            "In an open relationship",
+            "It's complicated",
+            "Separated",
+            "Divorced",
+            "Widowed",
+          ]}
+        />
+        <div className="relationship_message">Changes will not appear in News Feed.</div>
+      </div>
+      <FormFooter handleReset={handleReset} />
+    </form>
   );
 }
 

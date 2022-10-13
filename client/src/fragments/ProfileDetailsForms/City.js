@@ -1,11 +1,28 @@
-import AddIcon from "@mui/icons-material/Add";
+import DatePicker from "components/DatePicker";
+import TextInput from "components/TextInput";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function CityForm() {
+function AddCityForm({ handleReset }) {
+  const currentYear = new Date().getFullYear();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add a city</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <TextInput label="addCity" name="City" />
+      <DatePicker
+        fromText="Date moved"
+        fromTextVisibility={true}
+        defaultFromYear={currentYear}
+        toTextVisibility={false}
+        toDateVisibility={false}
+      />
+      <FormFooter handleReset={handleReset} />
+    </form>
   );
 }
 
-export default CityForm;
+export default AddCityForm;

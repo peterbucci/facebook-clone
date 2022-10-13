@@ -1,8 +1,9 @@
+import "./styles/profile_details_forms.css"
+
 export { default as about } from "./AboutYou"
 export { default as address } from "./Address"
 export { default as language } from "./Language"
-export { default as birthDate } from "./BirthDate"
-export { default as birthYear } from "./BirthYear"
+export { default as birthday } from "./Birthday"
 export { default as lifeEvents } from "./LifeEvents"
 export { default as pronunciation } from "./NamePronunciation"
 export { default as otherNames } from "./OtherNames"

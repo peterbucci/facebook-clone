@@ -19,7 +19,7 @@ function AboutYou({ currentProfile, user }) {
           <ProfileDetails
             isProfileUser={isProfileUser}
             detail="bloodDonations"
-            onClick={() => console.log("blood donations clicked")}
+            linkTo="photos"
           />
         </>
       )}

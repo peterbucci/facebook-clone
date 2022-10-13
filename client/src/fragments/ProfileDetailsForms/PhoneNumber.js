@@ -1,11 +1,19 @@
-import AddIcon from "@mui/icons-material/Add";
+import TextInput from "components/TextInput";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function PhoneNumberDetails() {
+function PhoneNumberForm({ handleReset }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add your phone number</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <TextInput label="phone" name="Phone Number" />
+      <FormFooter handleReset={handleReset} />
+    </form>
   );
 }
 
-export default PhoneNumberDetails;
+export default PhoneNumberForm;
+

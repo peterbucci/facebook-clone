@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps }) {
-  const containerStyle = height ? { maxHeight: height } : {} 
-  const listStyle = containerStyle.maxHeight ? { maxHeight: height, overflow: "scroll" } : {}
+function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps, setVisible }) {
+  const containerStyle = height ? { maxHeight: height,  overflow: "scroll" } : {} 
+  const listStyle = containerStyle.maxHeight ? { maxHeight: height, } : {}
 
   return (
     <div
@@ -11,9 +11,12 @@ function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps
       tabIndex={1}
       style={{ width: width ? width + "px" : "auto", ...containerStyle, ...menuProps }}
     >
-      <ul ref={listRef} style={listStyle}>
-        {listOrder.map((text) => {
-          const onClick = listItems[text].onClick;
+      <ul ref={listRef} >
+        {listOrder.map((text, i) => {
+          const onClick = () => {
+            listItems[text].onClick()
+            setVisible(false)
+          };
           const Icon = listItems[text].Icon
           const item = Icon ? (
             <>
@@ -28,11 +31,11 @@ function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps
 
 
           return typeof onClick === "string" ? (
-            <li>
+            <li key={i}>
               <Link to={onClick} className={`item_container${Icon ? " with_icons" : ""}`}>{item}</Link>
             </li>
           ) : (
-            <li onClick={onClick} className={`item_container${Icon ? " with_icons" : ""}`}>{item}</li>
+            <li key={i} onClick={onClick} className={`item_container${Icon ? " with_icons" : ""}`}>{item}</li>
           );
         })}
       </ul>

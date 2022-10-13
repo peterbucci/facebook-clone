@@ -4,7 +4,7 @@ import AddADetail from "./AddADetail";
 import NoDetailToShow from "./NoDetailToShow";
 import * as components from "fragments/ProfileDetailsForms/";
 
-function ProfileDetails({ isProfileUser, detail, disableDefault, onClick }) {
+function ProfileDetails({ isProfileUser, detail, disableDefault, linkTo }) {
   const [expanded, setExpanded] = useState(false);
   const CurrentForm = components[detail];
 
@@ -14,7 +14,7 @@ function ProfileDetails({ isProfileUser, detail, disableDefault, onClick }) {
         <CurrentForm handleReset={() => setExpanded(false)} />
       </li>
     ) : (
-      <AddADetail detail={detail} setExpanded={setExpanded} onClick={onClick} />
+      <AddADetail detail={detail} setExpanded={setExpanded} linkTo={linkTo} />
     )
   ) : disableDefault ? (
     <></>

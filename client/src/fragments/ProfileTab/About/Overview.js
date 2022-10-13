@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react"
-import AddIcon from "@mui/icons-material/Add";
-import ProfileDetails, {
-  PhoneNumberDetails,
-} from "fragments/ProfileDetails/";
+import ProfileDetails from "fragments/ProfileDetails/";
 import NoDetailToShow from "fragments/ProfileDetails/NoDetailToShow";
 
 function Overview({ currentProfile, user }) {

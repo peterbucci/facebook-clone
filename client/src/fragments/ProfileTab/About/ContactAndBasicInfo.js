@@ -31,8 +31,7 @@ function ContactAndBasicInfo({ currentProfile, user }) {
       <ProfileDetails isProfileUser={isProfileUser} detail="politics" disableDefault={true} />
       <ProfileDetails isProfileUser={isProfileUser} detail="sexuality" disableDefault={true} />
       <ProfileDetails isProfileUser={isProfileUser} detail="gender" disableDefault={true} />
-      <ProfileDetails isProfileUser={isProfileUser} detail="birthDate" disableDefault={true} />
-      <ProfileDetails isProfileUser={isProfileUser} detail="birthYear" disableDefault={true} />
+      <ProfileDetails isProfileUser={isProfileUser} detail="birthday" disableDefault={true} />
     </ul>
   );
 }

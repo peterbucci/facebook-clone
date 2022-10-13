@@ -33,22 +33,28 @@ function ProfilePhoto({ user, currentProfile, currentProfilePic }) {
         "View profile picture": {
           onClick: handleViewPhoto,
           Icon: () => (
-            <BackgroundIcon icon="profilePic" image="nnebAkjFy_c" position={[0, -84]} />
+            <BackgroundIcon
+              icon="profilePic"
+              image="nnebAkjFy_c"
+              position={[0, -84]}
+            />
           ),
         },
         "Update profile picture": {
           onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
           Icon: () => (
-            <BackgroundIcon icon="photos" image="fgWwJT0JD-x" position={[0, -406]} />
+            <BackgroundIcon
+              icon="photos"
+              image="fgWwJT0JD-x"
+              position={[0, -406]}
+            />
           ),
         },
       }
     : {
         "Add Photo": {
           onClick: () => setToggleUploadPhotoForm(!toggleUploadPhotoForm),
-          Icon: () => (
-            <BackgroundIcon icon="camera" />
-          ),
+          Icon: () => <BackgroundIcon icon="camera" />,
         },
       };
 
@@ -59,7 +65,11 @@ function ProfilePhoto({ user, currentProfile, currentProfilePic }) {
       )}
       <DropdownMenu
         listItems={listItems}
-        listOrder={currentProfilePic ? ["View profile picture", "Update profile picture"] : ["Add Photo"]}
+        listOrder={
+          currentProfilePic
+            ? ["View profile picture", "Update profile picture"]
+            : ["Add Photo"]
+        }
         width={344}
         left={1}
         align="center"

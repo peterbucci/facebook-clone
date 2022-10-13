@@ -1,10 +1,18 @@
-import AddIcon from "@mui/icons-material/Add";
+import TextInput from "components/TextInput";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function HometownForm() {
+
+function HometownForm({handleReset}) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add a hometown</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <TextInput label="hometown" name="Hometown" />
+      <FormFooter handleReset={handleReset}  />
+    </form>
   );
 }
 

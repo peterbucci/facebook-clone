@@ -28,7 +28,7 @@ function SvgIcon({
   return (
     <svg viewBox={viewBox} height={height} width={width}>
       {circles &&
-        circles.map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r}></circle>)}
+        circles.map(([cx, cy, r], i) => <circle key={i} cx={cx} cy={cy} r={r}></circle>)}
       {name && <path d={icons[filled ? name + "Filled" : name]}></path>}
     </svg>
   );

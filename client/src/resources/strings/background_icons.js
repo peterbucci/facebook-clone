@@ -155,3 +155,17 @@ export const arrowDown = {
   file: "jARXTcnV8gf",
   position: [-136, -204],
 }
+
+export const plus = {
+  file: "Yh3XiBiKP8B",
+  position: [0, -1269],
+  height: "16px",
+  width: "16px",
+}
+
+export const globe = {
+  file: "uZ3e1jYZKfj",
+  position: [0, 0],
+  height: "12px",
+  width: "12px"
+}

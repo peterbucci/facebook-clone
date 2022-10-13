@@ -4,6 +4,7 @@ import Menu from "./menu";
 import getTextWidth from "common/get_text_width";
 import determinePos from "./determinePos";
 import BackgroundIcon from "common/icons/BackgroundIcon";
+import TextInput from "components/TextInput";
 
 function DropdownMenu({
   children,
@@ -20,35 +21,38 @@ function DropdownMenu({
   customContainerClass,
   customMenuClass,
   customButton,
+  inputButton,
 }) {
   const [textWidth, setTextWidth] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [menuHeight, setMenuHeight] = useState(0)
+  const [menuHeight, setMenuHeight] = useState(null);
   const [menuProps, setMenuProps] = useState({});
   const buttonRef = useRef(null);
   const menuRef = useRef(null);
   const listRef = useRef(null);
 
+  const ButtonIcon = () => {
+    return (
+      <BackgroundIcon
+        icon={buttonIcon ? buttonIcon : "ellipsis"}
+        width="16px"
+        height="16px"
+      />
+    );
+  };
+
   const handleClick = () => setVisible(!visible);
 
   useEffect(() => {
-    const input = document.getElementById(label);
-    if (input) {
-      var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-        window.HTMLInputElement.prototype,
-        "value"
-      ).set;
-      nativeInputValueSetter.call(input, buttonText);
-      var ev2 = new Event("input", { bubbles: true });
-      input.dispatchEvent(ev2);
-      setVisible(false)
-    }
-  }, [buttonText, label]);
-
-  useEffect(() => {
-    const height = label ? (window.innerHeight - (buttonRef.current?.getBoundingClientRect().top + buttonRef.current?.offsetHeight)) + "px" : null
-    setMenuHeight(height)
-  }, [visible, label])
+    const height = label
+      ? window.innerHeight -
+        (buttonRef.current?.getBoundingClientRect().top +
+          buttonRef.current?.offsetHeight) +
+        "px"
+      : null;
+    console.log(height);
+    setMenuHeight(height);
+  }, [visible, label]);
 
   useEffect(() => {
     setTextWidth(width ?? getTextWidth(Object.keys(listItems)));
@@ -78,42 +82,31 @@ function DropdownMenu({
   }, [visible, align, right, left, textWidth]);
 
   return (
-    <div className={customContainerClass ?? `dropdown_container`}>
+    <div
+      className={
+        customContainerClass ??
+        `dropdown_container${label ? " select_dropdown" : ""}`
+      }
+    >
       {customButton ? (
         customButton(handleClick, buttonRef)
+      ) : inputButton ? (
+        <TextInput
+          label={label}
+          name={inputButton}
+          outsideValue={buttonText}
+          handleClick={handleClick}
+          inputRef={buttonRef}
+          icon={buttonIcon ? () => <ButtonIcon /> : null}
+        />
       ) : (
         <div onClick={handleClick} className="dropdown_button" ref={buttonRef}>
-          {buttonIcon !== "none" && !buttonIconRight && (
-            <BackgroundIcon
-              icon={buttonIcon ?? "ellipsis"}
-              width="16px"
-              height="16px"
-            />
-          )}
+          {buttonIcon !== "none" && !buttonIconRight && <ButtonIcon />}
           {buttonText && (
-            <>
-              {!label ? (
-                <div className="dropdown_button_text">{buttonText}</div>
-              ) : (
-                <input
-                  type="text"
-                  id={label}
-                  className="dropdown_button_text"
-                  readOnly={true}
-                  style={{
-                    width: (buttonText.length + 2) +  "ch",
-                  }}
-                />
-              )}
-            </>
+            <div className="dropdown_button_text">{buttonText}</div>
           )}
-          {buttonIcon !== "none" && buttonIconRight && (
-            <BackgroundIcon
-              icon={buttonIcon ?? "ellipsis"}
-              width="16px"
-              height="16px"
-            />
-          )}
+          {label && <input id={label} type="hidden" value={buttonText} />}
+          {buttonIcon !== "none" && buttonIconRight && <ButtonIcon />}
         </div>
       )}
 
@@ -130,6 +123,7 @@ function DropdownMenu({
             listOrder={listOrder}
             menuProps={menuProps}
             customMenuClass={customMenuClass}
+            setVisible={setVisible}
           />
         )
       ) : (

@@ -5,7 +5,7 @@ function TabNavigator({ listItems, active }) {
   return (
     <div className="tab_navigator">
       <ul>
-        {Object.keys(listItems).map((key) => {
+        {Object.keys(listItems).map((key, i) => {
           const { text, Icon, onClick, secondaryKeys, additionalClasses } =
             listItems[key];
           const item = Icon ? (
@@ -22,7 +22,7 @@ function TabNavigator({ listItems, active }) {
             (additionalClasses ? " " + additionalClasses : "");
 
           return (
-            <li className={classes}>
+            <li key={i} className={classes}>
               {typeof onClick === "string" ? (
                 <Link to={onClick}>{item}</Link>
               ) : (

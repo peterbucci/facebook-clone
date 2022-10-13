@@ -1,0 +1,56 @@
+.date_select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.date_select .dropdown_button {
+  padding-right: 8px;
+  margin-right: 8px !important;
+}
+
+.date_select .dropdown_button > input {
+  padding-right: 0;
+}
+
+.date_select > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.date_select > div > select {
+  all: unset;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  padding: 4px 16px;
+  height: 36px;
+  background-color: #E4E6EB;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.date_select > div > select > option {
+  all: unset;
+  background-color: #fff;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
+  border: none;
+  border-radius: 8px;
+}
+
+.date_select_from {
+  margin-right: 8px;
+}
+
+.date_select_to {
+  margin-right: 8px;
+}

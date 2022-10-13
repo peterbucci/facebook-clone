@@ -1,10 +1,17 @@
-import AddIcon from "@mui/icons-material/Add";
+import TextInput from "components/TextInput";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function LanguageForm() {
+function LanguageForm({ handleReset }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add a language</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <TextInput label="languages" name="Languages" />
+      <FormFooter handleReset={handleReset} />
+    </form>
   );
 }
 

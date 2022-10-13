@@ -6,7 +6,7 @@
 
 .profile_detail_form form h4 {
   margin: 5px 0;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 600;
 }
 
@@ -16,6 +16,10 @@
   margin-bottom: 10px;
   padding: 0.5px;
   border-radius: 6px;
+}
+
+.profile_detail_form .cursor_pointer {
+  cursor: pointer;
 }
 
 .profile_detail_form .text_box.outline {
@@ -33,6 +37,37 @@
   border-radius: 6px;
   border: solid 1px #ced0d4;
   box-sizing: border-box;
+  font-size: 1rem;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+
+  40% {
+    transform: translateX(5px);
+  }
+
+  60% {
+    transform: translateX(-5px);
+  }
+
+  80% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.profile_detail_form .text_box.clicked {
+  animation: shake 0.35s;
+  animation-iteration-count: 1;
 }
 
 .profile_detail_form .text_box_input:hover {
@@ -42,6 +77,19 @@
 .profile_detail_form .text_box_input.text_area {
   vertical-align: top;
   resize: none;
+}
+
+.profile_detail_form .text_box .disabled {
+  background-color: #f0f2f5;
+  cursor: not-allowed;
+}
+
+.profile_detail_form .text_box .text_box_input.disabled:hover {
+  border: solid 1px #ced0d4;
+}
+
+.profile_detail_form .text_box label.disabled {
+  color: #b5baca;
 }
 
 .profile_detail_form .text_box_placeholder {
@@ -62,4 +110,10 @@
 .profile_detail_form .text_box_placeholder.text_entered {
   top: 10px;
   font-size: 0.75rem;
+}
+.profile_detail_form .text_box .background_icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
 }

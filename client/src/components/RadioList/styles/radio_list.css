@@ -1,0 +1,23 @@
+.radio_list {
+  margin-bottom: 12px;
+}
+
+.radio_list_label {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.radio_list_button {
+  border: 0;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.radio_list_text {
+  padding-left: 8px;
+  font-weight: 600;
+  font-size: .9375rem;
+}

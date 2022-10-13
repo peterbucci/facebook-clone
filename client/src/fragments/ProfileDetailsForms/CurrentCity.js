@@ -1,10 +1,18 @@
-import AddIcon from "@mui/icons-material/Add";
+import TextInput from "components/TextInput";
+import FormFooter from "fragments/ProfileDetails/FormFooter";
 
-function CurrentCityForm() {
+
+function CurrentCityForm({handleReset}) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target.elements);
+  };
+
   return (
-    <li>
-      <AddIcon /> <span>Add current city</span>
-    </li>
+    <form onSubmit={handleSubmit}>
+      <TextInput label="currentCity" name="Current city" />
+      <FormFooter handleReset={handleReset}  />
+    </form>
   );
 }
 
