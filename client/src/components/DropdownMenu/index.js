@@ -32,13 +32,7 @@ function DropdownMenu({
   const listRef = useRef(null);
 
   const ButtonIcon = () => {
-    return (
-      <BackgroundIcon
-        icon={buttonIcon ? buttonIcon : "ellipsis"}
-        width="16px"
-        height="16px"
-      />
-    );
+    return <BackgroundIcon icon={buttonIcon ? buttonIcon : "ellipsis"} />;
   };
 
   const handleClick = () => setVisible(!visible);
@@ -50,7 +44,6 @@ function DropdownMenu({
           buttonRef.current?.offsetHeight) +
         "px"
       : null;
-    console.log(height);
     setMenuHeight(height);
   }, [visible, label]);
 

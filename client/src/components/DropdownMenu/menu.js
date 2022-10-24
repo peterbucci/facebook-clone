@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 
 function Menu({ menuRef, listRef, height, width, listItems, listOrder, menuProps, setVisible }) {
   const containerStyle = height ? { maxHeight: height,  overflow: "scroll" } : {} 
-  const listStyle = containerStyle.maxHeight ? { maxHeight: height, } : {}
 
   return (
     <div

@@ -11,6 +11,7 @@ import Options from "./Options";
 import Footer from "./Footer";
 
 import { useStateValue } from "providers/StateProvider";
+import ModalBox from "components/ModalBox";
 
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string
@@ -36,7 +37,7 @@ function dataURItoBlob(dataURI) {
   return blob;
 }
 
-function UploadPhotoForm({ closeAllMenus, modalRef }) {
+function UploadPhotoForm({ closeAllMenus }) {
   const {
     state: {
       user,
@@ -155,7 +156,7 @@ function UploadPhotoForm({ closeAllMenus, modalRef }) {
       dataURLKey="data_url"
     >
       {({ imageList, onImageUpload, onImageRemove }) => (
-        <div className="profilePhoto__modal__background" ref={modalRef}>
+        <ModalBox handleClickAway={() => closeAllMenus()}>
           <div className="profilePhoto__modal__container">
             <div className="profilePhoto__modal__header">
               <h3>Update Profile Picture</h3>
@@ -196,7 +197,7 @@ function UploadPhotoForm({ closeAllMenus, modalRef }) {
               onImageUpload={onImageUpload}
             />
           </div>
-        </div>
+        </ModalBox>
       )}
     </ImageUploading>
   );

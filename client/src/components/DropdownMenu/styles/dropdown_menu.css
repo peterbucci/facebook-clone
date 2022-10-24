@@ -44,7 +44,7 @@
   position: absolute;
   top: 100%;
   background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px;
+  box-shadow: var(--main-box-shadow);
   border-radius: 8px;
   z-index: 999;
 }

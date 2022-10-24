@@ -1,0 +1,148 @@
+@media (max-width: 775px){
+  .profile_about {
+    flex-direction: column;
+  }
+
+  .profile_about_sidebar {
+    width: 100% !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.profile_about {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.profile_about_sidebar {
+  width: 274px;
+  padding: 8px;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.profile_about_sidebar ul {
+  padding: 0;
+  list-style: none;
+}
+
+.profile_about_sidebar li {
+  margin: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.profile_about_sidebar li a {
+  all: unset;
+  display: block;
+  padding: 5px 10px;
+}
+
+.profile_about_sidebar li.active,
+.profile_about_sidebar li.active:hover {
+  background-color: #E7F3FF;
+}
+
+.profile_about_sidebar li:hover {
+  background-color: #f1f2f5;
+}
+
+.profile_about_body {
+  flex: 1;
+  padding: 16px 32px 32px 16px;
+}
+
+.profile_about_body > ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile_about_body > ul h3 {
+  margin-top: 4px;
+  margin-bottom: 20px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.profile_about_body > ul li img {
+  margin: 0 7px;
+  height: 24px;
+  width: 24px;
+  object-fit: none;
+  object-position: bottom;
+}
+
+.life_events_modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  width: 100%;
+  max-width: 548px;
+  box-sizing: border-box;
+}
+
+.life_events_modal h3 {
+  margin: 0 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  text-align: center;
+}
+
+.life_events_modal span {
+  font-size: .8125rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.life_events_modal .horizontal_divider {
+  height: 1px;
+  width: calc(100% - 32px);
+  margin: 40px 16px;
+  background-color: #ced0d4;
+}
+
+.life_events_modal h4 {
+  margin: 0 !important;
+  font-size: .9375rem !important;
+  font-weight: 600 !important;
+  text-align: center;
+}
+
+.life_events_modal .icon_menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  padding: 16px 12px 0;
+}
+
+.life_events_modal .icon_menu_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+  aspect-ratio: 1/1;
+}
+
+.life_events_modal .icon_menu_item:hover {
+  background-color: #f0f2f5;
+}
+
+.life_events_modal .icon_menu_item span {
+  margin-top: 8px;
+  font-size: .8125rem;
+  font-weight: 400;
+  color: #050505;
+}
+
+.life_events_modal .icon_menu_item img {
+  width: 100%;
+  height: auto;
+}

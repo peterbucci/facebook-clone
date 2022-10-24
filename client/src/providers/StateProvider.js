@@ -19,6 +19,8 @@ export const StateProvider = ({ reducer, children }) => {
     posts: {},
     postOrder: [],
     commentOrder: {},
+    profile: null,
+    profileDetails: {},
     uploadPhotoForm: {
       imageRef: null,
       imageContainerRef: null,

@@ -1,16 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, useHistory } from "react-router-dom";
+import {
+  useParams,
+  useLocation,
+  useHistory,
+  useRouteMatch,
+  Switch,
+  Route,
+} from "react-router-dom";
 import "./styles/profile.css";
+import "./styles/profile_tab.css";
 // COMPONENTS
-import CoverPhoto from "./CoverPhoto";
-import StickyHeaderMenu from "./StickyHeaderMenu";
+import CoverPhoto from "components/CoverPhoto";
+import ProfilePhotoDropdown from "components/ProfilePhotoDropdown";
+import StickyHeaderMenu from "components/StickyHeaderMenu";
+import Posts from "./posts";
+import About from "./about/";
+import Photos from "./photos";
+import Videos from "./videos";
+import CheckIns from "./checkins";
+import Friends from "./friends";
 import { scrollToTop } from "common/scroll_to_top";
-import ProfilePosts from "fragments/ProfilePosts";
-import ProfileTab from "fragments/ProfileTab";
-import ProfilePhoto from "./ProfilePhoto";
 // STATE
 import { useStateValue } from "providers/StateProvider";
 import { useApiUtil } from "providers/ApiUtil";
+
+
+const ABOUT_PATHS = [
+  "about_overview",
+  "about_work_and_education",
+  "about_places",
+  "about_contact_and_basic_info",
+  "about_family_and_relationships",
+  "about_details",
+  "about_life_events",
+  "about",
+];
 
 function Profile() {
   const {
@@ -21,6 +45,7 @@ function Profile() {
   const history = useHistory();
   const prevUser = users[history.location.state?.uid];
   const prevProfilePic = posts[prevUser?.profilePic];
+  const match = useRouteMatch();
   const [currentProfile, setCurrentProfile] = useState(prevUser);
   const [currentProfilePic, setCurrentProfilePic] = useState(prevProfilePic);
 
@@ -55,7 +80,7 @@ function Profile() {
         <CoverPhoto currentProfile={currentProfile} />
         <div className="profile_wrapper">
           <div className="header__name_container">
-            <ProfilePhoto
+            <ProfilePhotoDropdown
               user={user}
               currentProfile={currentProfile}
               currentProfilePic={currentProfilePic}
@@ -73,21 +98,49 @@ function Profile() {
         currentProfile={currentProfile}
         scrollToTop={() => scrollToTop()}
       />
-
-      {path === currentProfile.url || path === "" ? (
-        <ProfilePosts
-          currentProfile={currentProfile}
-          currentProfilePic={currentProfilePic}
-        />
-      ) : (
-        <ProfileTab
-          user={user}
-          currentProfile={currentProfile}
-          currentProfilePic={currentProfilePic}
-          posts={posts}
-          path={path}
-        />
-      )}
+      
+      <div
+        className={`${
+          match.isExact ? "profile_body" : "profile_tab"
+        } profile_wrapper`}
+      >
+        <Switch>
+          <Route path={ABOUT_PATHS.map((path) => `${match.path}/${path}`)}>
+            <About path={path} currentProfile={currentProfile} user={user} />
+            <Photos path={path} userId={currentProfile.id} posts={posts} />
+            <Videos />
+            <CheckIns />
+          </Route>
+          <Route path={["friends"].map((path) => `${match.path}/${path}`)}>
+            <Friends path={path} />
+            <Photos path={path} userId={currentProfile.id} posts={posts} />
+            <Videos />
+            <CheckIns />
+          </Route>
+          <Route
+            path={["photos", "photos_by", "photos_albums"].map(
+              (path) => `${match.path}/${path}`
+            )}
+          >
+            <Photos path={path} userId={currentProfile.id} posts={posts} />
+            <Videos />
+            <CheckIns />
+          </Route>
+          <Route path={["videos"].map((path) => `${match.path}/${path}`)}>
+            <Videos />
+            <CheckIns />
+          </Route>
+          <Route path={["map"].map((path) => `${match.path}/${path}`)}>
+            <CheckIns />
+          </Route>
+          <Route path="">
+            <Posts
+              currentProfile={currentProfile}
+              currentProfilePic={currentProfilePic}
+            />
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 }

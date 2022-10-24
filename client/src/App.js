@@ -7,6 +7,7 @@ import Login from "views/Login";
 import UserFeed from "views/UserFeed/";
 import Profile from "views/Profile";
 import Photo from "views/Photo";
+import BloodDonations from "views/BloodDonations";
 // COMPONENTS
 import Header from "components/Header";
 import ComponentDidMount from "common/ComponentDidMount";
@@ -32,6 +33,7 @@ function App() {
           <div className="body">
             <ComponentDidMount scrollToY={scrollToY} />
             <Switch>
+              <Route path="/blooddonations" component={BloodDonations}/>
               <Route path="/photo" component={Photo} />
               <Route path="/me">
                 <Redirect to={`/${currentUser.url}`} />

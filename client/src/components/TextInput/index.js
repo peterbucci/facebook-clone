@@ -10,9 +10,10 @@ function TextInput({
   handleClick,
   inputRef,
   outsideValue,
-  icon
+  icon,
+  defaultInput = ""
 }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(defaultInput);
   const [focused, setFocused] = useState(false);
   const [clicked, setClicked] = useState(false);
 

@@ -1,6 +1,6 @@
 export const workplace = {
   file: "XF1fUskiRxe",
-  position: [0, 0]
+  position: [0, 0],
 }
 
 export const graduationCap = {
@@ -75,9 +75,26 @@ export const star = {
 }
 export const lifeEvents = star
 
+export const star22 = {
+  file: "37kWcOmJ1n-",
+  position: [0, 0],
+  backgroundSize: "22px 22px",
+  height: "20px",
+  width: "20px",
+}
+
 export const ellipsis = {
   file: "RyUtCFgSzDn",
-  position: [-119, -147]
+  position: [-119, -147],
+  width: "16px",
+  height: "16px"
+}
+
+export const ellipsis20 = {
+  file: "dgKuFNRwhLo",
+  position: [-126, -145],
+  width: "20px",
+  height: "20px"
 }
 
 export const photos ={
@@ -103,6 +120,8 @@ export const camera = {
 export const cameraFilled = {
   file: "24cg4eigpiL",
   position: [0, -328],
+  height: "16px",
+  width: "16px"
 }
 
 export const eye = {
@@ -154,6 +173,8 @@ export const profileBlock = {
 export const arrowDown = {
   file: "jARXTcnV8gf",
   position: [-136, -204],
+  height: "16px",
+  width: "16px"
 }
 
 export const plus = {
@@ -168,4 +189,128 @@ export const globe = {
   position: [0, 0],
   height: "12px",
   width: "12px"
+}
+
+export const globe16 = {
+  file: "K9jUNaxYzs4",
+  position: [0, 0],
+  width: "16px",
+  height: "16px",
+}
+
+export const close = {
+  file: "RyUtCFgSzDn",
+  position: [-104, -105],
+  width: "20px",
+  height: "20px",
+}
+
+export const whiteFlag = {
+  file: "84702798_579370612644419_4516628711310622720_n",
+  position: [0, 0],
+  width: "40px",
+  height: "40px"
+}
+
+export const graduate = {
+  file: "84687230_2222103328096112_4091110349787365376_n",
+  position: [0, 0],
+  width: "40px",
+  height: "40px"
+}
+
+export const pencil = {
+  file: "DAzxmW4Mwkz",
+  position: [0, -646],
+  backgroundSize: "34px 990px",
+  width: "20px",
+  height: "20px"
+}
+
+export const trashcan = {
+  file: "DAzxmW4Mwkz",
+  position: [0, -910],
+  backgroundSize: "34px 990px",
+  width: "20px",
+  height: "20px"
+}
+
+// Life Events Menu
+
+export const suitcase = {
+  file: "LYeDSM6BqJ9",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const graduationCapLifeEvents = {
+  file: "BNRWVaze3by",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+
+export const heartsLifeEvents = {
+  file: "EJWWF8IsKr3",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const houseLifeEvents = {
+  file: "f-K96MXaEta",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const familyTreeLifeEvents = {
+  file: "X84hy5h_-NN",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const globeLifeEvents = {
+  file: "Rq-F-voymrY",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const starLifeEvents = {
+  file: "VtPau9RvrqD",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const clipBoardHeart = {
+  file: "p-r67erjrXf",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const starTrophy = {
+  file: "Wn4ekLfo2H3",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const cake = {
+  file: "zqXLWj8PYYi",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
+}
+
+export const flag = {
+  file: "6X9vm6JY_7F",
+  position: [0, 0],
+  height: "32px",
+  width: "32px"
 }

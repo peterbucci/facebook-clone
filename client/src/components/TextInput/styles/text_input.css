@@ -1,16 +1,4 @@
-.profile_detail_form form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.profile_detail_form form h4 {
-  margin: 5px 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.profile_detail_form .text_box {
+.text_box {
   position: relative;
   width: 100%;
   margin-bottom: 10px;
@@ -18,16 +6,16 @@
   border-radius: 6px;
 }
 
-.profile_detail_form .cursor_pointer {
+.cursor_pointer {
   cursor: pointer;
 }
 
-.profile_detail_form .text_box.outline {
+.text_box.outline {
   outline: solid 2px #0571ed;
   outline-offset: 2px;
 }
 
-.profile_detail_form .text_box_input {
+.text_box_input {
   all: unset;
   width: 100%;
   padding-top: 26px;
@@ -65,34 +53,34 @@
   }
 }
 
-.profile_detail_form .text_box.clicked {
+.text_box.clicked {
   animation: shake 0.35s;
   animation-iteration-count: 1;
 }
 
-.profile_detail_form .text_box_input:hover {
+.text_box_input:hover {
   border-color: #555;
 }
 
-.profile_detail_form .text_box_input.text_area {
+.text_box_input.text_area {
   vertical-align: top;
   resize: none;
 }
 
-.profile_detail_form .text_box .disabled {
+.text_box .disabled {
   background-color: #f0f2f5;
   cursor: not-allowed;
 }
 
-.profile_detail_form .text_box .text_box_input.disabled:hover {
+.text_box .text_box_input.disabled:hover {
   border: solid 1px #ced0d4;
 }
 
-.profile_detail_form .text_box label.disabled {
+.text_box label.disabled {
   color: #b5baca;
 }
 
-.profile_detail_form .text_box_placeholder {
+.text_box_placeholder {
   position: absolute;
   top: 20px;
   left: 16px;
@@ -101,17 +89,17 @@
   font-size: 1rem;
 }
 
-.profile_detail_form .text_box_placeholder.focused {
+.text_box_placeholder.focused {
   top: 10px;
   color: #0571ed;
   font-size: 0.75rem;
 }
 
-.profile_detail_form .text_box_placeholder.text_entered {
+.text_box_placeholder.text_entered {
   top: 10px;
   font-size: 0.75rem;
 }
-.profile_detail_form .text_box .background_icon {
+.text_box .background_icon {
   position: absolute;
   right: 16px;
   top: 50%;
