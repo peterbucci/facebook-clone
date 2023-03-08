@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { storage } from "firebase.js";
 import "./styles/photo.css";
 // COMPONENTS
 import PostHeader from "components/Post/PostHeader";
@@ -8,7 +9,7 @@ import PostFooter from "components/Post/PostFooter";
 import { useStateValue } from "providers/StateProvider";
 import { useApiUtil } from "providers/ApiUtil";
 
-const { REACT_APP_PHOTOS_FOLDER } = process.env;
+const storageRef = storage.ref("images");
 
 function useQuery() {
   const { search } = useLocation();
@@ -23,6 +24,7 @@ function Photo({ history }) {
   const [referred] = useState(history.location.state?.referred);
   const [scrollToY] = useState(history.location.state?.scrollToY);
   const [height] = useState(history.location.state?.height);
+  const [imageURL, setImageURL] = useState(null);
   const { getProfile, getSingleCommentFeed } = useApiUtil();
   const {
     state: { user, users, posts, commentOrder, comments },
@@ -41,6 +43,19 @@ function Photo({ history }) {
   const commentsInPost = commentIds ? commentIds.map((id) => comments[id]) : [];
   const commentUsers = commentsInPost.map((comment) => users[comment.userId]);
   const commentUserPics = commentUsers.map((user) => posts[user.profilePic]);
+
+  useEffect(() => {
+    if (!currentPhoto) return;
+    const image = currentPhoto.cropped
+      ? currentPhoto.thumbnail
+      : currentPhoto.image;
+
+    storageRef
+      .child(image)
+      .getDownloadURL()
+      .then((url) => setImageURL(url))
+      .catch((e) => console.log(e));
+  }, [currentPhoto]);
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -92,39 +107,33 @@ function Photo({ history }) {
     >
       <div className="viewPicture__left">
         <div className="viewPicture__leftBody">
-          {currentPhoto && <img
-            src={
-              REACT_APP_PHOTOS_FOLDER +
-              (currentPhoto.cropped
-                ? currentPhoto.thumbnail
-                : currentPhoto.image)
-            }
-            alt=""
-          />}
+          {currentPhoto && <img src={imageURL} alt="" />}
         </div>
       </div>
       <div className="viewPicture__right">
         {referred && <div className="viewPicture__rightHeader" />}
-        {currentPhoto &&<div ref={containerRef} style={{ overflowY: "overlay" }}>
-          <PostHeader
-            profilePicData={userOfPhotoPic}
-            originalPoster={userOfPhoto}
-            currentWall={userOfPhoto}
-            timestamp={currentPhoto.timestamp}
-          />
-          <div className={`post__body small-font`}>
-            <p>{currentPhoto.message}</p>
+        {currentPhoto && (
+          <div ref={containerRef} style={{ overflowY: "overlay" }}>
+            <PostHeader
+              profilePicData={userOfPhotoPic}
+              originalPoster={userOfPhoto}
+              currentWall={userOfPhoto}
+              timestamp={currentPhoto.timestamp}
+            />
+            <div className={`post__body small-font`}>
+              <p>{currentPhoto.message}</p>
+            </div>
+            <PostFooter
+              post={currentPhoto}
+              commentsInPost={commentsInPost}
+              commentUsers={commentUsers}
+              commentUserPics={commentUserPics}
+              currentUser={currentUser}
+              currentUserPic={currentUserPic}
+              expandComments={true}
+            />
           </div>
-          <PostFooter
-            post={currentPhoto}
-            commentsInPost={commentsInPost}
-            commentUsers={commentUsers}
-            commentUserPics={commentUserPics}
-            currentUser={currentUser}
-            currentUserPic={currentUserPic}
-            expandComments={true}
-          />
-        </div>}
+        )}
       </div>
     </div>
   );

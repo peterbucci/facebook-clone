@@ -1,22 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
+import { storage } from "firebase.js";
+import { useEffect } from "react";
 
-const { REACT_APP_PHOTOS_FOLDER } = process.env;
+const storageRef = storage.ref("images");
 
 function NewAvatar({ profilePicData, className, onClick }) {
+  const [imageURL, setImageURL] = useState(null);
+
+  useEffect(() => {
+    profilePicData &&
+      storageRef
+        .child(profilePicData.thumbnail)
+        .getDownloadURL()
+        .then((url) => setImageURL(url))
+        .catch((e) => console.log(e));
+  }, [profilePicData]);
+
   const props = {
-    ...(profilePicData
-      ? { src: REACT_APP_PHOTOS_FOLDER + profilePicData.thumbnail }
-      : {}),
+    ...(imageURL ? { src: imageURL } : {}),
     className,
-    onClick
+    onClick,
   };
 
   return (
     <Avatar {...props}>
       <img
         style={{ width: "100%" }}
-        src={REACT_APP_PHOTOS_FOLDER + "default_avatar.png"}
+        src="/default_avatar.png"
         alt="Profile Default"
       />
     </Avatar>

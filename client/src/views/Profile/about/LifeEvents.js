@@ -3,7 +3,6 @@ import ModalBox from "components/ModalBox";
 import ProfileDetails from "components/ProfileDetails";
 import NoDetailToShow from "components/ProfileDetails/NoDetailToShow";
 import BackgroundIcon from "common/icons/BackgroundIcon";
-const { REACT_APP_PHOTOS_FOLDER } = process.env;
 
 const icons = [
   { text: "Work", icon: "suitcase" },
@@ -22,17 +21,16 @@ const icons = [
 function LifeEventsModal({ closeModal }) {
   return (
     <div className="life_events_modal">
-      <div className="close_button" onClick={closeModal}><BackgroundIcon icon="close" /></div>
-      <img
-        src={`${REACT_APP_PHOTOS_FOLDER}banners/st43MlfQdGP.png`}
-        alt=""
-      />
+      <div className="close_button" onClick={closeModal}>
+        <BackgroundIcon icon="close" />
+      </div>
+      <img src={`/banners/st43MlfQdGP.png`} alt="" />
       <h3>Life events</h3>
       <span>Share and remember important moments from your life.</span>
       <div className="horizontal_divider"></div>
       <h4>SELECT A CATEGORY</h4>
       <div className="icon_menu">
-        {icons.map(({icon, text}, i) => {
+        {icons.map(({ icon, text }, i) => {
           return (
             <div className="icon_menu_item">
               <BackgroundIcon icon={icon} />

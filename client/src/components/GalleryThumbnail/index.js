@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom";
-import "./styles/gallery_thumbnail.css"
+import React, { useState, useEffect } from "react";
+import { storage } from "firebase.js";
+import "./styles/gallery_thumbnail.css";
 
-const { REACT_APP_PHOTOS_FOLDER } = process.env;
+const storageRef = storage.ref("images");
 
 function GalleryThumbnail({ photo, text, id, link }) {
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    photo &&
+      storageRef
+        .child(photo.thumbnail)
+        .getDownloadURL()
+        .then((url) => setImage(url))
+        .catch((e) => console.log(e));
+  }, [photo]);
+
   return (
     <div className="gallery_item" key={id}>
       <div className="gallery_img">
@@ -12,11 +25,7 @@ function GalleryThumbnail({ photo, text, id, link }) {
         </div>
         {photo && (
           <Link to={link}>
-            <img
-              src={REACT_APP_PHOTOS_FOLDER + photo.thumbnail}
-              alt=""
-              key={id}
-            />
+            <img src={image} alt="" key={id} />
           </Link>
         )}
       </div>
