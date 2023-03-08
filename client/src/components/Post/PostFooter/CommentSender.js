@@ -13,7 +13,8 @@ function CommentSender({
   post,
   user,
   aggregateCount,
-  avatarClass
+  avatarClass,
+  parentComment = false
 }) {
   const { addNewComment } = useApiUtil();
   const [comment, setComment] = useState("");
@@ -26,7 +27,8 @@ function CommentSender({
       post.id,
       comment,
       firebase.firestore.FieldValue.serverTimestamp(),
-      aggregateCount
+      aggregateCount,
+      parentComment
     );
     setComment("");
   };

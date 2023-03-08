@@ -148,7 +148,6 @@ export const addNewPost = async (
   timestamp,
   message,
   image,
-  rest = {},
   dispatch,
   state
 ) => {
@@ -168,8 +167,7 @@ export const addNewPost = async (
     image,
     reactions: {
       like: [],
-    },
-    ...rest,
+    }
   };
 
   await postQuery.set(postContent);
@@ -195,7 +193,7 @@ export const addNewComment = (
   message,
   timestamp,
   aggregateCount,
-  parentComment = false,
+  parentComment,
   dispatch
 ) => {
   const newCommentDoc = db

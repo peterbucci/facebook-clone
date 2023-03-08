@@ -17,7 +17,7 @@ function Options({ post, userId, iconActive }) {
       <button
         className="post__option"
         onClick={() =>
-          handleReactionClick(reactions, "like", userId, post, "posts")
+          handleReactionClick(reactions, "like", userId, post, "posts", null)
         }
       >
         <ThumbUpIcon className={iconActive} />
