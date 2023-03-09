@@ -14,9 +14,9 @@
 
 ## Screenshots
 
-![User Feed Screesnshot](public/feed.png "User Feed")
+![User Feed Screesnshot](public/feed_screenshot.png "User Feed")
 
-![Profile Screesnshot](public/profile.png "Profile")
+![Profile Screesnshot](public/profile_screenshot.png "Profile")
 
 ## About
 
