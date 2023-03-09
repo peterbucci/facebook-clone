@@ -1,7 +1,7 @@
 {
   "hosting": {
     "public": "build",
-    "site": "project-clone-00",
+    "site": "pb-project-01",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
